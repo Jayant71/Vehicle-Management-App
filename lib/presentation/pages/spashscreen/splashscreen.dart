@@ -16,16 +16,25 @@ class Splashscreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 3), () {
-      // Check if user is logged in
-      bool isLoggedIn =
-          isUserLoggedIn(); // Replace isUserLoggedIn() with your own logic
+    Future.delayed(const Duration(seconds: 2), () {
+      bool isLoggedIn = isUserLoggedIn();
 
       // Navigate to respective pages
       if (isLoggedIn) {
         // User is logged in, navigate to home page
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const Homepage()));
+        Navigator.of(context).pushReplacement(PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) {
+          return const Homepage();
+        }, transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = const Offset(0.0, -1.0);
+          var end = Offset.zero;
+          var curve = Curves.ease;
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+
+          return SlideTransition(position: offsetAnimation, child: child);
+        }));
       } else {
         // User is not logged in, navigate to login page
         Navigator.of(context).pushReplacement(

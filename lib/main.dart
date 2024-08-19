@@ -8,8 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:vehicle_management_app/core/config/theme/app_theme.dart';
 import 'package:vehicle_management_app/firebase_options.dart';
 import 'package:vehicle_management_app/presentation/choose_mode/bloc/theme_cubit.dart';
-import 'package:vehicle_management_app/presentation/pages/getstartedpage/getstartedpage.dart';
-import 'package:vehicle_management_app/presentation/pages/homepage/homepage.dart';
+import 'package:vehicle_management_app/presentation/pages/homepage/bloc/time_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/spashscreen/splashscreen.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 
@@ -40,6 +39,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<ThemeCubit>(
           create: (context) => ThemeCubit(),
         ),
+        BlocProvider(create: (context) => TimeCubit()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, state) {

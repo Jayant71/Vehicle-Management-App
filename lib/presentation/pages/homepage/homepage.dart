@@ -1,24 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:vehicle_management_app/core/config/theme/app_colors.dart';
 import 'package:intl/intl.dart';
+import 'package:vehicle_management_app/presentation/pages/appllications/applications.dart';
+import 'package:vehicle_management_app/presentation/pages/homepage/bloc/time_cubit.dart';
+import 'package:vehicle_management_app/presentation/pages/vehiclerequestform/vehiclereq.dart';
 import 'package:vehicle_management_app/presentation/widgets/homepagecards.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
-  String getCurrentDateTime() {
-    DateTime now = DateTime.now();
-    String formattedDateTime = DateFormat('HH:mm').format(now);
-    String dayOfWeek = DateFormat('EEEE').format(now);
-    formattedDateTime = '$dayOfWeek  $formattedDateTime';
-    return formattedDateTime.toString();
-  }
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  // String getCurrentDateTime() {
+  //   DateTime now = DateTime.now();
+  //   String formattedDateTime = DateFormat('HH:mm').format(now);
+  //   String dayOfWeek = DateFormat('EEEE').format(now);
+  //   formattedDateTime = '$dayOfWeek  $formattedDateTime';
+  //   return formattedDateTime.toString();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.darkgrey,
+      backgroundColor: AppColors.lightpurple,
       extendBodyBehindAppBar: true,
       drawer: Drawer(
         child: ListView(
@@ -27,7 +37,7 @@ class Homepage extends StatelessWidget {
               child: Text('Drawer Header'),
             ),
             ListTile(
-              title: const Text('Item 1'),
+              title: const Text('Admin Section'),
               onTap: () {},
             ),
             ListTile(
@@ -40,7 +50,11 @@ class Homepage extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80),
         child: AppBar(
-          title: Text(getCurrentDateTime()),
+          title: BlocBuilder<TimeCubit, String>(
+            builder: (context, state) {
+              return Text(state);
+            },
+          ),
           automaticallyImplyLeading: false,
           leading: Builder(
             builder: (BuildContext context) {
@@ -71,8 +85,25 @@ class Homepage extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         fixedColor: AppColors.darktext,
-        currentIndex: 1,
+        currentIndex: 0,
         iconSize: 30,
+        onTap: (value) {
+          switch (value) {
+            // case 0:
+            //   Navigator.pushNamed(context, '/homepage');
+            //   break;
+            case 1:
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const VehicleRequestForm(),
+              ));
+              break;
+            case 2:
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const Applications(),
+              ));
+              break;
+          }
+        },
         backgroundColor: AppColors.lightpurple,
         items: const [
           BottomNavigationBarItem(
@@ -111,8 +142,51 @@ class Homepage extends StatelessWidget {
                   ],
                 ),
               ),
-              padding: const EdgeInsets.only(top: 100),
-              child: Lottie.asset('assets/animations/homepage_animation.json'),
+              padding: const EdgeInsets.only(top: 50),
+              child: Stack(children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: Lottie.asset(
+                      'assets/animations/homepage_animation.json',
+                      renderCache: RenderCache.raster),
+                ),
+                const Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 90),
+                    child: Text(
+                      'Welcome to Vehicle Management',
+                      style: TextStyle(
+                        color: AppColors.lightbackground,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(bottom: 70, left: 20, right: 20),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
+                        minimumSize: const Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: const Text('Book a Vehicle'),
+                    ),
+                  ),
+                )
+              ]),
             ),
           ),
           Align(
@@ -125,7 +199,7 @@ class Homepage extends StatelessWidget {
                   topRight: Radius.circular(50),
                 ),
               ),
-              height: MediaQuery.of(context).size.height * 0.55,
+              height: MediaQuery.of(context).size.height * 0.4,
               width: double.infinity,
               child: GridView(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -136,40 +210,26 @@ class Homepage extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(50, 20, 50, 0),
                 children: [
                   HomeCard(
-                    icon: const Icon(Icons.car_rental, size: 50),
-                    title: "Maintenance",
-                  ),
-                  HomeCard(
                     icon: const Icon(Icons.car_repair, size: 50),
-                    title: "Repair",
+                    title: "Maintenance & Refueling",
                   ),
                   HomeCard(
                     icon: const Icon(Icons.car_rental, size: 50),
-                    title: "Maintenance",
-                  ),
-                  HomeCard(
-                    icon: const Icon(Icons.car_repair, size: 50),
-                    title: "Repair",
+                    title: "Vehicle List",
                   ),
                   HomeCard(
                     icon: const Icon(Icons.car_rental, size: 50),
-                    title: "Maintenance",
+                    title: "",
                   ),
                   HomeCard(
-                    icon: const Icon(Icons.car_repair, size: 50),
-                    title: "Repair",
-                  ),
-                  HomeCard(
-                    icon: const Icon(Icons.car_rental, size: 50),
-                    title: "Maintenance",
-                  ),
-                  HomeCard(
-                    icon: const Icon(Icons.car_repair, size: 50),
-                    title: "Repair",
+                    icon: const Icon(Icons.feedback, size: 50),
+                    title: "Feedback",
                   ),
                 ],
-              ),
-            ),
+              ).animate().fadeIn(duration: 300.ms).scale(delay: 300.ms),
+            )
+                .animate()
+                .slideY(duration: 300.ms, delay: 300.ms, begin: 1, end: 0),
           ),
         ],
       ),

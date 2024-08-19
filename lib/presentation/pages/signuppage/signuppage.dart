@@ -45,10 +45,10 @@ class _SignupPageState extends State<SignupPage> {
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    fullNameField(context),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    // fullNameField(context),
+                    // const SizedBox(
+                    //   height: 20,
+                    // ),
                     emailField(context),
                     const SizedBox(
                       height: 20,
@@ -82,7 +82,6 @@ class _SignupPageState extends State<SignupPage> {
                                 });
                             var result = await sl<SignupUseCase>().call(
                               params: CreateUserReq(
-                                fullName: _fullNameController.text.toString(),
                                 email: _emailController.text.toString(),
                                 password: _passwordController.text.toString(),
                               ),
@@ -115,8 +114,8 @@ class _SignupPageState extends State<SignupPage> {
                             );
                           }
                         }),
-                    const SizedBox(
-                      height: 20,
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.15,
                     ),
                     const Text(
                       'Already have an account?',

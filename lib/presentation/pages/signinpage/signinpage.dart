@@ -16,122 +16,123 @@ class SigninPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: const LogoNameAppBar(),
       body: Form(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(
-              height: 150,
-            ),
-            const Text(
-              'Sign In',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                height: 100,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    emailField(context),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    passwordField(context),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    AuthAppButton(
-                        text: "Sign In",
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                });
-                            var result = await sl<SigninUseCase>().call(
-                              params: SigninUserReq(
-                                email: _emailController.text.toString(),
-                                password: _passwordController.text.toString(),
-                              ),
-                            );
-                            result.fold(
-                              (l) {
-                                Navigator.of(context).pop();
-                                showDialog(
-                                    context: context,
-                                    builder: (builder) {
-                                      return AlertDialog(
-                                        title: const Text('Error'),
-                                        content: Text(l.toString()),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text('OK'),
-                                          ),
-                                        ],
-                                      );
-                                    });
-                              },
-                              (r) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    behavior: SnackBarBehavior.floating,
-                                    content: Text('Sign in successful'),
-                                  ),
-                                );
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Homepage(),
-                                  ),
-                                );
-                              },
-                            );
-                          }
-                        }),
-                    const SizedBox(
-                      height: 200,
-                    ),
-                    const Text(
-                      'Don\'t have an account?',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    AuthAppButton(
-                        text: "Sign Up",
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SignupPage(),
-                            ),
-                          );
-                        }),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                  ],
+              const Text(
+                'Sign In',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      emailField(context),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      passwordField(context),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      AuthAppButton(
+                          text: "Sign In",
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  });
+                              var result = await sl<SigninUseCase>().call(
+                                params: SigninUserReq(
+                                  email: _emailController.text.toString(),
+                                  password: _passwordController.text.toString(),
+                                ),
+                              );
+                              result.fold(
+                                (l) {
+                                  Navigator.of(context).pop();
+                                  showDialog(
+                                      context: context,
+                                      builder: (builder) {
+                                        return AlertDialog(
+                                          title: const Text('Error'),
+                                          content: Text(l.toString()),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
+                                (r) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      behavior: SnackBarBehavior.floating,
+                                      content: Text('Sign in successful'),
+                                    ),
+                                  );
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const Homepage(),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+                          }),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                      ),
+                      const Text(
+                        'Don\'t have an account?',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      AuthAppButton(
+                          text: "Sign Up",
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SignupPage(),
+                              ),
+                            );
+                          }),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

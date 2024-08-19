@@ -18,22 +18,20 @@ class HomeCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       child: SizedBox(
-        height: 150,
-        width: 150,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(
-              height: 20,
+              height: 5,
             ),
             icon ?? const Icon(Icons.car_rental),
             const SizedBox(
-              height: 20,
+              height: 5,
             ),
             Text(
               title ?? "Title",
+              textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),

@@ -1,3 +1,6 @@
+import 'package:vehicle_management_app/data/models/vehicle/maintenance_record.dart';
+import 'package:vehicle_management_app/data/models/vehicle/refueling_record.dart';
+
 class VehicleEntity {
   final String id;
   final String make;
@@ -13,25 +16,5 @@ class VehicleEntity {
     required this.year,
     this.maintenanceHistory = const [],
     this.refuelingHistory = const [],
-  });
-}
-
-class MaintenanceRecord {
-  final DateTime date;
-  final String description;
-
-  MaintenanceRecord({
-    required this.date,
-    required this.description,
-  });
-}
-
-class RefuelingRecord {
-  final DateTime date;
-  final double amount;
-
-  RefuelingRecord({
-    required this.date,
-    required this.amount,
   });
 }
