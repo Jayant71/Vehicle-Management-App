@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vehicle_management_app/data/models/auth/signin_user_req.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/sigin.dart';
-import 'package:vehicle_management_app/presentation/pages/homepage/homepage.dart';
+import 'package:vehicle_management_app/presentation/pages/homepage/ui/homepage.dart';
 import 'package:vehicle_management_app/presentation/pages/signuppage/signuppage.dart';
 import 'package:vehicle_management_app/presentation/widgets/authappbutton.dart';
 import 'package:vehicle_management_app/presentation/widgets/logo_name.dart';

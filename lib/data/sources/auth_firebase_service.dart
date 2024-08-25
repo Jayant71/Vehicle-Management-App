@@ -13,6 +13,8 @@ abstract class AuthFirebaseService {
   Future<Either> signin(SigninUserReq signinUserReq);
 
   Future<Either> getUser();
+
+  Future<Either> signout();
 }
 
 class AuthFirebaseServiceImpl extends AuthFirebaseService {
@@ -72,6 +74,18 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
           firebaseAuth.currentUser?.photoURL ?? AppURLs.defaultImage;
       UserEntity userEntity = userModel.toEntity();
       return Right(userEntity);
+    } catch (e) {
+      return const Left('An error occurred');
+    }
+  }
+
+  @override
+  Future<Either> signout() async {
+    var message = '';
+    try {
+      await FirebaseAuth.instance.signOut();
+      message = 'Signout was Successful';
+      return Right(message);
     } catch (e) {
       return const Left('An error occurred');
     }

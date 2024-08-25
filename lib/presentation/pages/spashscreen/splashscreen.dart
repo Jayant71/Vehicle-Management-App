@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vehicle_management_app/common/helpers/isLoggedin.dart';
 import 'package:vehicle_management_app/presentation/pages/getstartedpage/getstartedpage.dart';
-import 'package:vehicle_management_app/presentation/pages/homepage/homepage.dart';
+import 'package:vehicle_management_app/presentation/pages/homepage/ui/homepage.dart';
 import 'package:vehicle_management_app/presentation/widgets/getstartedlogo.dart';
 
 class Splashscreen extends StatelessWidget {

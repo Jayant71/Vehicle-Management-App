@@ -1,10 +1,9 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 
 class TimeCubit extends HydratedCubit<String> {
-  TimeCubit() : super(_getCurrentTime()) {
+  TimeCubit() : super(DateTime.now().toString()) {
     _startTimer();
   }
 
@@ -17,19 +16,25 @@ class TimeCubit extends HydratedCubit<String> {
     return formattedDateTime;
   }
 
+  Timer? _timer;
+
   void _startTimer() {
-    Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       emit(_getCurrentTime());
     });
   }
 
+  void stopTimer() {
+    _timer?.cancel();
+  }
+
   @override
-  String fromJson(Map<String, dynamic> json) {
+  String? fromJson(Map<String, dynamic> json) {
     return json['time'] as String;
   }
 
   @override
-  Map<String, dynamic> toJson(String state) {
+  Map<String, dynamic>? toJson(String state) {
     return {'time': state};
   }
 }

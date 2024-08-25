@@ -13,8 +13,10 @@ class Getstartedlogo extends StatelessWidget {
         height: 130,
         decoration: const BoxDecoration(
             color: AppColors.lightgrey, shape: BoxShape.circle),
-        child: Image.asset(
-          AppImages.logo,
+        child: ClipOval(
+          child: Image.asset(
+            AppImages.logo,
+          ),
         ),
       ),
     ]);
