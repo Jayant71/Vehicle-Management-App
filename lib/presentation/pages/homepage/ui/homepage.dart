@@ -22,15 +22,21 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   TimeCubit timeCubit = TimeCubit();
+  CarouselController carouselController = CarouselController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.lightpurple,
+      backgroundColor: AppColors.grey,
       extendBodyBehindAppBar: true,
       drawer: _drawer(context),
       appBar: _appbar(),
       body: Stack(
         children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: _carousel(),
+          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -193,6 +199,42 @@ class _HomepageState extends State<Homepage> {
             },
           ),
         ],
+      ),
+    );
+  }
+
+  _carousel() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 140),
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.2,
+        child: CarouselView(
+            itemSnapping: true,
+            controller: carouselController,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            itemExtent: MediaQuery.of(context).size.width,
+            children: [
+              Container(
+                height: 100,
+                width: 200,
+                color: Colors.red,
+              ),
+              Container(
+                height: 100,
+                width: 200,
+                color: Colors.blue,
+              ),
+              Container(
+                height: 100,
+                width: 200,
+                color: Colors.green,
+              ),
+              Container(
+                height: 100,
+                width: 200,
+                color: Colors.yellow,
+              ),
+            ]),
       ),
     );
   }

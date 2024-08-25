@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:vehicle_management_app/common/helpers/isLoggedin.dart';
 import 'package:vehicle_management_app/presentation/pages/getstartedpage/getstartedpage.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/homepage.dart';
@@ -16,27 +18,14 @@ class Splashscreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 3), () {
       bool isLoggedIn = isUserLoggedIn();
-
-      // Navigate to respective pages
+      if (context.mounted)
+      // ignore: curly_braces_in_flow_control_structures
       if (isLoggedIn) {
-        // User is logged in, navigate to home page
-        Navigator.of(context).pushReplacement(PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) {
-          return const Homepage();
-        }, transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          var begin = const Offset(0.0, -1.0);
-          var end = Offset.zero;
-          var curve = Curves.ease;
-          var tween =
-              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          var offsetAnimation = animation.drive(tween);
-
-          return SlideTransition(position: offsetAnimation, child: child);
-        }));
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const Homepage()));
       } else {
-        // User is not logged in, navigate to login page
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const GetStartedPage()));
       }
@@ -52,7 +41,10 @@ class Splashscreen extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            CircularProgressIndicator(),
+            SizedBox(
+                height: 40,
+                width: 40,
+                child: CircularProgressIndicator.adaptive()),
           ],
         ),
       ),
