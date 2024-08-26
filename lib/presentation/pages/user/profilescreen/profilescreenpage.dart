@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class VehicleRequestForm extends StatelessWidget {
-  const VehicleRequestForm({super.key});
+class ProfileScreenPage extends StatelessWidget {
+  const ProfileScreenPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('Vehicle Request Form'),
+        child: Text('Profile Screen Page'),
       ),
     );
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:vehicle_management_app/data/models/auth/create_user_req.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/signup.dart';
-import 'package:vehicle_management_app/presentation/pages/signinpage/signinpage.dart';
+import 'package:vehicle_management_app/presentation/pages/auth/completeprofilepage/completeprofile.dart';
+import 'package:vehicle_management_app/presentation/pages/auth/signinpage/signinpage.dart';
 import 'package:vehicle_management_app/presentation/widgets/authappbutton.dart';
-import 'package:vehicle_management_app/presentation/widgets/logo_name.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 
 class SignupPage extends StatefulWidget {
@@ -25,42 +25,30 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const LogoNameAppBar(),
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
+      body: Form(
+        key: _formKey,
+        child: Center(
+          child: ListView(
+            shrinkWrap: true,
             children: [
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                'Sign Up',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+              const Center(
+                child: Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // fullNameField(context),
-                    // const SizedBox(
-                    //   height: 20,
-                    // ),
                     emailField(context),
                     const SizedBox(
                       height: 20,
                     ),
-                    // employeeIdField(context),
-                    // const SizedBox(
-                    //   height: 20,
-                    // ),
-                    // contactNumberField(context),
-                    // const SizedBox(
-                    //   height: 20,
-                    // ),
                     passwordField(context),
                     const SizedBox(
                       height: 20,
@@ -115,7 +103,7 @@ class _SignupPageState extends State<SignupPage> {
                           }
                         }),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.1,
                     ),
                     const Text(
                       'Already have an account?',
@@ -133,7 +121,7 @@ class _SignupPageState extends State<SignupPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SigninPage(),
+                              builder: (context) => CompleteProfilePage(),
                             ),
                           );
                         }),

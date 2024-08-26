@@ -6,9 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vehicle_management_app/core/config/theme/app_theme.dart';
+import 'package:vehicle_management_app/core/config/theme/text_theme.dart';
 import 'package:vehicle_management_app/firebase_options.dart';
 import 'package:vehicle_management_app/presentation/choose_mode/bloc/theme_cubit.dart';
-import 'package:vehicle_management_app/presentation/pages/homepage/bloc/time_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/spashscreen/splashscreen.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 
@@ -29,28 +29,54 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    _setSystemUIOverlayStyle(ThemeMode.system);
+  }
+
+  void _setSystemUIOverlayStyle(ThemeMode themeMode) {
+    final brightness = themeMode == ThemeMode.dark
+        ? Brightness.dark
+        : themeMode == ThemeMode.light
+            ? Brightness.light
+            : PlatformDispatcher.instance.platformBrightness;
+
+    SystemUiOverlayStyle style = brightness == Brightness.dark
+        ? SystemUiOverlayStyle.light
+        : SystemUiOverlayStyle.dark;
+
+    SystemChrome.setSystemUIOverlayStyle(style);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    TextTheme textTheme = createTextTheme(context, "Roboto Flex", "Roboto");
+    MaterialTheme theme = MaterialTheme(textTheme);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<ThemeCubit>(
           create: (context) => ThemeCubit(),
         ),
-        BlocProvider(create: (context) => TimeCubit()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
-        builder: (context, state) {
-          Theme.of(context).brightness == Brightness.dark
-              ? SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light)
-              : SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+        builder: (context, themeMode) {
+          _setSystemUIOverlayStyle(themeMode);
+
           return MaterialApp(
-            themeMode: ThemeMode.system,
-            theme: AppTheme.lightTheme,
+            themeMode: themeMode,
+            theme: theme.light(),
+            darkTheme: theme.dark(),
             debugShowCheckedModeBanner: false,
-            darkTheme: AppTheme.darkTheme,
             home: Splashscreen(),
           );
         },

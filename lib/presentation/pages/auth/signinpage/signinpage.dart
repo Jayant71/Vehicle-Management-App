@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:vehicle_management_app/data/models/auth/signin_user_req.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/sigin.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/homepage.dart';
-import 'package:vehicle_management_app/presentation/pages/signuppage/signuppage.dart';
+import 'package:vehicle_management_app/presentation/pages/auth/signuppage/signuppage.dart';
 import 'package:vehicle_management_app/presentation/widgets/authappbutton.dart';
-import 'package:vehicle_management_app/presentation/widgets/logo_name.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 
 class SigninPage extends StatelessWidget {
@@ -16,21 +15,18 @@ class SigninPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const LogoNameAppBar(),
       body: Form(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
+        child: Center(
+          child: ListView(
+            shrinkWrap: true,
             children: [
-              const SizedBox(
-                height: 100,
-              ),
-              const Text(
-                'Sign In',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+              const Center(
+                child: Text(
+                  'Sign In',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Padding(
@@ -91,6 +87,8 @@ class SigninPage extends StatelessWidget {
                                       content: Text('Sign in successful'),
                                     ),
                                   );
+                                  Navigator.of(context)
+                                      .popUntil((route) => route.isFirst);
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
@@ -102,7 +100,7 @@ class SigninPage extends StatelessWidget {
                             }
                           }),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.2,
+                        height: MediaQuery.of(context).size.height * 0.1,
                       ),
                       const Text(
                         'Don\'t have an account?',

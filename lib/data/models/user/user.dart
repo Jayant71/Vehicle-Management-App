@@ -20,35 +20,42 @@ class UserModel {
       this.department,
       this.role = 'user'});
 
-  UserModel.fromJson(Map<String, dynamic> data) {
-    fullName = data['name'];
-    email = data['email'];
+  UserModel.fromJson(Map<String, dynamic> json) {
+    fullName = json['fullName'];
+    uid = json['uid'];
+    email = json['email'];
+    imageURL = json['imageURL'];
+    employeeId = json['employeeId'];
+    contactNumber = json['contactNumber'];
+    department = json['department'];
+    role = json['role'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': fullName,
-      'email': email,
-      'uid': uid,
-      'imageURL': imageURL,
-      'employeeId': employeeId,
-      'contactNumber': contactNumber,
-      'department': department,
-      'role': role
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['fullName'] = fullName;
+    data['uid'] = uid;
+    data['email'] = email;
+    data['imageURL'] = imageURL;
+    data['employeeId'] = employeeId;
+    data['contactNumber'] = contactNumber;
+    data['department'] = department;
+    data['role'] = role;
+    return data;
   }
 }
 
 extension UserModelX on UserModel {
   UserEntity toEntity() {
     return UserEntity(
-        email: email,
-        uid: uid,
-        fullName: fullName,
-        imageURL: imageURL,
-        employeeId: employeeId,
-        contactNumber: contactNumber,
-        department: department,
-        role: role);
+      fullName: fullName,
+      uid: uid,
+      email: email,
+      imageURL: imageURL,
+      employeeId: employeeId,
+      contactNumber: contactNumber,
+      department: department,
+      role: role,
+    );
   }
 }

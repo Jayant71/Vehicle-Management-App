@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'dart:async';
 
 class TimeCubit extends HydratedCubit<String> {
-  TimeCubit() : super(DateTime.now().toString()) {
+  TimeCubit() : super("") {
     _startTimer();
   }
 

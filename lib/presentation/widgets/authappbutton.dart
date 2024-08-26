@@ -8,27 +8,21 @@ class AuthAppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50,
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(text,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                )),
-            const SizedBox(width: 10),
-            const Icon(
-              Icons.arrow_forward,
-              size: 20,
-            ),
-          ],
-        ),
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(double.infinity, 50),
       ),
+      onPressed: onPressed,
+      icon: const Icon(
+        Icons.arrow_forward,
+        size: 20,
+      ),
+      iconAlignment: IconAlignment.end,
+      label: Text(text,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          )),
     );
   }
 }

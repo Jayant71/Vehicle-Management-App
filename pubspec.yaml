@@ -25,6 +25,8 @@ dependencies:
   # lottie:
   flutter_animate: ^4.5.0
   equatable:
+  internet_connection_checker:
+  google_fonts: ^6.2.1
   # rive:
 
 dev_dependencies:

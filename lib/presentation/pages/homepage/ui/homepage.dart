@@ -3,13 +3,17 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vehicle_management_app/core/config/theme/app_colors.dart';
+import 'package:vehicle_management_app/core/config/theme/app_theme.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/signout.dart';
 import 'package:vehicle_management_app/presentation/pages/getstartedpage/getstartedpage.dart';
 // import 'package:intl/intl.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/bloc/time_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/timerview.dart';
-import 'package:vehicle_management_app/presentation/pages/vehiclerequestform/vehiclereq.dart';
+import 'package:vehicle_management_app/presentation/pages/notifications/notificationpage.dart';
+import 'package:vehicle_management_app/presentation/pages/refuelingandmaintenance/refuelingandmaintenancepage.dart';
+import 'package:vehicle_management_app/presentation/pages/user/profilescreen/profilescreenpage.dart';
+import 'package:vehicle_management_app/presentation/pages/vehicle/vehiclelistpage/vehiclelistpage.dart';
+import 'package:vehicle_management_app/presentation/pages/vehicle/vehiclerequestform/vehiclereq.dart';
 import 'package:vehicle_management_app/presentation/widgets/homepagecards.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 
@@ -27,89 +31,90 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.grey,
-      extendBodyBehindAppBar: true,
-      drawer: _drawer(context),
-      appBar: _appbar(),
-      body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: _carousel(),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: AppColors.lightbackground,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
+        drawer: _drawer(context),
+        appBar: _appbar(),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              _carousel(),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.6,
+                child: GridView(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3),
+                  children: [
+                    HomePageCard(
+                      title: 'Refueling and Maintenance',
+                      icon: const Icon(Icons.local_gas_station, size: 40),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const RefuelingAndMaintenancePage(),
+                          ),
+                        );
+                      },
+                    ),
+                    HomePageCard(
+                      title: 'Vehicle List',
+                      icon: const Icon(Icons.directions_car, size: 40),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const VehicleListPage(),
+                          ),
+                        );
+                      },
+                    ),
+                    HomePageCard(
+                      title: 'Vehicle Request Form',
+                      icon: const Icon(Icons.request_page, size: 40),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const VehicleRequestForm(),
+                          ),
+                        );
+                      },
+                    ),
+                    HomePageCard(
+                      title: 'Vehicle Request Form',
+                      icon: const Icon(Icons.request_page, size: 40),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const VehicleRequestForm(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
-              height: MediaQuery.of(context).size.height * 0.55,
-              width: double.infinity,
-              child: GridView(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisSpacing: 6,
-                  mainAxisSpacing: 6,
-                  crossAxisCount: 2,
-                ),
-                padding: const EdgeInsets.fromLTRB(50, 20, 50, 0),
-                children: [
-                  HomeCard(
-                    icon: const Icon(Icons.car_repair, size: 50),
-                    title: "Maintenance & Refueling",
-                  ),
-                  HomeCard(
-                    icon: const Icon(Icons.car_rental, size: 50),
-                    title: "Vehicle List",
-                  ),
-                  HomeCard(
-                    icon: const Icon(Icons.car_rental, size: 50),
-                    title: "",
-                  ),
-                  HomeCard(
-                    icon: const Icon(Icons.feedback, size: 50),
-                    title: "Feedback",
-                  ),
-                ],
-              ).animate().fadeIn(duration: 300.ms).scale(delay: 300.ms),
-            )
-                .animate()
-                .slideY(duration: 300.ms, delay: 300.ms, begin: 1, end: 0),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 10),
+              SizedBox(
+                width: double.maxFinite,
                 child: FloatingActionButton.extended(
-                    extendedPadding: const EdgeInsets.symmetric(
-                      horizontal: 70,
-                    ),
-                    backgroundColor: Colors.blue,
-                    label: const Text(
-                      'Book Vehicle',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const VehicleRequestForm(),
-                        ),
-                      );
-                    }),
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  onPressed: () {},
+                  label: const Text(
+                    'Book a Vehicle',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  icon: const Icon(
+                    Icons.add,
+                  ),
+                ),
               ),
-            ),
-          )
-        ],
-      ),
-    );
+            ],
+          ),
+        ));
   }
 
   _signout(BuildContext context) async {
@@ -149,6 +154,7 @@ class _HomepageState extends State<Homepage> {
     return PreferredSize(
       preferredSize: const Size.fromHeight(80),
       child: AppBar(
+        elevation: 5,
         title: BlocProvider(
             create: (context) => timeCubit, child: const TimerView()),
         automaticallyImplyLeading: false,
@@ -165,9 +171,25 @@ class _HomepageState extends State<Homepage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NotificationPage(),
+                ),
+              );
+            },
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.person)),
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProfileScreenPage(),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.person)),
           const SizedBox(
             width: 10,
           ),
@@ -204,10 +226,12 @@ class _HomepageState extends State<Homepage> {
   }
 
   _carousel() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 140),
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.2,
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.2,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 8.0,
+        ),
         child: CarouselView(
             itemSnapping: true,
             controller: carouselController,
