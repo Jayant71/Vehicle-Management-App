@@ -1,12 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vehicle_management_app/core/config/theme/app_theme.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/signout.dart';
 import 'package:vehicle_management_app/presentation/pages/getstartedpage/getstartedpage.dart';
-// import 'package:intl/intl.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/bloc/time_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/timerview.dart';
 import 'package:vehicle_management_app/presentation/pages/notifications/notificationpage.dart';
@@ -31,90 +29,119 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        extendBodyBehindAppBar: true,
         drawer: _drawer(context),
         appBar: _appbar(),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+        body: Stack(children: [
+          ListView(
+            shrinkWrap: true,
             children: [
               _carousel(),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.6,
-                child: GridView(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3),
-                  children: [
-                    HomePageCard(
-                      title: 'Refueling and Maintenance',
-                      icon: const Icon(Icons.local_gas_station, size: 40),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const RefuelingAndMaintenancePage(),
-                          ),
-                        );
-                      },
-                    ),
-                    HomePageCard(
-                      title: 'Vehicle List',
-                      icon: const Icon(Icons.directions_car, size: 40),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const VehicleListPage(),
-                          ),
-                        );
-                      },
-                    ),
-                    HomePageCard(
-                      title: 'Vehicle Request Form',
-                      icon: const Icon(Icons.request_page, size: 40),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const VehicleRequestForm(),
-                          ),
-                        );
-                      },
-                    ),
-                    HomePageCard(
-                      title: 'Vehicle Request Form',
-                      icon: const Icon(Icons.request_page, size: 40),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const VehicleRequestForm(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: double.maxFinite,
-                child: FloatingActionButton.extended(
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  onPressed: () {},
-                  label: const Text(
-                    'Book a Vehicle',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  icon: const Icon(
-                    Icons.add,
-                  ),
-                ),
-              ),
             ],
           ),
-        ));
+          // const Align(
+          //   alignment: Alignment.center,
+          //   child: GoogleMap(
+          //       initialCameraPosition: CameraPosition(
+          //     target: LatLng(0, 0),
+          //     zoom: 15,
+          //   )),
+          // ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: BottomSheet(
+                enableDrag: false,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                onClosing: () {},
+                builder: (ctx) {
+                  return Container(
+                    padding: const EdgeInsets.all(8),
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        Center(
+                          child: Text("Where do you want to go?",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary)),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Center(
+                          child: Text("Source",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary)),
+                        ),
+                        TextField(
+                          decoration: InputDecoration(
+                            fillColor: Theme.of(context).colorScheme.onPrimary,
+                            filled: true,
+                            enabled: false,
+                            hintText: "Select source location",
+                            hintStyle: const TextStyle(),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(30)),
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Center(
+                          child: Text("Destination",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary)),
+                        ),
+                        TextField(
+                          decoration: InputDecoration(
+                            fillColor: Theme.of(context).colorScheme.onPrimary,
+                            filled: true,
+                            enabled: false,
+                            hintText: "Select destination location",
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(30)),
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.onSecondary,
+                          ),
+                          onPressed: () {},
+                          child: Text("Book a Vehicle",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      Theme.of(context).colorScheme.primary)),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+          )
+        ]));
   }
 
   _signout(BuildContext context) async {
@@ -154,6 +181,7 @@ class _HomepageState extends State<Homepage> {
     return PreferredSize(
       preferredSize: const Size.fromHeight(80),
       child: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 5,
         title: BlocProvider(
             create: (context) => timeCubit, child: const TimerView()),
@@ -161,7 +189,10 @@ class _HomepageState extends State<Homepage> {
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: const Icon(Icons.menu),
+              icon: Icon(
+                Icons.menu,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
@@ -170,7 +201,8 @@ class _HomepageState extends State<Homepage> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications),
+            icon: Icon(Icons.notifications,
+                color: Theme.of(context).colorScheme.onPrimary),
             onPressed: () {
               Navigator.push(
                 context,
@@ -180,16 +212,6 @@ class _HomepageState extends State<Homepage> {
               );
             },
           ),
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ProfileScreenPage(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.person)),
           const SizedBox(
             width: 10,
           ),
@@ -208,18 +230,77 @@ class _HomepageState extends State<Homepage> {
       child: ListView(
         children: [
           const DrawerHeader(
-            child: Text('Drawer Header'),
+            child: Text('Name', style: TextStyle(fontSize: 30)),
           ),
           ListTile(
-            title: const Text('Admin Section'),
+            leading:
+                const Icon(Icons.wallet, color: Color.fromARGB(255, 0, 0, 0)),
+            title: const Text(
+              "Wallet",
+              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+            ),
             onTap: () {},
           ),
+          const Divider(),
           ListTile(
-            title: const Text('Sign Out'),
+            leading: const Icon(
+              Icons.notification_add,
+              color: Color.fromARGB(255, 0, 0, 0),
+            ),
+            title: const Text(
+              "Notification",
+              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+            ),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(
+              Icons.description,
+              color: Color.fromARGB(255, 0, 0, 0),
+            ),
+            title: const Text(
+              "Privacy Policies",
+              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+            ),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(
+              Icons.album_outlined,
+              color: Color.fromARGB(255, 0, 0, 0),
+            ),
+            title: const Text(
+              "Contact Us",
+              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+            ),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            leading:
+                const Icon(Icons.settings, color: Color.fromARGB(255, 0, 0, 0)),
+            title: const Text(
+              "Settings",
+              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+            ),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(
+              Icons.exit_to_app,
+              color: Color.fromARGB(255, 0, 0, 0),
+            ),
+            title: const Text(
+              "Sign Out",
+              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+            ),
             onTap: () {
               _signout(context);
             },
-          ),
+          )
         ],
       ),
     );

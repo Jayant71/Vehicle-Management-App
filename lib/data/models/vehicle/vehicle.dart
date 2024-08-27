@@ -1,66 +1,59 @@
-import 'package:vehicle_management_app/data/models/vehicle/maintenance_record.dart';
-import 'package:vehicle_management_app/data/models/vehicle/refueling_record.dart';
+import 'package:vehicle_management_app/domain/entities/vehicle/vehicle.dart';
 
 class VehicleModel {
-  final String id;
+  final String vehicleId;
+  final String registrationNumber;
   final String name;
   final String brand;
-  final String model;
-  final String color;
-  final String price;
-  final String image;
-  final List<MaintenanceRecord> maintenanceHistory;
-  final List<RefuelingRecord> refuelingHistory;
+  // final String imageUrl;
+  final String driverId;
+  final String availablity;
 
   VehicleModel({
-    required this.id,
+    required this.vehicleId,
     required this.name,
     required this.brand,
-    required this.model,
-    required this.color,
-    required this.price,
-    required this.image,
-    this.maintenanceHistory = const [],
-    this.refuelingHistory = const [],
+    // required this.imageUrl,
+    required this.driverId,
+    required this.registrationNumber,
+    required this.availablity,
   });
 
   factory VehicleModel.fromJson(Map<String, dynamic> json) {
     return VehicleModel(
-      id: json['id'],
+      vehicleId: json['vechicleId'],
       name: json['name'],
       brand: json['brand'],
-      model: json['model'],
-      color: json['color'],
-      price: json['price'],
-      image: json['image'],
+      // imageUrl: json['imageUrl'],
+      driverId: json['driverId'],
+      registrationNumber: json['registrationNumber'],
+      availablity: json['availablity'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'vehicleId': vehicleId,
       'name': name,
       'brand': brand,
-      'model': model,
-      'color': color,
-      'price': price,
-      'image': image,
+      // 'imageUrl': imageUrl,
+      'driverId': driverId,
+      'registrationNumber': registrationNumber,
+      'availablity': availablity,
     };
   }
 }
 
 extension VehicleModelX on VehicleModel {
-  VehicleModel toEntity() {
-    return VehicleModel(
-      id: id,
+  VehicleEntity toEntity() {
+    return VehicleEntity(
+      vehicleId: vehicleId,
       name: name,
       brand: brand,
-      model: model,
-      color: color,
-      price: price,
-      image: image,
-      maintenanceHistory: maintenanceHistory,
-      refuelingHistory: refuelingHistory,
+      // imageUrl: imageUrl,
+      driverId: driverId,
+      registrationNumber: registrationNumber,
+      availablity: availablity,
     );
   }
 }

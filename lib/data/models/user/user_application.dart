@@ -1,70 +1,69 @@
 import 'package:vehicle_management_app/domain/entities/user/user_application.dart';
 
 class UserApplication {
-  final String id;
-  final String source;
-  final String destination;
+  final String bookingId;
+  final String userId;
+  final String sourceName;
+  final String destinationName;
   final String sourceCoordinates;
   final String destinationCoordinates;
   final String date;
   final String time;
-  final String status;
+  final String accepted;
   final String driverId;
   final String vehicleId;
-  final String userId;
-  final String driverName;
-  final String driverPhone;
-  final int statusIndex;
+  final String createdAt;
+  final String roundTrip;
 
   UserApplication({
-    required this.status,
-    required this.driverId,
-    required this.vehicleId,
+    required this.bookingId,
     required this.userId,
-    required this.driverName,
-    required this.driverPhone,
-    required this.statusIndex,
-    required this.id,
-    required this.source,
-    required this.destination,
+    required this.sourceName,
+    required this.destinationName,
     required this.sourceCoordinates,
     required this.destinationCoordinates,
     required this.date,
     required this.time,
+    required this.accepted,
+    required this.driverId,
+    required this.vehicleId,
+    required this.createdAt,
+    required this.roundTrip,
   });
 
-  UserApplication.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        source = json['source'],
-        destination = json['destination'],
-        sourceCoordinates = json['sourceCoordinates'],
-        destinationCoordinates = json['destinationCoordinates'],
-        date = json['date'],
-        time = json['time'],
-        status = json['status'],
-        driverId = json['driverId'],
-        vehicleId = json['vehicleId'],
-        userId = json['userId'],
-        driverName = json['driverName'],
-        driverPhone = json['driverPhone'],
-        statusIndex = json['statusIndex'];
+  factory UserApplication.fromJson(Map<String, dynamic> json) {
+    return UserApplication(
+      bookingId: json['bookingId'],
+      userId: json['userId'],
+      sourceName: json['sourceName'],
+      destinationName: json['destinationName'],
+      sourceCoordinates: json['sourceCoordinates'],
+      destinationCoordinates: json['destinationCoordinates'],
+      date: json['date'],
+      time: json['time'],
+      accepted: json['accepted'],
+      driverId: json['driverId'],
+      vehicleId: json['vehicleId'],
+      createdAt: json['createdAt'],
+      roundTrip: json['roundTrip'],
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'source': source,
-      'destination': destination,
+      'bookingId': bookingId,
+      'userId': userId,
+      'sourceName': sourceName,
+      'destinationName': destinationName,
       'sourceCoordinates': sourceCoordinates,
       'destinationCoordinates': destinationCoordinates,
       'date': date,
       'time': time,
-      'status': status,
+      'accepted': accepted,
       'driverId': driverId,
       'vehicleId': vehicleId,
-      'userId': userId,
-      'driverName': driverName,
-      'driverPhone': driverPhone,
-      'statusIndex': statusIndex,
+      'createdAt': createdAt,
+      'roundTrip': roundTrip,
     };
   }
 }
@@ -72,20 +71,19 @@ class UserApplication {
 extension UserApplicationX on UserApplication {
   UserApplicationEntity toEntity() {
     return UserApplicationEntity(
-      status: status,
-      driverId: driverId,
-      vehicleId: vehicleId,
+      bookingId: bookingId,
       userId: userId,
-      driverName: driverName,
-      driverPhone: driverPhone,
-      statusIndex: statusIndex,
-      id: id,
-      source: source,
-      destination: destination,
+      sourceName: sourceName,
+      destinationName: destinationName,
       sourceCoordinates: sourceCoordinates,
       destinationCoordinates: destinationCoordinates,
       date: date,
       time: time,
+      accepted: accepted,
+      driverId: driverId,
+      vehicleId: vehicleId,
+      createdAt: createdAt,
+      roundTrip: roundTrip,
     );
   }
 }

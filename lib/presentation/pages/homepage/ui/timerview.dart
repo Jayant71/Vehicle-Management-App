@@ -10,7 +10,8 @@ class TimerView extends StatelessWidget {
     return BlocBuilder<TimeCubit, String>(builder: (context, state) {
       return Text(
         state,
-        style: const TextStyle(
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onPrimary,
           fontWeight: FontWeight.w500,
           fontSize: 22,
         ),

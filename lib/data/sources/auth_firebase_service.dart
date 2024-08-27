@@ -70,8 +70,8 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
           .get();
 
       UserModel userModel = UserModel.fromJson(user.data()!);
-      userModel.imageURL =
-          firebaseAuth.currentUser?.photoURL ?? AppURLs.defaultImage;
+      // userModel.imageURL =
+      //     firebaseAuth.currentUser?.photoURL ?? AppURLs.defaultImage;
       UserEntity userEntity = userModel.toEntity();
       return Right(userEntity);
     } catch (e) {

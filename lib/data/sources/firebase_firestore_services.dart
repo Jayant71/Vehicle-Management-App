@@ -12,6 +12,7 @@ abstract class FirestoreService {
   Future<Either> deleteUserDatabase(String id);
   Future<Either> getUser();
   Future<Either> getUserList();
+  Future<Either> updateUserRole(String id, String role);
 
   // Vehicle
   Future<Either> createVehicleDatabase(VehicleModel vehicleModel);
@@ -24,12 +25,14 @@ abstract class FirestoreService {
   // Future<Either> deleteMaintenanceDatabase(String id);
   Future<Either> getMaintenance(String id);
   Future<Either> getMaintenanceList(String vehicleId);
+  Future<Either> getMaintenanceListByDriver(String driverId);
 
   // Refueling
   Future<Either> createRefuelingDatabase(RefuelingRecord refuelingModel);
   // Future<Either> deleteRefuelingDatabase(String id);
   Future<Either> getRefueling(String id);
   Future<Either> getRefuelingList(String vehicleId);
+  Future<Either> getRefuelingListByDriver(String driverId);
 }
 
 class FirestoreServiceImpl implements FirestoreService {
@@ -114,7 +117,7 @@ class FirestoreServiceImpl implements FirestoreService {
     try {
       await FirebaseFirestore.instance
           .collection('vehicles')
-          .doc(vehicleModel.id)
+          .doc(vehicleModel.vehicleId)
           .set(vehicleModel.toJson());
       message = 'Vehicle created successfully';
       return Right(message);
@@ -188,10 +191,8 @@ class FirestoreServiceImpl implements FirestoreService {
       var auth = FirebaseAuth.instance;
       maintenanceModel.userId = auth.currentUser!.uid.toString();
       await FirebaseFirestore.instance
-          .collection('user')
-          .doc(maintenanceModel.userId)
           .collection('maintenance')
-          .doc(maintenanceModel.id)
+          .doc(maintenanceModel.maintenanceId)
           .set(maintenanceModel.toJson());
       message = 'Maintenance created successfully';
       return Right(message);
@@ -211,10 +212,8 @@ class FirestoreServiceImpl implements FirestoreService {
       var auth = FirebaseAuth.instance;
       refuelingModel.userId = auth.currentUser!.uid.toString();
       await FirebaseFirestore.instance
-          .collection('user')
-          .doc(refuelingModel.userId)
           .collection('refueling')
-          .doc(refuelingModel.id)
+          .doc(refuelingModel.refuelingId)
           .set(refuelingModel.toJson());
       message = 'Refueling created successfully';
       return Right(message);
@@ -231,10 +230,7 @@ class FirestoreServiceImpl implements FirestoreService {
   Future<Either> getMaintenance(String id) async {
     String message = '';
     try {
-      var auth = FirebaseAuth.instance;
       var maintenance = await FirebaseFirestore.instance
-          .collection('user')
-          .doc(auth.currentUser!.uid.toString())
           .collection('maintenance')
           .doc(id)
           .get();
@@ -256,8 +252,6 @@ class FirestoreServiceImpl implements FirestoreService {
     try {
       // var auth = FirebaseAuth.instance;
       var maintenances = await FirebaseFirestore.instance
-          .collection('user')
-          .doc()
           .collection('maintenance')
           .where('vehicleId', isEqualTo: vehicleId)
           .get();
@@ -279,10 +273,7 @@ class FirestoreServiceImpl implements FirestoreService {
   Future<Either> getRefueling(String id) async {
     String message = '';
     try {
-      var auth = FirebaseAuth.instance;
       var refueling = await FirebaseFirestore.instance
-          .collection('user')
-          .doc(auth.currentUser!.uid.toString())
           .collection('refueling')
           .doc(id)
           .get();
@@ -304,8 +295,6 @@ class FirestoreServiceImpl implements FirestoreService {
     try {
       // var auth = FirebaseAuth.instance;
       var refuelings = await FirebaseFirestore.instance
-          .collection('user')
-          .doc()
           .collection('refueling')
           .where('vehicleId', isEqualTo: vehicleId)
           .get();
@@ -314,6 +303,71 @@ class FirestoreServiceImpl implements FirestoreService {
         refuelingList.add(RefuelingRecord.fromJson(refueling.data()));
       }
       return Right(refuelingList);
+    } on FirebaseException catch (e) {
+      message = e.toString();
+      return Left(message);
+    } catch (e) {
+      message = e.toString();
+      return Left(message);
+    }
+  }
+
+  @override
+  Future<Either> getMaintenanceListByDriver(String driverId) async {
+    String message = '';
+    try {
+      // var auth = FirebaseAuth.instance;
+      var maintenances = await FirebaseFirestore.instance
+          .collection('maintenance')
+          .where('driverId', isEqualTo: driverId)
+          .get();
+      List<MaintenanceRecord> maintenanceList = [];
+      for (var maintenance in maintenances.docs) {
+        maintenanceList.add(MaintenanceRecord.fromJson(maintenance.data()));
+      }
+      return Right(maintenanceList);
+    } on FirebaseException catch (e) {
+      message = e.toString();
+      return Left(message);
+    } catch (e) {
+      message = e.toString();
+      return Left(message);
+    }
+  }
+
+  @override
+  Future<Either> getRefuelingListByDriver(String driverId) async {
+    String message = '';
+    try {
+      // var auth = FirebaseAuth.instance;
+      var refuelings = await FirebaseFirestore.instance
+          .collection('refueling')
+          .where('driverId', isEqualTo: driverId)
+          .get();
+      List<RefuelingRecord> refuelingList = [];
+      for (var refueling in refuelings.docs) {
+        refuelingList.add(RefuelingRecord.fromJson(refueling.data()));
+      }
+      return Right(refuelingList);
+    } on FirebaseException catch (e) {
+      message = e.toString();
+      return Left(message);
+    } catch (e) {
+      message = e.toString();
+      return Left(message);
+    }
+  }
+
+  @override
+  Future<Either> updateUserRole(String id, String role) async {
+    String message = '';
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(id)
+          .update({'role': role});
+      message = 'User role updated successfully';
+      return Right(message);
     } on FirebaseException catch (e) {
       message = e.toString();
       return Left(message);

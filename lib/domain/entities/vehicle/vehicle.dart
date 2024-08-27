@@ -1,20 +1,19 @@
-import 'package:vehicle_management_app/data/models/vehicle/maintenance_record.dart';
-import 'package:vehicle_management_app/data/models/vehicle/refueling_record.dart';
-
 class VehicleEntity {
-  final String id;
-  final String make;
-  final String model;
-  final int year;
-  final List<MaintenanceRecord> maintenanceHistory;
-  final List<RefuelingRecord> refuelingHistory;
+  String vehicleId;
+  String registrationNumber;
+  String name;
+  String brand;
+  //  String? imageUrl;
+  String driverId;
+  String availablity;
 
   VehicleEntity({
-    required this.id,
-    required this.make,
-    required this.model,
-    required this.year,
-    this.maintenanceHistory = const [],
-    this.refuelingHistory = const [],
+    required this.vehicleId,
+    required this.name,
+    required this.brand,
+    // required this.imageUrl,
+    required this.driverId,
+    required this.registrationNumber,
+    required this.availablity,
   });
 }

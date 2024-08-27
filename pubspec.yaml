@@ -18,16 +18,16 @@ dependencies:
   firebase_core:
   firebase_auth:
   cloud_firestore:
+  firebase_storage:
+  google_maps_flutter:
   get_it:
   dartz:
   path_provider:
   intl: ^0.19.0
-  # lottie:
-  flutter_animate: ^4.5.0
+  uuid:
   equatable:
   internet_connection_checker:
   google_fonts: ^6.2.1
-  # rive:
 
 dev_dependencies:
   flutter_test:
@@ -50,19 +50,19 @@ flutter:
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
 
-  fonts:
-    - family: Satoshi
-      fonts:
-        - asset: assets/fonts/Satoshi-Black.ttf
-          weight: 900
-        - asset: assets/fonts/Satoshi-Bold.ttf
-          weight: 600
-        - asset: assets/fonts/Satoshi-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Satoshi-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/Satoshi-Light.ttf
-          weight: 300
+  # fonts:
+  #   - family: Satoshi
+  #     fonts:
+  #       - asset: assets/fonts/Satoshi-Black.ttf
+  #         weight: 900
+  #       - asset: assets/fonts/Satoshi-Bold.ttf
+  #         weight: 600
+  #       - asset: assets/fonts/Satoshi-Medium.ttf
+  #         weight: 500
+  #       - asset: assets/fonts/Satoshi-Regular.ttf
+  #         weight: 400
+  #       - asset: assets/fonts/Satoshi-Light.ttf
+  #         weight: 300
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

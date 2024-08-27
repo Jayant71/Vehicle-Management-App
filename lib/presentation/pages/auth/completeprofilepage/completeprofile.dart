@@ -5,7 +5,7 @@ import 'package:vehicle_management_app/presentation/widgets/authappbutton.dart';
 class CompleteProfilePage extends StatelessWidget {
   CompleteProfilePage({super.key});
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _contactNumberController =
       TextEditingController();
   final TextEditingController _employeeIdController = TextEditingController();
@@ -100,7 +100,7 @@ class CompleteProfilePage extends StatelessWidget {
 
   Widget fullNameField(BuildContext context) {
     return TextFormField(
-      controller: _nameController,
+      controller: _fullNameController,
       decoration: InputDecoration(
         labelText: 'Full Name',
         border: OutlineInputBorder(

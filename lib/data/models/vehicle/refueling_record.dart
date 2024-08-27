@@ -1,40 +1,43 @@
 class RefuelingRecord {
-  final String id;
-  final DateTime date;
+  String refuelingId;
   String userId;
-  final String vehicleId;
-
-  final double amount;
-  final String billImgUrl;
+  String vehicleId;
+  String date;
+  double amount;
+  // String billImgUrl;
+  String comment = '';
 
   RefuelingRecord({
-    required this.id,
+    required this.refuelingId,
     required this.date,
     required this.userId,
     required this.vehicleId,
     required this.amount,
-    required this.billImgUrl,
+    // required this.billImgUrl,
+    this.comment = '',
   });
 
   factory RefuelingRecord.fromJson(Map<String, dynamic> json) {
     return RefuelingRecord(
-      id: json['id'],
+      refuelingId: json['refuelingId'],
       userId: json['userId'],
       vehicleId: json['vehicleId'],
-      date: DateTime.parse(json['date']),
+      date: json['date'],
       amount: json['amount'],
-      billImgUrl: json['billImgUrl'],
+      // billImgUrl: json['billImgUrl'],
+      comment: json['comment'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'refuelingId': refuelingId,
       'userId': userId,
       'vehicleId': vehicleId,
       'date': date,
       'amount': amount,
-      'billImgUrl': billImgUrl,
+      // 'billImgUrl': billImgUrl,
+      'comment': comment,
     };
   }
 }

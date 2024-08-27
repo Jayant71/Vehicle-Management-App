@@ -15,11 +15,7 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _employeeIdController = TextEditingController();
-  final TextEditingController _contactNumberController =
-      TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -138,27 +134,6 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  Widget fullNameField(BuildContext context) {
-    return TextFormField(
-      controller: _fullNameController,
-      decoration: InputDecoration(
-        labelText: 'Fullname',
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-      keyboardType: TextInputType.name,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter your fullname';
-        } else if (value.length < 3) {
-          return 'Please enter a valid fullname';
-        }
-        return null;
-      },
-    );
-  }
-
   Widget emailField(BuildContext context) {
     return TextFormField(
       controller: _emailController,
@@ -174,45 +149,6 @@ class _SignupPageState extends State<SignupPage> {
           return 'Please enter your email';
         } else if (!value.contains('@') && !value.contains('.')) {
           return 'Please enter a valid email';
-        }
-        return null;
-      },
-    );
-  }
-
-  Widget employeeIdField(BuildContext context) {
-    return TextFormField(
-      controller: _employeeIdController,
-      decoration: InputDecoration(
-        labelText: 'Employee ID',
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter your employee ID';
-        }
-        return null;
-      },
-    );
-  }
-
-  Widget contactNumberField(BuildContext context) {
-    return TextFormField(
-      controller: _contactNumberController,
-      decoration: InputDecoration(
-        labelText: 'Contact Number',
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-      keyboardType: TextInputType.number,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter your contact number';
-        } else if (value.length < 10 || value.length > 10) {
-          return 'Please enter a valid contact number';
         }
         return null;
       },
