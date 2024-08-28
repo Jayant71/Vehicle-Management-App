@@ -20,6 +20,7 @@ dependencies:
   cloud_firestore:
   firebase_storage:
   google_maps_flutter:
+  googleapis:
   get_it:
   dartz:
   path_provider:
@@ -28,6 +29,7 @@ dependencies:
   equatable:
   internet_connection_checker:
   google_fonts: ^6.2.1
+  permission_handler:
 
 dev_dependencies:
   flutter_test:

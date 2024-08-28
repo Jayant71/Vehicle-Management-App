@@ -6,6 +6,24 @@ plugins {
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+}
+
+
+
+secrets {
+    // Change the properties file from the default "local.properties" in your root project
+    // to another properties file in your root project.
+    propertiesFileName 'secrets.properties'
+
+    // A properties file containing default secret values. This file can be checked in version
+    // control.
+    defaultPropertiesFileName = 'local.defaults.properties'
+
+    // Configure which keys should be ignored by the plugin by providing regular expressions.
+    // "sdk.dir" is ignored by default.
+    ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
+    ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
 }
 
 def localProperties = new Properties()
@@ -28,7 +46,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.example.vehicle_management_app"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34
     // ndkVersion = flutter.ndkVersion
     ndkVersion = "25.1.8937393"
 
@@ -42,7 +60,7 @@ android {
         applicationId = "com.example.vehicle_management_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = flutter.minSdkVersion
+        minSdk = 21
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
@@ -59,8 +77,18 @@ android {
             signingConfig = signingConfigs.debug
         }
     }
+
+    buildFeatures {
+    buildConfig = true
+  }
 }
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+
+    // Maps SDK for Android
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
 }

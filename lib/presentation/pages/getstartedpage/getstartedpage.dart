@@ -1,10 +1,32 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:vehicle_management_app/core/config/assets/app_images.dart';
 import 'package:vehicle_management_app/presentation/pages/auth/signinpage/signinpage.dart';
 import 'package:vehicle_management_app/presentation/widgets/getstartedlogo.dart';
 
-class GetStartedPage extends StatelessWidget {
+class GetStartedPage extends StatefulWidget {
   const GetStartedPage({super.key});
+
+  @override
+  State<GetStartedPage> createState() => _GetStartedPageState();
+}
+
+class _GetStartedPageState extends State<GetStartedPage> {
+  _askForPermission() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+      // Permission.storage,
+    ].request();
+    log(statuses.toString());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _askForPermission();
+  }
 
   @override
   Widget build(BuildContext context) {

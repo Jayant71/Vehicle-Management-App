@@ -10,11 +10,12 @@ pluginManagement {
     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
 
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
-        gradlePluginPortal()
     }
 }
+
 
 plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
@@ -24,5 +25,6 @@ plugins {
     // END: FlutterFire Configuration
     id "org.jetbrains.kotlin.android" version "1.7.10" apply false
 }
+
 
 include ":app"
