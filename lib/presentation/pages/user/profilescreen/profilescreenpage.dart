@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:vehicle_management_app/domain/usecases/auth/get_user.dart';
+import 'package:vehicle_management_app/service_locator.dart';
 
 class ProfileScreenPage extends StatelessWidget implements PreferredSizeWidget {
-  const ProfileScreenPage({super.key});
+  ProfileScreenPage({super.key});
+
+  final currentUser = sl<GetUserUseCase>().call();
 
   @override
   Widget build(BuildContext context) {

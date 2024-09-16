@@ -13,6 +13,7 @@ import 'package:vehicle_management_app/domain/usecases/auth/get_user.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/sigin.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/signout.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/signup.dart';
+import 'package:vehicle_management_app/domain/usecases/user/create_userdatabse.dart';
 import 'package:vehicle_management_app/domain/usecases/vehicle/create_maintenance.dart';
 import 'package:vehicle_management_app/domain/usecases/vehicle/create_refueling.dart';
 import 'package:vehicle_management_app/domain/usecases/vehicle/create_vehicle_usecase.dart';
@@ -44,6 +45,8 @@ Future<void> initializeDependencies() async {
 
   sl.registerSingleton<FirestoreService>(FirestoreServiceImpl());
   sl.registerSingleton<VehicleRepository>(VehicleRepositoryImpl());
+
+  sl.registerSingleton<CreateUserdatabseUseCase>(CreateUserdatabseUseCase());
 
   sl.registerSingleton<RefuelingRepository>(RefuelingRepositoryImpl());
   sl.registerSingleton<MaintenanceRepository>(MaintenanceRepositoryImpl());

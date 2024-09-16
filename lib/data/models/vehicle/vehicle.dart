@@ -11,11 +11,11 @@ class VehicleModel {
 
   VehicleModel({
     required this.vehicleId,
+    required this.registrationNumber,
     required this.name,
     required this.brand,
     // required this.imageUrl,
     required this.driverId,
-    required this.registrationNumber,
     required this.availablity,
   });
 
