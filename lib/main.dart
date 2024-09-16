@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:vehicle_management_app/core/config/theme/app_theme.dart';
 import 'package:vehicle_management_app/core/config/theme/text_theme.dart';
 import 'package:vehicle_management_app/firebase_options.dart';
-import 'package:vehicle_management_app/presentation/choose_mode/bloc/theme_cubit.dart';
+import 'package:vehicle_management_app/presentation/cubits/theme_cubit/theme_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/spashscreen/splashscreen.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vehicle_management_app/domain/usecases/auth/sigin.dart';
 import 'package:vehicle_management_app/presentation/widgets/authappbutton.dart';
 
 class CompleteProfilePage extends StatelessWidget {

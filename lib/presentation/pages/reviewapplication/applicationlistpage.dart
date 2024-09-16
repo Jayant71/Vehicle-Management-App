@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vehicle_management_app/presentation/widgets/commonappbar.dart';
 
 class ApplicationListPage extends StatelessWidget
     implements PreferredSizeWidget {

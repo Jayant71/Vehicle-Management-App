@@ -40,6 +40,7 @@ class _HomeViewState extends State<HomeView>
 
     log("rebuilt");
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         drawer: _drawer(context),
         appBar: _appbar(),
         body: Stack(children: [
@@ -170,6 +171,7 @@ class _HomeViewState extends State<HomeView>
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.primary,
       elevation: 5,
+      centerTitle: true,
       title: const TimerView(),
       automaticallyImplyLeading: false,
       leading: Builder(

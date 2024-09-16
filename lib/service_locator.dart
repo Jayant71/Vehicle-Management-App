@@ -22,10 +22,14 @@ import 'package:vehicle_management_app/domain/usecases/vehicle/get_refueling.dar
 import 'package:vehicle_management_app/domain/usecases/vehicle/get_refueling_list.dart';
 import 'package:vehicle_management_app/domain/usecases/vehicle/get_vehicle.dart';
 import 'package:vehicle_management_app/domain/usecases/vehicle/get_vehicle_list.dart';
+import 'package:vehicle_management_app/presentation/pages/feedback/cubit/feedback_cubit.dart';
 
 final sl = GetIt.instance;
 
 Future<void> initializeDependencies() async {
+  // Register FeedbackCubit
+  sl.registerFactory(() => FeedbackCubit());
+
   sl.registerSingleton<AuthFirebaseService>(AuthFirebaseServiceImpl());
 
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());

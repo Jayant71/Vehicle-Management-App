@@ -27,6 +27,7 @@ class _HomepageState extends State<Homepage> {
         BlocProvider<TimeCubit>(create: (context) => TimeCubit()),
       ],
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         bottomNavigationBar: SafeArea(
           child: BlocBuilder<NavindexCubit, dynamic>(
             builder: (context, state) {
