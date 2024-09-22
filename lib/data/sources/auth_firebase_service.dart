@@ -64,15 +64,15 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
       FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
       var user = await firebaseFirestore
-          .collection('Users')
+          .collection('users')
           .doc(firebaseAuth.currentUser?.uid)
           .get();
 
       UserModel userModel = UserModel.fromJson(user.data()!);
       // userModel.imageURL =
       //     firebaseAuth.currentUser?.photoURL ?? AppURLs.defaultImage;
-      UserEntity userEntity = userModel.toEntity();
-      return Right(userEntity);
+      // UserEntity userEntity = userModel.toEntity();
+      return Right(userModel);
     } catch (e) {
       return const Left('An error occurred');
     }

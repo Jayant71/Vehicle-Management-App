@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/get_user.dart';
+import 'package:vehicle_management_app/presentation/widgets/commonappbar.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 
 class ProfileScreenPage extends StatelessWidget implements PreferredSizeWidget {
@@ -10,10 +11,7 @@ class ProfileScreenPage extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-        centerTitle: true,
-      ),
+      appBar: const CommonAppBar(title: 'Profile'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(

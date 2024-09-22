@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/cubit/navindex_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/cubit/time_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/homeview.dart';
 import 'package:vehicle_management_app/presentation/pages/reviewapplication/applicationlistpage.dart';
+import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/profilescreenpage.dart';
 import 'package:vehicle_management_app/presentation/pages/vehicle/vehiclelistpage/vehiclelistpage.dart';
 
@@ -27,6 +30,7 @@ class _HomepageState extends State<Homepage> {
           create: (context) => NavindexCubit(),
         ),
         BlocProvider<TimeCubit>(create: (context) => TimeCubit()),
+        BlocProvider<ProfileCubit>(create: (context) => ProfileCubit()),
       ],
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -52,18 +56,18 @@ class _HomepageState extends State<Homepage> {
                     icon: Icon(Icons.home),
                     label: 'Home',
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.car_rental),
-                    label: 'Vehicles',
-                  ),
+                  // BottomNavigationBarItem(
+                  //   icon: Icon(Icons.car_rental),
+                  //   label: 'Vehicles',
+                  // ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.pages),
                     label: 'Applications',
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    label: 'Person',
-                  ),
+                  // BottomNavigationBarItem(
+                  //   icon: Icon(Icons.person),
+                  //   label: 'Person',
+                  // ),
                 ],
               );
             },
@@ -75,9 +79,9 @@ class _HomepageState extends State<Homepage> {
           index: _currentIndx,
           children: [
             HomeView(),
-            VehicleListPage(),
+            // VehicleListPage(),
             ApplicationListPage(),
-            ProfileScreenPage()
+            // ProfileScreenPage()
           ],
         ),
       ),
