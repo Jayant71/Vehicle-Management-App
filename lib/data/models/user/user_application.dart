@@ -5,8 +5,8 @@ class UserApplication {
   final String userId;
   final String sourceName;
   final String destinationName;
-  final String sourceCoordinates;
-  final String destinationCoordinates;
+  final List<double> sourceCoordinates;
+  final List<double> destinationCoordinates;
   final String date;
   final String time;
   final String accepted;

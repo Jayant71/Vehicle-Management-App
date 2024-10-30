@@ -5,13 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vehicle_management_app/data/models/user/user.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/signout.dart';
-import 'package:vehicle_management_app/main.dart';
 import 'package:vehicle_management_app/presentation/pages/getstartedpage/getstartedpage.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/cubit/time_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/timerview.dart';
-import 'package:vehicle_management_app/presentation/pages/notifications/notificationpage.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/profilescreenpage.dart';
+import 'package:vehicle_management_app/presentation/pages/vehicle/vehiclelistpage/vehiclelistpage.dart';
 import 'package:vehicle_management_app/presentation/pages/vehicle/vehiclerequestform/vehiclereq.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 
@@ -35,6 +34,13 @@ class _HomeViewState extends State<HomeView>
   initState() {
     super.initState();
     context.read<ProfileCubit>().getUserProfile();
+  }
+
+  @override
+  void dispose() {
+    timeCubit.stopTimer();
+    ProfileCubit().close();
+    super.dispose();
   }
 
   @override
@@ -148,18 +154,24 @@ class _HomeViewState extends State<HomeView>
           DrawerHeader(
             child: BlocBuilder<ProfileCubit, UserModel?>(
                 builder: (context, state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              return ListView(
+                shrinkWrap: true,
                 children: [
-                  const CircleAvatar(
-                    radius: 40,
-                    // backgroundImage:
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: NetworkImage(
+                        'https://via.placeholder.com/150?text=${state?.fullName}'),
                   ),
-                  Text(
-                    "${state?.fullName}",
-                    style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w500,
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Center(
+                    child: Text(
+                      state?.fullName ?? "User",
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ],
@@ -179,7 +191,7 @@ class _HomeViewState extends State<HomeView>
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfileScreenPage(),
+                  builder: (context) => const ProfileScreenPage(),
                 ),
               );
             },
@@ -194,7 +206,14 @@ class _HomeViewState extends State<HomeView>
               "Vehicle List",
               style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const VehicleListPage(),
+                ),
+              );
+            },
           ),
           const Divider(),
           ListTile(
@@ -207,6 +226,25 @@ class _HomeViewState extends State<HomeView>
               style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
             ),
             onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(
+              Icons.feedback,
+              color: Color.fromARGB(255, 0, 0, 0),
+            ),
+            title: const Text(
+              "Feedback",
+              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+            ),
+            onTap: () {
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => const FeedbackPage(),
+              //   ),
+              // );
+            },
           ),
           const Divider(),
           ListTile(
@@ -248,7 +286,8 @@ class _HomeViewState extends State<HomeView>
         });
 
     var result = await sl<SignoutUseCase>().call();
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 2), () {
+      timeCubit.stopTimer();
       if (context.mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -259,12 +298,12 @@ class _HomeViewState extends State<HomeView>
           )),
         ));
         log(result.toString());
-        timeCubit.stopTimer();
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
             builder: (context) => const GetStartedPage(),
           ),
+          (Route<dynamic> route) => false,
         );
       }
     });

@@ -6,13 +6,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vehicle_management_app/core/config/theme/app_theme.dart';
 import 'package:vehicle_management_app/core/config/theme/text_theme.dart';
 import 'package:vehicle_management_app/firebase_options.dart';
+import 'package:vehicle_management_app/presentation/cubit/currentlocation/currentlocation_cubit.dart';
 import 'package:vehicle_management_app/presentation/cubit/theme_cubit/theme_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/spashscreen/splashscreen.dart';
+import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 
 Future<void> main() async {
@@ -26,6 +29,8 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await dotenv.load(fileName: ".env");
 
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
@@ -74,13 +79,17 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<ThemeCubit>(
           create: (context) => ThemeCubit(),
         ),
+        BlocProvider<CurrentlocationCubit>(
+            create: (context) => CurrentlocationCubit()),
+        BlocProvider<ProfileCubit>(create: (context) => ProfileCubit()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {
           _setSystemUIOverlayStyle(themeMode);
 
           return MaterialApp(
-            themeMode: themeMode,
+            // themeMode: themeMode,
+            themeMode: ThemeMode.light,
             theme: theme.light(),
             darkTheme: theme.dark(),
             debugShowCheckedModeBanner: false,

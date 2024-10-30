@@ -117,7 +117,7 @@ class _SignupPageState extends State<SignupPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => CompleteProfilePage(),
+                              builder: (context) => SigninPage(),
                             ),
                           );
                         }),

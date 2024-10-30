@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vehicle_management_app/common/helpers/isinternetconnected.dart';
 import 'package:vehicle_management_app/common/helpers/isloggedin.dart';
+import 'package:vehicle_management_app/common/utils/requestpermissions.dart';
 import 'package:vehicle_management_app/presentation/pages/getstartedpage/getstartedpage.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/homepage.dart';
 import 'package:vehicle_management_app/presentation/widgets/getstartedlogo.dart';
@@ -19,9 +20,10 @@ class Splashscreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 3), () async {
+    Future.delayed(const Duration(seconds: 2), () async {
       if (context.mounted) {
         bool isconnected = await context.isInternetConnected();
+        await RequestPermissions.requestLocationPermission();
         log('isconnected: $isconnected');
         if (!isconnected) {
           showDialog(

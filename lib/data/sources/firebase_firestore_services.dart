@@ -76,7 +76,6 @@ class FirestoreServiceImpl implements FirestoreService {
     String message = '';
     try {
       var auth = FirebaseAuth.instance;
-
       var user = await FirebaseFirestore.instance
           .collection('users')
           .doc(auth.currentUser?.uid.toString())

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vehicle_management_app/core/config/constants/sample_vehicle_data.dart';
+import 'package:vehicle_management_app/presentation/widgets/commonappbar.dart';
+import 'package:vehicle_management_app/presentation/widgets/vehicle_card.dart';
 
 class VehicleListPage extends StatelessWidget implements PreferredSizeWidget {
   const VehicleListPage({super.key});
@@ -7,25 +9,19 @@ class VehicleListPage extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: preferredSize,
-          child: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            title: Text('Vehicles',
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
-            centerTitle: true,
-            automaticallyImplyLeading: false,
-          ),
-        ),
-        body: ListView.builder(
-            itemCount: sampleVehicleData.length,
-            itemBuilder: (ctx, i) {
-              return ListTile(
-                title: Text(sampleVehicleData[i].name),
-                subtitle: Text(sampleVehicleData[i].brand),
-              );
-            }));
+      appBar: const CommonAppBar(title: "Vehicles"),
+      body: ListView.builder(
+        itemCount: sampleVehicleData.length,
+        itemBuilder: (context, index) {
+          return VehicleWidget(
+            vehicle: sampleVehicleData[index],
+            onTap: () {
+              // Navigate to vehicle details page
+            },
+          );
+        },
+      ),
+    );
   }
 
   @override

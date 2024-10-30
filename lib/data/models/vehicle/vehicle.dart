@@ -5,7 +5,7 @@ class VehicleModel {
   final String registrationNumber;
   final String name;
   final String brand;
-  // final String imageUrl;
+  final String imageUrl;
   final String driverId;
   final String availablity;
 
@@ -14,7 +14,7 @@ class VehicleModel {
     required this.registrationNumber,
     required this.name,
     required this.brand,
-    // required this.imageUrl,
+    required this.imageUrl,
     required this.driverId,
     required this.availablity,
   });
@@ -24,7 +24,7 @@ class VehicleModel {
       vehicleId: json['vechicleId'],
       name: json['name'],
       brand: json['brand'],
-      // imageUrl: json['imageUrl'],
+      imageUrl: json['imageUrl'],
       driverId: json['driverId'],
       registrationNumber: json['registrationNumber'],
       availablity: json['availablity'],

@@ -5,6 +5,7 @@ import 'package:vehicle_management_app/data/repositories/vehicle/refueling_repos
 import 'package:vehicle_management_app/data/repositories/vehicle/vehicle_repository_impl.dart';
 import 'package:vehicle_management_app/data/sources/auth_firebase_service.dart';
 import 'package:vehicle_management_app/data/sources/firebase_firestore_services.dart';
+import 'package:vehicle_management_app/data/sources/location_services.dart';
 import 'package:vehicle_management_app/domain/repositories/auth/auth.dart';
 import 'package:vehicle_management_app/domain/repositories/vehicle/maintenance.dart';
 import 'package:vehicle_management_app/domain/repositories/vehicle/refueling.dart';
@@ -60,4 +61,6 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<GetRefuelingUsecase>(GetRefuelingUsecase());
   sl.registerSingleton<GetMaintenanceListUsecase>(GetMaintenanceListUsecase());
   sl.registerSingleton<GetRefuelingListUsecase>(GetRefuelingListUsecase());
+
+  sl.registerSingleton<LocationServices>(LocationServices());
 }

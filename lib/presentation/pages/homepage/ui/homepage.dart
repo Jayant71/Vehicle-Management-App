@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/cubit/navindex_cubit.dart';
@@ -7,8 +5,6 @@ import 'package:vehicle_management_app/presentation/pages/homepage/cubit/time_cu
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/homeview.dart';
 import 'package:vehicle_management_app/presentation/pages/reviewapplication/applicationlistpage.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
-import 'package:vehicle_management_app/presentation/pages/user/profilescreen/profilescreenpage.dart';
-import 'package:vehicle_management_app/presentation/pages/vehicle/vehiclelistpage/vehiclelistpage.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -23,6 +19,15 @@ class _HomepageState extends State<Homepage> {
   var currentUser = "";
 
   @override
+  void dispose() {
+    pageController.dispose();
+    context.read<NavindexCubit>().close();
+    context.read<TimeCubit>().close();
+    context.read<ProfileCubit>().close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
@@ -30,7 +35,6 @@ class _HomepageState extends State<Homepage> {
           create: (context) => NavindexCubit(),
         ),
         BlocProvider<TimeCubit>(create: (context) => TimeCubit()),
-        BlocProvider<ProfileCubit>(create: (context) => ProfileCubit()),
       ],
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -78,7 +82,7 @@ class _HomepageState extends State<Homepage> {
           // physics: const NeverScrollableScrollPhysics(),
           index: _currentIndx,
           children: [
-            HomeView(),
+            const HomeView(),
             // VehicleListPage(),
             ApplicationListPage(),
             // ProfileScreenPage()
