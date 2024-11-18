@@ -80,7 +80,6 @@ class LocationServices {
       final response = await _dio.get(
           'https://maps.googleapis.com/maps/api/directions/json?origin=$origin&destination=$destination&mode=driving&key=$PLACES_API_KEY');
 
-      Logger().i(response.data);
       if (response.statusCode == 200) {
         return response.data;
       }

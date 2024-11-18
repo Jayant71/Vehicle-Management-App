@@ -99,6 +99,9 @@ class FirestoreServiceImpl implements FirestoreService {
     String message = '';
     try {
       var auth = FirebaseAuth.instance;
+      if (id == '') {
+        id = auth.currentUser!.uid;
+      }
       var user =
           await FirebaseFirestore.instance.collection('users').doc(id).get();
       UserModel userModel = UserModel.fromJson(user.data()!);

@@ -129,7 +129,8 @@ class _ApplicationListPageState extends State<ApplicationListPage>
                           subtitle: Text(application.vehicleId),
                           trailing: const Icon(Icons.arrow_forward_ios),
                           onTap: () {
-                            context.go('/home/reviewapplication',
+                            context.go(
+                                '/home/reviewapplication?who=${profileCubit.role}',
                                 extra: application);
                           },
                         );
@@ -147,7 +148,8 @@ class _ApplicationListPageState extends State<ApplicationListPage>
                         subtitle: Text(application.vehicleId),
                         trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () {
-                          context.go('/home/reviewapplication',
+                          context.go(
+                              '/home/reviewapplication?who=${profileCubit.role}',
                               extra: application);
                         },
                       );
@@ -183,7 +185,8 @@ class _ApplicationListPageState extends State<ApplicationListPage>
                       subtitle: Text(application.vehicleId),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
-                        context.go('/home/reviewapplication',
+                        context.go(
+                            '/home/reviewapplication?who=${profileCubit.role}',
                             extra: application);
                       },
                     );
@@ -200,7 +203,8 @@ class _ApplicationListPageState extends State<ApplicationListPage>
                       subtitle: Text(application.vehicleId),
                       trailing: const Icon(Icons.arrow_forward_ios),
                       onTap: () {
-                        context.go('/home/reviewapplication',
+                        context.go(
+                            '/home/reviewapplication?who=${profileCubit.role}',
                             extra: application);
                       },
                     );

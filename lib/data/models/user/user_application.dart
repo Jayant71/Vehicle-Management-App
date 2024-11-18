@@ -1,5 +1,3 @@
-import 'package:vehicle_management_app/domain/entities/user/user_application.dart';
-
 class UserApplication {
   final String bookingId;
   final String userId;
@@ -10,8 +8,7 @@ class UserApplication {
   final String date;
   final String time;
   final String purpose;
-  final String status;
-
+  final int status;
   final String accepted;
   final String driverId;
   final String vehicleId;

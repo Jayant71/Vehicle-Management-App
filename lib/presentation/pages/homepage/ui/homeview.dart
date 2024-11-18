@@ -22,7 +22,6 @@ class _HomeViewState extends State<HomeView>
     with AutomaticKeepAliveClientMixin {
   @override
   void dispose() {
-    ProfileCubit().close();
     super.dispose();
   }
 
@@ -210,8 +209,8 @@ class _HomeViewState extends State<HomeView>
 
     var result = await sl<SignoutUseCase>().call();
     Future.delayed(const Duration(seconds: 2), () {
-      context.read<ApplicationlistCubit>().close();
-      context.read<ProfileCubit>().close();
+      context.read<ApplicationlistCubit>().clearApplications();
+      context.read<ProfileCubit>().clearProfile();
       if (context.mounted) {
         context.pop();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

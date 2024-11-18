@@ -61,8 +61,10 @@ final GoRouter router = GoRouter(
               path: 'reviewapplication',
               builder: (context, state) {
                 final application = state.extra as UserApplication;
+                final who = state.uri.queryParameters['who'] ?? '';
                 return ReviewApplicationPage(
                   application: application,
+                  who: who,
                 );
               },
             ),
@@ -72,7 +74,11 @@ final GoRouter router = GoRouter(
             path: 'reviewapplication',
             builder: (context, state) {
               final application = state.extra as UserApplication;
-              return ReviewApplicationPage(application: application);
+              final who = state.uri.queryParameters['who'] ?? '';
+              return ReviewApplicationPage(
+                application: application,
+                who: who,
+              );
             }),
         GoRoute(
             path: 'refueling',

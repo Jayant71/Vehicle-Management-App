@@ -77,10 +77,10 @@ class _VehicleRequestFormState extends State<ApplicationForm> {
                     createdAt: DateTime.now().toString(),
                     roundTrip: isRoundTrip.toString(),
                     userId: widget.uid,
-                    status: '3',
+                    status: 3,
                   );
                   context.go(
-                    '/home/applicationform/reviewapplication',
+                    '/home/applicationform/reviewapplication?who=review',
                     extra: application,
                   );
                 },
