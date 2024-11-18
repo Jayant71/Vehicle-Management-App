@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:vehicle_management_app/core/config/assets/app_images.dart';
+import 'package:vehicle_management_app/router.dart';
 import 'package:vehicle_management_app/presentation/pages/auth/signinpage/signinpage.dart';
 import 'package:vehicle_management_app/presentation/widgets/getstartedlogo.dart';
 
@@ -87,8 +89,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
                 icon: const Icon(Icons.arrow_forward),
                 iconAlignment: IconAlignment.end,
                 onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => SigninPage()));
+                  context.go('/getstarted/login');
                 },
                 label: const Text('Get Started'),
               ),

@@ -10,6 +10,10 @@ class DriverHome extends StatefulWidget {
 class _DriverHomeState extends State<DriverHome> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const Scaffold(
+      body: Center(
+        child: Text("Driver Home"),
+      ),
+    );
   }
 }

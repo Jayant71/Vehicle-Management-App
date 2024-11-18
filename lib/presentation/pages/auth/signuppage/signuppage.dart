@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vehicle_management_app/data/models/auth/create_user_req.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/signup.dart';
 import 'package:vehicle_management_app/presentation/pages/auth/completeprofilepage/completeprofile.dart';
@@ -72,7 +73,7 @@ class _SignupPageState extends State<SignupPage> {
                             );
                             result.fold(
                               (l) {
-                                Navigator.pop(context);
+                                context.pop();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(l.message),
@@ -81,19 +82,14 @@ class _SignupPageState extends State<SignupPage> {
                                 );
                               },
                               (r) {
-                                Navigator.pop(context);
+                                context.pop();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text('Signup successful'),
                                     backgroundColor: Colors.green,
                                   ),
                                 );
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CompleteProfilePage(),
-                                  ),
-                                );
+                                context.go('/getstarted/completeprofile');
                               },
                             );
                           }
@@ -114,12 +110,7 @@ class _SignupPageState extends State<SignupPage> {
                     AuthAppButton(
                         text: "Sign In",
                         onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SigninPage(),
-                            ),
-                          );
+                          context.go('/getstarted/login');
                         }),
                     const SizedBox(
                       height: 20,

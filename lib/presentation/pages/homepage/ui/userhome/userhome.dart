@@ -1,8 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:vehicle_management_app/data/models/user/user.dart";
+import "package:go_router/go_router.dart";
 import "package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart";
-import "package:vehicle_management_app/presentation/pages/vehicle/vehiclerequestform/vehiclereq.dart";
 
 class UserHome extends StatefulWidget {
   const UserHome({super.key});
@@ -20,7 +19,7 @@ class _UserHomeState extends State<UserHome> {
       children: [
         Align(
             alignment: Alignment.centerLeft,
-            child: BlocBuilder<ProfileCubit, UserModel?>(
+            child: BlocBuilder<ProfileCubit, dynamic>(
               builder: (context, state) {
                 uid = state?.uid ?? "";
                 return Text.rich(
@@ -51,14 +50,7 @@ class _UserHomeState extends State<UserHome> {
           height: 60,
           child: ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => VehicleRequestForm(
-                    uid: uid!,
-                  ),
-                ),
-              );
+              context.go("/home/applicationform?uid=$uid");
             },
             child: const Text(
               "Book a Vehicle",

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/cubit/navindex_cubit.dart';
@@ -16,7 +18,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   PageController pageController = PageController();
   int _currentIndx = 0;
-  String? role;
+  String? role_;
 
   @override
   void dispose() {
@@ -29,7 +31,9 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    role = context.read<ProfileCubit>().state?.role;
+    role_ = context.read<ProfileCubit>().state?.role;
+    log(role_!);
+    // role_ = "admin";
 
     return MultiBlocProvider(
       providers: [
@@ -40,7 +44,7 @@ class _HomepageState extends State<Homepage> {
       ],
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        bottomNavigationBar: role == 'user'
+        bottomNavigationBar: (role_ != 'admin' && role_ != 'driver')
             ? SafeArea(
                 child: BlocBuilder<NavindexCubit, dynamic>(
                   builder: (context, state) {
@@ -68,20 +72,16 @@ class _HomepageState extends State<Homepage> {
                 ),
               )
             : null,
-        body: IndexedStack(
-          // controller: pageController,
-          // physics: const NeverScrollableScrollPhysics(),
-          index: _currentIndx,
-          children: role == "driver"
-              ? const [
-                  HomeView(),
-                  ApplicationListPage(),
-                ]
-              : const [
-                  HomeView(),
-                  ApplicationListPage(),
-                ],
-        ),
+        body: (role_ != 'admin' && role_ != 'driver')
+            ? IndexedStack(
+                // controller: pageController,
+                // physics: const NeverScrollableScrollPhysics(),
+                index: _currentIndx,
+                children: [
+                    HomeView(role: role_!),
+                    const ApplicationListPage(),
+                  ])
+            : HomeView(role: role_!),
       ),
     );
   }

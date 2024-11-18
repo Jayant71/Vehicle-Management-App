@@ -3,51 +3,59 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vehicle_management_app/data/models/user/user.dart';
-import 'package:vehicle_management_app/domain/usecases/user/create_userdatabse.dart';
+import 'package:vehicle_management_app/domain/usecases/user/create_userdatabase_usecase.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/homepage.dart';
 import 'package:vehicle_management_app/presentation/widgets/authappbutton.dart';
 import 'package:vehicle_management_app/core/config/constants/university_data.dart';
+import 'package:vehicle_management_app/presentation/widgets/commonappbar.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 
-class CompleteProfilePage extends StatelessWidget {
-  CompleteProfilePage({super.key});
+class CompleteProfilePage extends StatefulWidget {
+  const CompleteProfilePage({super.key});
+
+  @override
+  State<CompleteProfilePage> createState() => _CompleteProfilePageState();
+}
+
+class _CompleteProfilePageState extends State<CompleteProfilePage> {
   final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _fullNameController = TextEditingController();
+
   final TextEditingController _contactNumberController =
       TextEditingController();
+
   final TextEditingController _employeeIdController = TextEditingController();
+
   final TextEditingController _departmentController = TextEditingController();
+
+  final TextEditingController _teachingDepartmentController =
+      TextEditingController();
+
   final TextEditingController _designationController = TextEditingController();
 
   final _auth = FirebaseAuth.instance;
 
+  bool isUTD = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CommonAppBar(title: "Complete Profile"),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.blue.shade200, Colors.blue.shade800],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-          ),
           Form(
             child: ListView(
               shrinkWrap: true,
               padding: const EdgeInsets.all(20),
               children: [
-                const SizedBox(height: 30),
+                const SizedBox(height: 10),
                 const Center(
                   child: Text(
                     'Complete Your Profile',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -71,8 +79,12 @@ class CompleteProfilePage extends StatelessWidget {
                           const SizedBox(height: 20),
                           employeeIdField(context),
                           const SizedBox(height: 20),
-                          departmentDropdown(context),
+                          adminDepartmentDropdown(context),
                           const SizedBox(height: 20),
+                          // if (isUTD) ...[
+                          //   teachingDepartmentDropdown(context),
+                          //   const SizedBox(height: 20)
+                          // ],
                           designationDropdown(context),
                           const SizedBox(height: 20),
                           AuthAppButton(
@@ -263,7 +275,34 @@ class CompleteProfilePage extends StatelessWidget {
     );
   }
 
-  Widget departmentDropdown(BuildContext context) {
+  Widget teachingDepartmentDropdown(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(
+        labelText: 'Sub Department',
+        prefixIcon: const Icon(Icons.business),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      items: teachingDepartments.map((String department) {
+        return DropdownMenuItem<String>(
+          value: department,
+          child: Text(department),
+        );
+      }).toList(),
+      onChanged: (String? newValue) {
+        _teachingDepartmentController.text = newValue!;
+      },
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please select your department';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget adminDepartmentDropdown(BuildContext context) {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
         labelText: 'Department',
@@ -272,7 +311,7 @@ class CompleteProfilePage extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      items: departments.map((String department) {
+      items: adminDepartments.map((String department) {
         return DropdownMenuItem<String>(
           value: department,
           child: Text(department),
@@ -280,6 +319,15 @@ class CompleteProfilePage extends StatelessWidget {
       }).toList(),
       onChanged: (String? newValue) {
         _departmentController.text = newValue!;
+        if (newValue == 'UTD') {
+          setState(() {
+            isUTD = true;
+          });
+        } else {
+          setState(() {
+            isUTD = false;
+          });
+        }
       },
       validator: (value) {
         if (value == null || value.isEmpty) {

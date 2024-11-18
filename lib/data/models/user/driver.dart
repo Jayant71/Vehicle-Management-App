@@ -8,14 +8,15 @@ class DriverModel {
   final String contact;
   final String? altContact;
   final String? altContactRelative;
-  final DateTime? dateOfBirth;
+  final String? dateOfBirth;
   final String? residence;
   final String licenseNumber;
   final String? licenseType;
-  final DateTime? licenseIssueDate;
-  final DateTime? licenseExpiryDate1;
-  final DateTime? licenseExpiryDate2;
-  final DateTime? licenseExpiryDate3;
+  final String? role;
+  final String? licenseIssueDate;
+  final String? licenseExpiryDate1;
+  final String? licenseExpiryDate2;
+  final String? licenseExpiryDate3;
 
   DriverModel({
     required this.driverId,
@@ -29,6 +30,7 @@ class DriverModel {
     this.residence,
     required this.licenseNumber,
     this.licenseType,
+    this.role = 'driver',
     this.licenseIssueDate,
     this.licenseExpiryDate1,
     this.licenseExpiryDate2,
@@ -44,18 +46,15 @@ class DriverModel {
       contact: json['CONTACT'],
       altContact: json['ALTCONTACT'],
       altContactRelative: json['ALTCONRELATIVE'],
-      dateOfBirth: json['DDOB'] != null ? DateTime.parse(json['DDOB']) : null,
+      dateOfBirth: json['DDOB'],
       residence: json['DRESIDE'],
+      role: json['ROLE'],
       licenseNumber: json['LICNO'] ?? '',
       licenseType: json['LICTYPE'],
-      licenseIssueDate:
-          json['LISSUEDT'] != null ? DateTime.parse(json['LISSUEDT']) : null,
-      licenseExpiryDate1:
-          json['LEXPDT1'] != null ? DateTime.parse(json['LEXPDT1']) : null,
-      licenseExpiryDate2:
-          json['LEXPDT2'] != null ? DateTime.parse(json['LEXPDT2']) : null,
-      licenseExpiryDate3:
-          json['LEXPDT3'] != null ? DateTime.parse(json['LEXPDT3']) : null,
+      licenseIssueDate: json['LISSUEDT'],
+      licenseExpiryDate1: json['LEXPDT1'],
+      licenseExpiryDate2: json['LEXPDT2'],
+      licenseExpiryDate3: json['LEXPDT3'],
     );
   }
 
@@ -68,36 +67,37 @@ class DriverModel {
       'CONTACT': contact,
       'ALTCONTACT': altContact,
       'ALTCONRELATIVE': altContactRelative,
-      'DDOB': dateOfBirth?.toIso8601String(),
+      'DDOB': dateOfBirth?.toString(),
       'DRESIDE': residence,
       'LICNO': licenseNumber,
       'LICTYPE': licenseType,
-      'LISSUEDT': licenseIssueDate?.toIso8601String(),
-      'LEXPDT1': licenseExpiryDate1?.toIso8601String(),
-      'LEXPDT2': licenseExpiryDate2?.toIso8601String(),
-      'LEXPDT3': licenseExpiryDate3?.toIso8601String(),
+      'ROLE': role,
+      'LISSUEDT': licenseIssueDate?.toString(),
+      'LEXPDT1': licenseExpiryDate1?.toString(),
+      'LEXPDT2': licenseExpiryDate2?.toString(),
+      'LEXPDT3': licenseExpiryDate3?.toString(),
     };
   }
 }
 
-extension DriverModelX on DriverModel {
-  DriverEntity toEntity() {
-    return DriverEntity(
-      driverId: driverId,
-      name: name,
-      status: status,
-      allocation: allocation,
-      contact: contact,
-      altContact: altContact,
-      altContactRelative: altContactRelative,
-      dateOfBirth: dateOfBirth,
-      residence: residence,
-      licenseNumber: licenseNumber,
-      licenseType: licenseType,
-      licenseIssueDate: licenseIssueDate,
-      licenseExpiryDate1: licenseExpiryDate1,
-      licenseExpiryDate2: licenseExpiryDate2,
-      licenseExpiryDate3: licenseExpiryDate3,
-    );
-  }
-}
+// extension DriverModelX on DriverModel {
+//   DriverEntity toEntity() {
+//     return DriverEntity(
+//       driverId: driverId,
+//       name: name,
+//       status: status,
+//       allocation: allocation,
+//       contact: contact,
+//       altContact: altContact,
+//       altContactRelative: altContactRelative,
+//       dateOfBirth: dateOfBirth != null ? DateTime.parse(dateOfBirth) : null,
+//       residence: residence,
+//       licenseNumber: licenseNumber,
+//       licenseType: licenseType,
+//       licenseIssueDate: licenseIssueDate != null ? DateTime.parse(licenseIssueDate) : null,
+//       licenseExpiryDate1: licenseExpiryDate1 != null ? DateTime.parse(licenseExpiryDate1) : null,
+//       licenseExpiryDate2: licenseExpiryDate2 != null ? DateTime.parse(licenseExpiryDate2) : null,
+//       licenseExpiryDate3: licenseExpiryDate3 != null ? DateTime.parse(licenseExpiryDate3) : null,
+//     );
+//   }
+// }

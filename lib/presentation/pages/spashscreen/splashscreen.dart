@@ -1,12 +1,11 @@
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vehicle_management_app/common/helpers/isinternetconnected.dart';
 import 'package:vehicle_management_app/common/helpers/isloggedin.dart';
 import 'package:vehicle_management_app/common/utils/requestpermissions.dart';
-import 'package:vehicle_management_app/presentation/pages/getstartedpage/getstartedpage.dart';
-import 'package:vehicle_management_app/presentation/pages/homepage/ui/homepage.dart';
 import 'package:vehicle_management_app/presentation/widgets/getstartedlogo.dart';
 
 class Splashscreen extends StatelessWidget {
@@ -37,7 +36,10 @@ class Splashscreen extends StatelessWidget {
                   actions: [
                     TextButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          context.pop();
+                          Future.delayed(const Duration(milliseconds: 500), () {
+                            SystemNavigator.pop();
+                          });
                         },
                         child: const Text('OK'))
                   ],
@@ -49,11 +51,9 @@ class Splashscreen extends StatelessWidget {
       bool isLoggedIn = isUserLoggedIn();
       if (context.mounted) {
         if (isLoggedIn) {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const Homepage()));
+          context.go('/home');
         } else {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const GetStartedPage()));
+          context.go('/getstarted');
         }
       }
     });

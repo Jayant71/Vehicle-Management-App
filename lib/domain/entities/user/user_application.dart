@@ -7,6 +7,7 @@ class UserApplicationEntity {
   final List<double> destinationCoordinates;
   final String date;
   final String time;
+  final String purpose;
   final String accepted;
   final String driverId;
   final String vehicleId;
@@ -22,6 +23,7 @@ class UserApplicationEntity {
     required this.destinationCoordinates,
     required this.date,
     required this.time,
+    required this.purpose,
     required this.accepted,
     required this.driverId,
     required this.vehicleId,

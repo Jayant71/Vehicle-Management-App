@@ -17,7 +17,7 @@ class VehicleListLoaded extends VehicleListState {
   const VehicleListLoaded({required this.vehicles});
 
   @override
-  List<Object?> get props => [vehicles];
+  List<Object?> get props => vehicles;
 }
 
 class VehicleListError extends VehicleListState {

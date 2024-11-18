@@ -49,7 +49,7 @@ class VehicleWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${vehicle.brand} ${vehicle.brand}',
+                    '${vehicle.manufacturer} ${vehicle.brand}',
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

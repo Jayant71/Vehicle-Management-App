@@ -5,11 +5,13 @@ class UserApplication {
   final String userId;
   final String sourceName;
   final String destinationName;
-  final List<double> sourceCoordinates;
-  final List<double> destinationCoordinates;
+  final List<dynamic> sourceCoordinates;
+  final List<dynamic> destinationCoordinates;
   final String date;
   final String time;
+  final String purpose;
   final String status;
+  String directions;
   final String accepted;
   final String driverId;
   final String vehicleId;
@@ -25,8 +27,10 @@ class UserApplication {
     required this.destinationCoordinates,
     required this.date,
     required this.time,
+    required this.directions,
     required this.status,
     required this.accepted,
+    required this.purpose,
     required this.driverId,
     required this.vehicleId,
     required this.createdAt,
@@ -44,7 +48,9 @@ class UserApplication {
       date: json['date'],
       time: json['time'],
       status: json['status'],
+      directions: json['directions'],
       accepted: json['accepted'],
+      purpose: json['purpose'],
       driverId: json['driverId'],
       vehicleId: json['vehicleId'],
       createdAt: json['createdAt'],
@@ -63,7 +69,9 @@ class UserApplication {
       'date': date,
       'time': time,
       'status': status,
+      'directions': directions,
       'accepted': accepted,
+      'purpose': purpose,
       'driverId': driverId,
       'vehicleId': vehicleId,
       'createdAt': createdAt,
@@ -72,22 +80,23 @@ class UserApplication {
   }
 }
 
-extension UserApplicationX on UserApplication {
-  UserApplicationEntity toEntity() {
-    return UserApplicationEntity(
-      bookingId: bookingId,
-      userId: userId,
-      sourceName: sourceName,
-      destinationName: destinationName,
-      sourceCoordinates: sourceCoordinates,
-      destinationCoordinates: destinationCoordinates,
-      date: date,
-      time: time,
-      accepted: accepted,
-      driverId: driverId,
-      vehicleId: vehicleId,
-      createdAt: createdAt,
-      roundTrip: roundTrip,
-    );
-  }
-}
+// extension UserApplicationX on UserApplication {
+//   UserApplicationEntity toEntity() {
+//     return UserApplicationEntity(
+//       bookingId: bookingId,
+//       userId: userId,
+//       sourceName: sourceName,
+//       destinationName: destinationName,
+//       sourceCoordinates: sourceCoordinates,
+//       destinationCoordinates: destinationCoordinates,
+//       date: date,
+//       time: time,
+//       purpose: purpose,
+//       accepted: accepted,
+//       driverId: driverId,
+//       vehicleId: vehicleId,
+//       createdAt: createdAt,
+//       roundTrip: roundTrip,
+//     );
+//   }
+// }

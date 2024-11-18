@@ -1,4 +1,4 @@
-final List<String> departments = [
+final List<String> teachingDepartments = [
   'Computer Science',
   'Mechanical Engineering',
   'Electrical Engineering',
@@ -10,6 +10,27 @@ final List<String> departments = [
   'Biology',
   'Economics',
   'N/A'
+];
+
+final List<String> adminDepartments = [
+  'HVC Sectrate',
+  'Registrar Office',
+  'Administration',
+  'Affliation & Ph.D',
+  'Building Section',
+  'Vehicle',
+  'CSDIE',
+  'Exam',
+  'Account',
+  'Infocell',
+  'Law Dept.',
+  'RTI',
+  'Sports',
+  'Raj Bhavan',
+  'Pharmacy',
+  'UTD',
+  'Establishment',
+  'Purchase'
 ];
 
 final List<String> designations = [

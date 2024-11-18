@@ -32,8 +32,8 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either> getUser() async {
-    return sl<FirestoreService>().getUser();
+  Future<Either> getUser(String id) async {
+    return sl<FirestoreService>().getUser(id);
   }
 
   @override

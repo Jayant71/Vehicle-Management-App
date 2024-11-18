@@ -1,22 +1,38 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:vehicle_management_app/data/models/user/user_application.dart';
+import 'package:vehicle_management_app/domain/usecases/application/get_applications_usecase.dart';
+import 'package:vehicle_management_app/service_locator.dart';
 
 part 'applicationlist_state.dart';
 
 class ApplicationlistCubit extends HydratedCubit<ApplicationlistState> {
   ApplicationlistCubit() : super(ApplicationlistInitial());
 
-  // Future<void> getApplications() async {
-  //   emit(ApplicationlistLoading());
-  //   try {
-  //     final applications =
-  //         await sl<>().getApplications();
-  //     emit(ApplicationlistLoaded(applications));
-  //   } catch (e) {
-  //     emit(ApplicationlistError(e.toString()));
-  //   }
-  // }
+  Future<void> getApplications(
+      bool self, String destination, String status, String branch) async {
+    emit(ApplicationlistLoading());
+    try {
+      final applications = await sl<GetApplicationsUsecase>().call(
+        params: self,
+        designation: destination,
+        status: status,
+        branch: branch,
+      );
+
+      applications.fold(
+        (l) => emit(ApplicationlistError(l.toString())),
+        (r) {
+          emit(ApplicationlistLoaded(r));
+        },
+      );
+    } catch (e) {
+      emit(ApplicationlistError(e.toString()));
+    }
+  }
 
   @override
   ApplicationlistState? fromJson(Map<String, dynamic> json) {

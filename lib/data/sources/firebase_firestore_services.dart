@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:logger/logger.dart';
 import 'package:vehicle_management_app/data/models/feedback/feedback.dart';
 import 'package:vehicle_management_app/data/models/user/driver.dart';
 import 'package:vehicle_management_app/data/models/user/user.dart';
@@ -13,7 +16,7 @@ abstract class FirestoreService {
   // User
   Future<Either> createUserDatabase(UserModel userModel);
   Future<Either> deleteUserDatabase(String id);
-  Future<Either> getUser();
+  Future<Either> getUser(String id);
   Future<Either> getUserList();
   Future<Either> updateUserRole(String id, String role);
   Future<Either> updateUserDatabase(String id, Map<String, dynamic> fields);
@@ -41,7 +44,8 @@ abstract class FirestoreService {
   // Applications
   Future<Either> createApplication(UserApplication userApplication);
   Future<Either> updateApplication(String id, Map<String, dynamic> fields);
-  Future<Either> getApplications();
+  Future<Either> getApplications(
+      bool self, String designation, String status, String branch);
   Future<Either> getApplication(String id);
   Future<Either> getSelfApplications(String userId, String status);
   Future<Either> getBranchApplications(String branch, String status);
@@ -90,14 +94,12 @@ class FirestoreServiceImpl implements FirestoreService {
   }
 
   @override
-  Future<Either> getUser() async {
+  Future<Either> getUser(String id) async {
     String message = '';
     try {
       var auth = FirebaseAuth.instance;
-      var user = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(auth.currentUser?.uid.toString())
-          .get();
+      var user =
+          await FirebaseFirestore.instance.collection('users').doc(id).get();
       UserModel userModel = UserModel.fromJson(user.data()!);
       return Right(userModel);
     } on FirebaseException catch (e) {
@@ -417,9 +419,9 @@ class FirestoreServiceImpl implements FirestoreService {
     try {
       var drivers =
           await FirebaseFirestore.instance.collection('drivers').get();
-      List<UserModel> driverList = [];
+      List<DriverModel> driverList = [];
       for (var driver in drivers.docs) {
-        driverList.add(UserModel.fromJson(driver.data()));
+        driverList.add(DriverModel.fromJson(driver.data()));
       }
       return Right(driverList);
     } on FirebaseException catch (e) {
@@ -492,17 +494,48 @@ class FirestoreServiceImpl implements FirestoreService {
   }
 
   @override
-  Future<Either> getApplications() async {
+  Future<Either> getApplications(
+      bool self, String designation, String status, String branch) async {
     String message = '';
     try {
-      var applications = await FirebaseFirestore.instance
-          .collection('user_applications')
-          .get();
-      List<UserApplication> applicationList = [];
-      for (var application in applications.docs) {
-        applicationList.add(UserApplication.fromJson(application.data()));
+      if (self) {
+        var applications = await FirebaseFirestore.instance
+            .collection('user_applications')
+            .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+            .get();
+        List<UserApplication> applicationList = [];
+        for (var application in applications.docs) {
+          applicationList.add(UserApplication.fromJson(application.data()));
+        }
+        return Right(applicationList);
+      } else if (designation == "hod") {
+        var applications = await FirebaseFirestore.instance
+            .collection('user_applications')
+            .where('status', isEqualTo: status)
+            .get();
+        List<UserApplication> applicationList = [];
+        for (var application in applications.docs) {
+          dynamic user = await getUser(application.data()['userId']);
+          user.fold((l) => Logger().e(l), (r) {
+            if (r.department == branch) {
+              applicationList.add(UserApplication.fromJson(application.data()));
+            }
+          });
+        }
+        return Right(applicationList);
+      } else if (designation == "allocator") {
+        var applications = await FirebaseFirestore.instance
+            .collection('user_applications')
+            .where('status', isEqualTo: status)
+            .get();
+        List<UserApplication> applicationList = [];
+        for (var application in applications.docs) {
+          applicationList.add(UserApplication.fromJson(application.data()));
+        }
+        return Right(applicationList);
+      } else {
+        return const Left('Invalid designation');
       }
-      return Right(applicationList);
     } on FirebaseException catch (e) {
       message = e.toString();
       return Left(message);

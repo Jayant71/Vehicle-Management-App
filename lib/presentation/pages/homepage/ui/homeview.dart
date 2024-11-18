@@ -1,23 +1,18 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:vehicle_management_app/data/models/user/user.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/signout.dart';
-import 'package:vehicle_management_app/presentation/pages/getstartedpage/getstartedpage.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/cubit/time_cubit.dart';
-import 'package:vehicle_management_app/presentation/pages/homepage/ui/timerview.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/userhome/adminhome.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/userhome/driverhome.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/userhome/userhome.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
-import 'package:vehicle_management_app/presentation/pages/user/profilescreen/profilescreenpage.dart';
-import 'package:vehicle_management_app/presentation/pages/vehicle/vehiclerequestform/vehiclereq.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+  const HomeView({super.key, required this.role});
+
+  final String role;
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -25,11 +20,10 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView>
     with AutomaticKeepAliveClientMixin {
-  TimeCubit timeCubit = TimeCubit();
+  // TimeCubit timeCubit = TimeCubit();
   CarouselController carouselController = CarouselController();
   TextEditingController sourceController = TextEditingController();
   TextEditingController destinationController = TextEditingController();
-  String? role;
 
   // @override
   // initState() {
@@ -39,7 +33,7 @@ class _HomeViewState extends State<HomeView>
 
   @override
   void dispose() {
-    timeCubit.stopTimer();
+    // timeCubit.stopTimer();
     ProfileCubit().close();
     super.dispose();
   }
@@ -47,16 +41,15 @@ class _HomeViewState extends State<HomeView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    role = context.read<ProfileCubit>().state?.role.toString();
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
         drawer: _drawer(context),
         appBar: _appbar(),
-        body: role == 'driver'
+        body: widget.role == 'driver'
             ? const DriverHome()
-            : role == 'admin'
-                ? const AdminHome()
+            : widget.role == 'admin'
+                ? AdminHome()
                 : const UserHome());
   }
 
@@ -105,15 +98,15 @@ class _HomeViewState extends State<HomeView>
       child: ListView(
         children: [
           DrawerHeader(
-            child: BlocBuilder<ProfileCubit, UserModel?>(
-                builder: (context, state) {
+            child:
+                BlocBuilder<ProfileCubit, dynamic>(builder: (context, state) {
               return ListView(
                 shrinkWrap: true,
                 children: [
-                  CircleAvatar(
+                  const CircleAvatar(
                     radius: 50,
-                    backgroundImage: NetworkImage(
-                        'https://via.placeholder.com/150?text=${state?.fullName}'),
+                    // backgroundImage: NetworkImage(
+                    //     'https://via.placeholder.com/150?text=${state?.fullName}'),
                   ),
                   const SizedBox(
                     height: 10,
@@ -141,12 +134,7 @@ class _HomeViewState extends State<HomeView>
               style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
             ),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ProfileScreenPage(),
-                ),
-              );
+              context.go('/home/profile');
             },
           ),
           const Divider(),
@@ -160,12 +148,7 @@ class _HomeViewState extends State<HomeView>
               style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
             ),
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const VehicleListPage(),
-              //   ),
-              // );
+              context.go('/home/vehiclelist');
             },
           ),
           const Divider(),
@@ -229,7 +212,7 @@ class _HomeViewState extends State<HomeView>
   }
 
   _signout(BuildContext context) async {
-    Navigator.of(context).pop();
+    context.pop();
     showDialog(
         context: context,
         builder: (_) {
@@ -240,9 +223,9 @@ class _HomeViewState extends State<HomeView>
 
     var result = await sl<SignoutUseCase>().call();
     Future.delayed(const Duration(seconds: 2), () {
-      timeCubit.stopTimer();
+      // timeCubit.stopTimer();
       if (context.mounted) {
-        Navigator.pop(context);
+        context.pop();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text(result.fold(
@@ -250,14 +233,8 @@ class _HomeViewState extends State<HomeView>
             (r) => r.toString(),
           )),
         ));
-        log(result.toString());
-        Navigator.of(context).popUntil((route) => route.isFirst);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const GetStartedPage(),
-          ),
-        );
+
+        context.go('/getstarted');
       }
     });
   }

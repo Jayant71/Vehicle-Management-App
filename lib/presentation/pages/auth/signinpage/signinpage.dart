@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:vehicle_management_app/common/utils/picklocation.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vehicle_management_app/data/models/auth/signin_user_req.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/sigin.dart';
-import 'package:vehicle_management_app/presentation/pages/homepage/ui/homepage.dart';
-import 'package:vehicle_management_app/presentation/pages/auth/signuppage/signuppage.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
 import 'package:vehicle_management_app/presentation/widgets/authappbutton.dart';
 import 'package:vehicle_management_app/service_locator.dart';
@@ -65,7 +63,7 @@ class SigninPage extends StatelessWidget {
                               );
                               result.fold(
                                 (l) {
-                                  Navigator.of(context).pop();
+                                  context.pop();
                                   showDialog(
                                       context: context,
                                       builder: (builder) {
@@ -75,7 +73,7 @@ class SigninPage extends StatelessWidget {
                                           actions: [
                                             TextButton(
                                               onPressed: () {
-                                                Navigator.of(context).pop();
+                                                context.pop();
                                               },
                                               child: const Text('OK'),
                                             ),
@@ -83,13 +81,22 @@ class SigninPage extends StatelessWidget {
                                         );
                                       });
                                 },
-                                (r) {
+                                (r) async {
                                   if (_emailController.text
                                       .toString()
                                       .contains("driver")) {
-                                    context
+                                    String id = _emailController.text
+                                        .split('@')[0]
+                                        .split('.')
+                                        .last
+                                        .toUpperCase();
+                                    await context
                                         .read<ProfileCubit>()
-                                        .getUserProfile('driver');
+                                        .getUserProfile('driver', id);
+                                  } else {
+                                    await context
+                                        .read<ProfileCubit>()
+                                        .getUserProfile('user', null);
                                   }
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
@@ -97,14 +104,7 @@ class SigninPage extends StatelessWidget {
                                       content: Text('Sign in successful'),
                                     ),
                                   );
-                                  Navigator.of(context)
-                                      .popUntil((route) => route.isFirst);
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Homepage(),
-                                    ),
-                                  );
+                                  context.go('/home');
                                 },
                               );
                             }
@@ -125,12 +125,7 @@ class SigninPage extends StatelessWidget {
                       AuthAppButton(
                           text: "Sign Up",
                           onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SignupPage(),
-                              ),
-                            );
+                            context.go('/getstarted/signup');
                           }),
                       const SizedBox(
                         height: 20,

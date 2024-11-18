@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:vehicle_management_app/data/models/auth/create_user_req.dart';
 import 'package:vehicle_management_app/data/models/auth/signin_user_req.dart';

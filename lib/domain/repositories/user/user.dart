@@ -7,7 +7,7 @@ abstract class UserRepository {
 
   Future<Either> deleteUserDatabase(String id);
 
-  Future<Either> getUser();
+  Future<Either> getUser(String id);
 
   Future<Either> updateUserDatabase(String id, Map<String, dynamic> fields);
 

@@ -9,9 +9,9 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vehicle_management_app/core/config/theme/app_theme.dart';
 import 'package:vehicle_management_app/core/config/theme/text_theme.dart';
+import 'package:vehicle_management_app/router.dart';
 import 'package:vehicle_management_app/firebase_options.dart';
 import 'package:vehicle_management_app/presentation/cubit/theme_cubit/theme_cubit.dart';
-import 'package:vehicle_management_app/presentation/pages/spashscreen/splashscreen.dart';
 import 'package:vehicle_management_app/providers.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 
@@ -75,13 +75,13 @@ class _MyAppState extends State<MyApp> {
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {
           _setSystemUIOverlayStyle(themeMode);
-          return MaterialApp(
+          return MaterialApp.router(
             // themeMode: themeMode,
+            routerConfig: router,
             themeMode: ThemeMode.light,
             theme: theme.light(),
             darkTheme: theme.dark(),
             debugShowCheckedModeBanner: false,
-            home: Splashscreen(),
           );
         },
       ),

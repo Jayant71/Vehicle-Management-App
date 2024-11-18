@@ -11,7 +11,7 @@ class ProfileScreenPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CommonAppBar(title: 'Profile'),
-      body: BlocBuilder<ProfileCubit, UserModel?>(
+      body: BlocBuilder<ProfileCubit, dynamic>(
         builder: (context, state) {
           return state == null
               ? const Center(child: CircularProgressIndicator())
