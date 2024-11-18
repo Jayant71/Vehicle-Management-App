@@ -47,14 +47,14 @@ class Splashscreen extends StatelessWidget {
         }
       }
       bool isLoggedIn = isUserLoggedIn();
-      if (context.mounted)
-      // ignore: curly_braces_in_flow_control_structures
-      if (isLoggedIn) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const Homepage()));
-      } else {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const GetStartedPage()));
+      if (context.mounted) {
+        if (isLoggedIn) {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const Homepage()));
+        } else {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const GetStartedPage()));
+        }
       }
     });
 

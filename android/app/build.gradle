@@ -39,9 +39,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.example.vehicle_management_app"
-//    compileSdk = 34
     compileSdk = flutter.compileSdkVersion
-    // ndkVersion = flutter.ndkVersion
     ndkVersion = "25.1.8937393"
 
     compileOptions {

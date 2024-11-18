@@ -3,43 +3,67 @@ import 'package:vehicle_management_app/domain/entities/vehicle/vehicle.dart';
 class VehicleModel {
   final String vehicleId;
   final String registrationNumber;
-  final String name;
+  final String type;
+  final String manufacturer;
   final String brand;
-  final String imageUrl;
+  final String status;
+  final String fuelType;
+  final int? year;
+  String? owner = "CSVTU";
+  String? user = "";
+  String? remark = "";
   final String driverId;
-  final String availablity;
+  String imageUrl = "";
 
   VehicleModel({
     required this.vehicleId,
     required this.registrationNumber,
-    required this.name,
+    required this.type,
+    required this.manufacturer,
     required this.brand,
-    required this.imageUrl,
+    required this.status,
+    required this.fuelType,
+    this.year,
+    this.owner,
+    this.user,
+    this.remark,
     required this.driverId,
-    required this.availablity,
+    required this.imageUrl,
   });
 
   factory VehicleModel.fromJson(Map<String, dynamic> json) {
     return VehicleModel(
-      vehicleId: json['vechicleId'],
-      name: json['name'],
-      brand: json['brand'],
-      imageUrl: json['imageUrl'],
-      driverId: json['driverId'],
+      vehicleId: json['vehicleId'],
       registrationNumber: json['registrationNumber'],
-      availablity: json['availablity'],
+      type: json['type'],
+      manufacturer: json['manufacturer'],
+      brand: json['brand'],
+      status: json['status'] ?? 'Unavailable',
+      fuelType: json['fuelType'],
+      year: json['year'] != null ? int.parse(json['year'].toString()) : null,
+      owner: json['owner'],
+      user: json['user'],
+      remark: json['remark'],
+      driverId: json['driverId'],
+      imageUrl: json['imageUrl'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'vehicleId': vehicleId,
-      'name': name,
-      'brand': brand,
-      // 'imageUrl': imageUrl,
-      'driverId': driverId,
       'registrationNumber': registrationNumber,
-      'availablity': availablity,
+      'type': type,
+      'manufacturer': manufacturer,
+      'brand': brand,
+      'status': status,
+      'fuelType': fuelType,
+      'year': year,
+      'owner': owner,
+      'user': user,
+      'remark': remark,
+      'driverId': driverId,
+      'imageUrl': imageUrl,
     };
   }
 }
@@ -48,12 +72,18 @@ extension VehicleModelX on VehicleModel {
   VehicleEntity toEntity() {
     return VehicleEntity(
       vehicleId: vehicleId,
-      name: name,
-      brand: brand,
-      // imageUrl: imageUrl,
-      driverId: driverId,
       registrationNumber: registrationNumber,
-      availablity: availablity,
+      type: type,
+      manufacturer: manufacturer,
+      brand: brand,
+      status: status,
+      fuelType: fuelType,
+      year: year,
+      owner: owner,
+      user: user,
+      remark: remark,
+      driverId: driverId,
+      imageUrl: imageUrl,
     );
   }
 }

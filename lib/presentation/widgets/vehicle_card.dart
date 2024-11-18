@@ -49,7 +49,7 @@ class VehicleWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${vehicle.brand} ${vehicle.name}',
+                    '${vehicle.brand} ${vehicle.brand}',
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -68,12 +68,12 @@ class VehicleWidget extends StatelessWidget {
                       ),
                       Chip(
                         label: Text(
-                          vehicle.availablity,
+                          vehicle.status,
                           style: const TextStyle(
                             color: Colors.white,
                           ),
                         ),
-                        backgroundColor: vehicle.availablity == 'Available'
+                        backgroundColor: vehicle.status == 'Available'
                             ? Colors.green
                             : Colors.red,
                       ),

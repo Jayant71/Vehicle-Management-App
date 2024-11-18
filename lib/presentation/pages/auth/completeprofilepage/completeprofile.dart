@@ -184,7 +184,7 @@ class CompleteProfilePage extends StatelessWidget {
       enabled: false,
       decoration: InputDecoration(
         labelText: 'Email',
-        prefixIcon: Icon(Icons.email),
+        prefixIcon: const Icon(Icons.email),
         disabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.grey),
           borderRadius: BorderRadius.circular(10),
@@ -208,7 +208,7 @@ class CompleteProfilePage extends StatelessWidget {
       controller: _fullNameController,
       decoration: InputDecoration(
         labelText: 'Full Name',
-        prefixIcon: Icon(Icons.person),
+        prefixIcon: const Icon(Icons.person),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -227,7 +227,7 @@ class CompleteProfilePage extends StatelessWidget {
       controller: _contactNumberController,
       decoration: InputDecoration(
         labelText: 'Contact Number',
-        prefixIcon: Icon(Icons.phone),
+        prefixIcon: const Icon(Icons.phone),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -249,7 +249,7 @@ class CompleteProfilePage extends StatelessWidget {
       controller: _employeeIdController,
       decoration: InputDecoration(
         labelText: 'Employee ID',
-        prefixIcon: Icon(Icons.badge),
+        prefixIcon: const Icon(Icons.badge),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -267,7 +267,7 @@ class CompleteProfilePage extends StatelessWidget {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
         labelText: 'Department',
-        prefixIcon: Icon(Icons.business),
+        prefixIcon: const Icon(Icons.business),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -294,7 +294,7 @@ class CompleteProfilePage extends StatelessWidget {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
         labelText: 'Designation',
-        prefixIcon: Icon(Icons.work),
+        prefixIcon: const Icon(Icons.work),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vehicle_management_app/common/utils/picklocation.dart';
 import 'package:vehicle_management_app/data/models/auth/signin_user_req.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/sigin.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/homepage.dart';
 import 'package:vehicle_management_app/presentation/pages/auth/signuppage/signuppage.dart';
+import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
 import 'package:vehicle_management_app/presentation/widgets/authappbutton.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 
@@ -81,6 +84,13 @@ class SigninPage extends StatelessWidget {
                                       });
                                 },
                                 (r) {
+                                  if (_emailController.text
+                                      .toString()
+                                      .contains("driver")) {
+                                    context
+                                        .read<ProfileCubit>()
+                                        .getUserProfile('driver');
+                                  }
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       behavior: SnackBarBehavior.floating,

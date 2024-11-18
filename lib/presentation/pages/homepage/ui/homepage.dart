@@ -16,7 +16,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   PageController pageController = PageController();
   int _currentIndx = 0;
-  var currentUser = "";
+  String? role;
 
   @override
   void dispose() {
@@ -29,6 +29,8 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    role = context.read<ProfileCubit>().state?.role;
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<NavindexCubit>(
@@ -38,55 +40,47 @@ class _HomepageState extends State<Homepage> {
       ],
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        bottomNavigationBar: SafeArea(
-          child: BlocBuilder<NavindexCubit, dynamic>(
-            builder: (context, state) {
-              return BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                currentIndex: state,
-                onTap: (value) {
-                  context.read<NavindexCubit>().changeIndex(value);
-                  setState(() {
-                    _currentIndx = value;
-                  });
-                  // pageController.animateToPage(
-                  //   value,
-                  //   duration: const Duration(milliseconds: 100),
-                  //   curve: Curves.linear,
-                  // );
-                },
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  // BottomNavigationBarItem(
-                  //   icon: Icon(Icons.car_rental),
-                  //   label: 'Vehicles',
-                  // ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.pages),
-                    label: 'Applications',
-                  ),
-                  // BottomNavigationBarItem(
-                  //   icon: Icon(Icons.person),
-                  //   label: 'Person',
-                  // ),
-                ],
-              );
-            },
-          ),
-        ),
+        bottomNavigationBar: role == 'user'
+            ? SafeArea(
+                child: BlocBuilder<NavindexCubit, dynamic>(
+                  builder: (context, state) {
+                    return BottomNavigationBar(
+                      type: BottomNavigationBarType.fixed,
+                      currentIndex: state,
+                      onTap: (value) {
+                        context.read<NavindexCubit>().changeIndex(value);
+                        setState(() {
+                          _currentIndx = value;
+                        });
+                      },
+                      items: const [
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.home),
+                          label: 'Home',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.pages),
+                          label: 'Applications',
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              )
+            : null,
         body: IndexedStack(
           // controller: pageController,
           // physics: const NeverScrollableScrollPhysics(),
           index: _currentIndx,
-          children: [
-            const HomeView(),
-            // VehicleListPage(),
-            ApplicationListPage(),
-            // ProfileScreenPage()
-          ],
+          children: role == "driver"
+              ? const [
+                  HomeView(),
+                  ApplicationListPage(),
+                ]
+              : const [
+                  HomeView(),
+                  ApplicationListPage(),
+                ],
         ),
       ),
     );

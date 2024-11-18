@@ -9,6 +9,7 @@ class UserApplication {
   final List<double> destinationCoordinates;
   final String date;
   final String time;
+  final String status;
   final String accepted;
   final String driverId;
   final String vehicleId;
@@ -24,6 +25,7 @@ class UserApplication {
     required this.destinationCoordinates,
     required this.date,
     required this.time,
+    required this.status,
     required this.accepted,
     required this.driverId,
     required this.vehicleId,
@@ -41,6 +43,7 @@ class UserApplication {
       destinationCoordinates: json['destinationCoordinates'],
       date: json['date'],
       time: json['time'],
+      status: json['status'],
       accepted: json['accepted'],
       driverId: json['driverId'],
       vehicleId: json['vehicleId'],
@@ -59,6 +62,7 @@ class UserApplication {
       'destinationCoordinates': destinationCoordinates,
       'date': date,
       'time': time,
+      'status': status,
       'accepted': accepted,
       'driverId': driverId,
       'vehicleId': vehicleId,

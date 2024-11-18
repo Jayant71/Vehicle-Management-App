@@ -1,14 +1,11 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vehicle_management_app/common/utils/picklocation.dart';
 import 'package:vehicle_management_app/core/config/constants/sample_vehicle_data.dart';
-import 'package:vehicle_management_app/data/models/user/user.dart';
 import 'package:vehicle_management_app/data/models/user/user_application.dart';
 import 'package:vehicle_management_app/presentation/pages/reviewapplication/reviewapplicationpage.dart';
-import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
 import 'package:vehicle_management_app/presentation/widgets/commonappbar.dart';
 
 class VehicleRequestForm extends StatefulWidget {
@@ -50,7 +47,7 @@ class _VehicleRequestFormState extends State<VehicleRequestForm> {
             const SizedBox(height: 15),
             isRoundTripCheckbox(),
             const SizedBox(height: 15),
-            vehicleDropdown(),
+            // vehicleDropdown(),
             const SizedBox(height: 15),
             const Text("Select Date of Travel"),
             dateField(),
@@ -76,6 +73,7 @@ class _VehicleRequestFormState extends State<VehicleRequestForm> {
                   createdAt: DateTime.now().toString(),
                   roundTrip: isRoundTrip.toString(),
                   userId: widget.uid,
+                  status: '3',
                 );
                 Navigator.push(
                     context,
@@ -148,71 +146,70 @@ class _VehicleRequestFormState extends State<VehicleRequestForm> {
     );
   }
 
-  Widget vehicleDropdown() {
-    return DropdownButtonFormField2(
-      dropdownStyleData: DropdownStyleData(
-        maxHeight: 300, // Set the maximum height for the dropdown
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.grey),
-        ),
-      ),
-      decoration: InputDecoration(
-        labelText: 'Select a Vehicle Preference',
-        labelStyle: const TextStyle(fontSize: 18),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
+  // Widget vehicleDropdown() {
+  //   return DropdownButtonFormField2(
+  //     dropdownStyleData: DropdownStyleData(
+  //       maxHeight: 300, // Set the maximum height for the dropdown
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(10),
+  //         border: Border.all(color: Colors.grey),
+  //       ),
+  //     ),
+  //     decoration: InputDecoration(
+  //       labelText: 'Select a Vehicle Preference',
+  //       labelStyle: const TextStyle(fontSize: 18),
+  //       border: OutlineInputBorder(
+  //         borderRadius: BorderRadius.circular(10),
+  //       ),
+  //     ),
 
-      items: List.from(
-        sampleVehicleData.map((vehicle) {
-          return DropdownMenuItem(
-              value: vehicle.name,
-              alignment: Alignment.centerLeft,
-              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Chip(
-                  label: const Text(
-                    // vehicle.availablity,
-                    "",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  backgroundColor: vehicle.availablity == 'Available'
-                      ? Colors.green
-                      : Colors.red,
-                  shape: const CircleBorder(),
-                ),
-                const SizedBox(width: 10),
-                Image.network(
-                  vehicle.imageUrl,
-                  height: 50,
-                  width: 70,
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    '${vehicle.brand} ${vehicle.name}' +
-                        '\nRegistration: ${vehicle.registrationNumber}',
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 12),
-                  ),
-                ),
-              ]));
-        }),
-      ),
-      onChanged: (value) {
-        setState(() {
-          vehicleName = value.toString();
-        });
-      },
-      isExpanded:
-          true, // Set isExpanded to true to allow the dropdown to adjust its width
-    );
-  }
+  //     items: List.from(
+  //       sampleVehicleData.map((vehicle) {
+  //         return DropdownMenuItem(
+  //             value: vehicle.brand,
+  //             alignment: Alignment.centerLeft,
+  //             child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+  //               Chip(
+  //                 label: const Text(
+  //                   // vehicle.availablity,
+  //                   "",
+  //                   style: TextStyle(
+  //                     color: Colors.white,
+  //                   ),
+  //                 ),
+  //                 backgroundColor:
+  //                     vehicle.status == 'Available' ? Colors.green : Colors.red,
+  //                 shape: const CircleBorder(),
+  //               ),
+  //               const SizedBox(width: 10),
+  //               Image.network(
+  //                 vehicle.imageUrl,
+  //                 height: 50,
+  //                 width: 70,
+  //                 fit: BoxFit.cover,
+  //               ),
+  //               const SizedBox(width: 10),
+  //               Expanded(
+  //                 child: Text(
+  //                   '${vehicle.brand} ${vehicle.brand}' +
+  //                       '\nRegistration: ${vehicle.registrationNumber}',
+  //                   maxLines: 3,
+  //                   overflow: TextOverflow.ellipsis,
+  //                   style: const TextStyle(fontSize: 12),
+  //                 ),
+  //               ),
+  //             ]));
+  //       }),
+  //     ),
+  //     onChanged: (value) {
+  //       setState(() {
+  //         vehicleName = value.toString();
+  //       });
+  //     },
+  //     isExpanded:
+  //         true, // Set isExpanded to true to allow the dropdown to adjust its width
+  //   );
+  // }
 
   Widget dateField() {
     return TextField(
