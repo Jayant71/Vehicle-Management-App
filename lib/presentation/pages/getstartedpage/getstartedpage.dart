@@ -1,11 +1,34 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:vehicle_management_app/core/config/assets/app_images.dart';
-import 'package:vehicle_management_app/core/config/theme/app_colors.dart';
-import 'package:vehicle_management_app/presentation/pages/signinpage/signinpage.dart';
+import 'package:vehicle_management_app/router.dart';
+import 'package:vehicle_management_app/presentation/pages/auth/signinpage/signinpage.dart';
 import 'package:vehicle_management_app/presentation/widgets/getstartedlogo.dart';
 
-class GetStartedPage extends StatelessWidget {
+class GetStartedPage extends StatefulWidget {
   const GetStartedPage({super.key});
+
+  @override
+  State<GetStartedPage> createState() => _GetStartedPageState();
+}
+
+class _GetStartedPageState extends State<GetStartedPage> {
+  _askForPermission() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+      // Permission.storage,
+    ].request();
+    log(statuses.toString());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _askForPermission();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +38,9 @@ class GetStartedPage extends StatelessWidget {
           Container(
             height: MediaQuery.of(context).size.height * 0.5,
             width: double.infinity,
-            decoration: const BoxDecoration(
-              color: AppColors.primary,
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(100),
                 bottomRight: Radius.circular(100),
               ),
@@ -58,18 +81,17 @@ class GetStartedPage extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 100),
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SigninPage()));
-                    },
-                    child: const Text('Get Started'),
-                  ),
-                  const Icon(Icons.arrow_forward),
-                ],
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                icon: const Icon(Icons.arrow_forward),
+                iconAlignment: IconAlignment.end,
+                onPressed: () {
+                  context.go('/getstarted/login');
+                },
+                label: const Text('Get Started'),
               ),
             ),
           ),

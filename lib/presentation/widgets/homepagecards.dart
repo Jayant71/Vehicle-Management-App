@@ -1,45 +1,39 @@
 import 'package:flutter/material.dart';
 
-class HomeCard extends StatelessWidget {
-  HomeCard({
+class HomePageCard extends StatelessWidget {
+  const HomePageCard({
     super.key,
     this.icon,
     this.title,
+    this.onTap,
   });
 
-  Icon? icon;
-  String? title;
+  final Icon? icon;
+  final String? title;
+  final GestureTapCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: SizedBox(
-        height: 150,
-        width: 150,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            icon ?? const Icon(Icons.car_rental),
-            const SizedBox(
-              height: 20,
-            ),
-            Text(
-              title ?? "Title",
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        InkWell(
+          onTap: onTap,
+          child: Card(
+              shape: const CircleBorder(),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: icon,
+              )),
         ),
-      ),
+        Text(
+          title ?? "Title",
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
     );
   }
 }
