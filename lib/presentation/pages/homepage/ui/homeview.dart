@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/signout.dart';
-import 'package:vehicle_management_app/presentation/pages/homepage/cubit/time_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/userhome/adminhome.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/userhome/driverhome.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/userhome/userhome.dart';
+import 'package:vehicle_management_app/presentation/pages/reviewapplication/cubit/applicationlist_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 
@@ -20,20 +20,8 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView>
     with AutomaticKeepAliveClientMixin {
-  // TimeCubit timeCubit = TimeCubit();
-  CarouselController carouselController = CarouselController();
-  TextEditingController sourceController = TextEditingController();
-  TextEditingController destinationController = TextEditingController();
-
-  // @override
-  // initState() {
-  //   super.initState();
-  //   context.read<ProfileCubit>().getUserProfile();
-  // }
-
   @override
   void dispose() {
-    // timeCubit.stopTimer();
     ProfileCubit().close();
     super.dispose();
   }
@@ -44,7 +32,7 @@ class _HomeViewState extends State<HomeView>
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: _drawer(context),
+        drawer: _drawer(context, widget.role),
         appBar: _appbar(),
         body: widget.role == 'driver'
             ? const DriverHome()
@@ -58,7 +46,6 @@ class _HomeViewState extends State<HomeView>
       backgroundColor: Theme.of(context).colorScheme.primary,
       elevation: 5,
       centerTitle: true,
-      // title: const TimerView(),
       automaticallyImplyLeading: false,
       leading: Builder(
         builder: (BuildContext context) {
@@ -73,27 +60,10 @@ class _HomeViewState extends State<HomeView>
           );
         },
       ),
-      // actions: [
-      //   IconButton(
-      //     icon: Icon(Icons.notifications,
-      //         color: Theme.of(context).colorScheme.onPrimary),
-      //     onPressed: () {
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(
-      //           builder: (context) => const NotificationPage(),
-      //         ),
-      //       );
-      //     },
-      //   ),
-      //   const SizedBox(
-      //     width: 10,
-      //   ),
-      // ],
     );
   }
 
-  _drawer(BuildContext context) {
+  _drawer(BuildContext context, String role) {
     return Drawer(
       child: ListView(
         children: [
@@ -113,7 +83,9 @@ class _HomeViewState extends State<HomeView>
                   ),
                   Center(
                     child: Text(
-                      state?.fullName ?? "User",
+                      state?.role == 'driver'
+                          ? state?.name ?? "User"
+                          : state?.fullName ?? "User",
                       style: const TextStyle(
                         fontSize: 20,
                         color: Colors.black,
@@ -137,20 +109,52 @@ class _HomeViewState extends State<HomeView>
               context.go('/home/profile');
             },
           ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(
-              Icons.description,
-              color: Color.fromARGB(255, 0, 0, 0),
+          if (role != 'driver') ...[
+            const Divider(),
+            ListTile(
+              leading: const Icon(
+                Icons.description,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
+              title: const Text(
+                "Vehicle List",
+                style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+              ),
+              onTap: () {
+                context.go('/home/vehiclelist');
+              },
             ),
-            title: const Text(
-              "Vehicle List",
-              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+          ],
+          if (role == 'driver') ...[
+            const Divider(),
+            ListTile(
+              leading: const Icon(
+                Icons.car_repair,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
+              title: const Text(
+                "Maintenace",
+                style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+              ),
+              onTap: () {
+                context.go('/home/maintenance');
+              },
             ),
-            onTap: () {
-              context.go('/home/vehiclelist');
-            },
-          ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(
+                Icons.gas_meter,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
+              title: const Text(
+                "Refueling",
+                style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+              ),
+              onTap: () {
+                context.go('/home/refueling');
+              },
+            ),
+          ],
           const Divider(),
           ListTile(
             leading: const Icon(
@@ -171,23 +175,6 @@ class _HomeViewState extends State<HomeView>
             ),
             title: const Text(
               "Feedback",
-              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-            ),
-            onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const FeedbackPage(),
-              //   ),
-              // );
-            },
-          ),
-          const Divider(),
-          ListTile(
-            leading:
-                const Icon(Icons.settings, color: Color.fromARGB(255, 0, 0, 0)),
-            title: const Text(
-              "Settings",
               style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
             ),
             onTap: () {},
@@ -223,7 +210,8 @@ class _HomeViewState extends State<HomeView>
 
     var result = await sl<SignoutUseCase>().call();
     Future.delayed(const Duration(seconds: 2), () {
-      // timeCubit.stopTimer();
+      context.read<ApplicationlistCubit>().close();
+      context.read<ProfileCubit>().close();
       if (context.mounted) {
         context.pop();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

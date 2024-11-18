@@ -7,6 +7,10 @@ import 'package:vehicle_management_app/service_locator.dart';
 class ProfileCubit extends HydratedCubit<dynamic> {
   ProfileCubit() : super(null);
 
+  void clearProfile() {
+    emit(null);
+  }
+
   Future<void> getUserProfile(String role, String? id_) async {
     dynamic result;
     if (role == 'driver') {

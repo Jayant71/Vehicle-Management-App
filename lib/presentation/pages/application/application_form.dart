@@ -71,7 +71,6 @@ class _VehicleRequestFormState extends State<ApplicationForm> {
                     date: dateController.text,
                     time: timeController.text,
                     accepted: 'false',
-                    directions: "",
                     purpose: purposeController.text,
                     driverId: '',
                     vehicleId: '',

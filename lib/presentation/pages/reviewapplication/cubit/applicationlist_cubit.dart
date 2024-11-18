@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:logger/logger.dart';
@@ -12,13 +10,17 @@ part 'applicationlist_state.dart';
 class ApplicationlistCubit extends HydratedCubit<ApplicationlistState> {
   ApplicationlistCubit() : super(ApplicationlistInitial());
 
+  void clearApplications() {
+    emit(ApplicationlistInitial());
+  }
+
   Future<void> getApplications(
-      bool self, String destination, String status, String branch) async {
+      bool self, String designation, String status, String branch) async {
     emit(ApplicationlistLoading());
     try {
       final applications = await sl<GetApplicationsUsecase>().call(
         params: self,
-        designation: destination,
+        designation: designation,
         status: status,
         branch: branch,
       );

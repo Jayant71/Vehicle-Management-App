@@ -6,6 +6,8 @@ import 'package:vehicle_management_app/presentation/pages/auth/signinpage/signin
 import 'package:vehicle_management_app/presentation/pages/auth/signuppage/signuppage.dart';
 import 'package:vehicle_management_app/presentation/pages/getstartedpage/getstartedpage.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/homepage.dart';
+import 'package:vehicle_management_app/presentation/pages/refuelingandmaintenance/maintenance/maintenancelist.dart';
+import 'package:vehicle_management_app/presentation/pages/refuelingandmaintenance/refueling/refuelinglist.dart';
 import 'package:vehicle_management_app/presentation/pages/reviewapplication/reviewapplicationpage.dart';
 import 'package:vehicle_management_app/presentation/pages/spashscreen/splashscreen.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/profilescreenpage.dart';
@@ -72,6 +74,12 @@ final GoRouter router = GoRouter(
               final application = state.extra as UserApplication;
               return ReviewApplicationPage(application: application);
             }),
+        GoRoute(
+            path: 'refueling',
+            builder: (context, state) => const RefuelingList()),
+        GoRoute(
+            path: 'maintenance',
+            builder: (context, state) => const MaintenanceList()),
       ],
     ),
   ],

@@ -11,7 +11,7 @@ class UserApplication {
   final String time;
   final String purpose;
   final String status;
-  String directions;
+
   final String accepted;
   final String driverId;
   final String vehicleId;
@@ -27,7 +27,6 @@ class UserApplication {
     required this.destinationCoordinates,
     required this.date,
     required this.time,
-    required this.directions,
     required this.status,
     required this.accepted,
     required this.purpose,
@@ -48,7 +47,6 @@ class UserApplication {
       date: json['date'],
       time: json['time'],
       status: json['status'],
-      directions: json['directions'],
       accepted: json['accepted'],
       purpose: json['purpose'],
       driverId: json['driverId'],
@@ -69,7 +67,6 @@ class UserApplication {
       'date': date,
       'time': time,
       'status': status,
-      'directions': directions,
       'accepted': accepted,
       'purpose': purpose,
       'driverId': driverId,

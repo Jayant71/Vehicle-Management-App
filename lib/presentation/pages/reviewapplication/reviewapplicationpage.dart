@@ -213,7 +213,6 @@ class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () async {
-                    widget.application.directions = directions.toString();
                     showDialog(
                       context: context,
                       barrierDismissible: false,

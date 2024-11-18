@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logger/logger.dart';
+
 import 'package:vehicle_management_app/data/models/user/user.dart';
 import 'package:vehicle_management_app/presentation/pages/reviewapplication/cubit/applicationlist_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';

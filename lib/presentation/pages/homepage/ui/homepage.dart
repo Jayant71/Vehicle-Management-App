@@ -30,10 +30,13 @@ class _HomepageState extends State<Homepage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     role_ = context.read<ProfileCubit>().state?.role;
-    log(role_!);
-    // role_ = "admin";
 
     return MultiBlocProvider(
       providers: [

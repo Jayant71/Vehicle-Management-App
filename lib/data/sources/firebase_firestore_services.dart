@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:logger/logger.dart';
 import 'package:vehicle_management_app/data/models/feedback/feedback.dart';
 import 'package:vehicle_management_app/data/models/user/driver.dart';
@@ -400,8 +401,13 @@ class FirestoreServiceImpl implements FirestoreService {
   Future<Either> getDriver(String id) async {
     String message = '';
     try {
+      var id_ = FirebaseAuth.instance.currentUser!.email
+          .toString()
+          .split('@')[0]
+          .split('.')[1]
+          .toUpperCase();
       var driver =
-          await FirebaseFirestore.instance.collection('drivers').doc(id).get();
+          await FirebaseFirestore.instance.collection('drivers').doc(id_).get();
       DriverModel driverModel = DriverModel.fromJson(driver.data()!);
       return Right(driverModel);
     } on FirebaseException catch (e) {
@@ -527,6 +533,20 @@ class FirestoreServiceImpl implements FirestoreService {
         var applications = await FirebaseFirestore.instance
             .collection('user_applications')
             .where('status', isEqualTo: status)
+            .get();
+        List<UserApplication> applicationList = [];
+        for (var application in applications.docs) {
+          applicationList.add(UserApplication.fromJson(application.data()));
+        }
+        return Right(applicationList);
+      } else if (designation == 'driver') {
+        var id = FirebaseAuth.instance.currentUser!.email
+            .toString()
+            .split('@')[0]
+            .split('.')[1];
+        var applications = await FirebaseFirestore.instance
+            .collection('user_applications')
+            .where('driverId', isEqualTo: id)
             .get();
         List<UserApplication> applicationList = [];
         for (var application in applications.docs) {
