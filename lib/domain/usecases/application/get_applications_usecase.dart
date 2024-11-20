@@ -5,12 +5,7 @@ import 'package:vehicle_management_app/service_locator.dart';
 
 class GetApplicationsUsecase extends UseCase<Either, bool> {
   @override
-  Future<Either> call(
-      {bool? params,
-      String? designation,
-      String? status,
-      String? branch}) async {
-    return sl<ApplicationRepository>()
-        .getApplications(params!, designation!, status!, branch!);
+  Future<Either> call({bool? params, String? designation}) async {
+    return sl<ApplicationRepository>().getApplications(params!, designation!);
   }
 }

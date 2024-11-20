@@ -1,5 +1,3 @@
-import 'package:vehicle_management_app/domain/entities/user/user_application.dart';
-
 class UserApplication {
   final String bookingId;
   final String userId;
@@ -10,8 +8,8 @@ class UserApplication {
   final String date;
   final String time;
   final String purpose;
-  final String status;
-  String directions;
+  final String rejectionComment;
+  final int status;
   final String accepted;
   final String driverId;
   final String vehicleId;
@@ -27,7 +25,7 @@ class UserApplication {
     required this.destinationCoordinates,
     required this.date,
     required this.time,
-    required this.directions,
+    required this.rejectionComment,
     required this.status,
     required this.accepted,
     required this.purpose,
@@ -48,7 +46,7 @@ class UserApplication {
       date: json['date'],
       time: json['time'],
       status: json['status'],
-      directions: json['directions'],
+      rejectionComment: json['rejectionComment'],
       accepted: json['accepted'],
       purpose: json['purpose'],
       driverId: json['driverId'],
@@ -69,7 +67,7 @@ class UserApplication {
       'date': date,
       'time': time,
       'status': status,
-      'directions': directions,
+      'rejectionComment': rejectionComment,
       'accepted': accepted,
       'purpose': purpose,
       'driverId': driverId,

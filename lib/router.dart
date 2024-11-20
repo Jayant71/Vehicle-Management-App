@@ -6,6 +6,8 @@ import 'package:vehicle_management_app/presentation/pages/auth/signinpage/signin
 import 'package:vehicle_management_app/presentation/pages/auth/signuppage/signuppage.dart';
 import 'package:vehicle_management_app/presentation/pages/getstartedpage/getstartedpage.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/homepage.dart';
+import 'package:vehicle_management_app/presentation/pages/refuelingandmaintenance/maintenance/maintenancelist.dart';
+import 'package:vehicle_management_app/presentation/pages/refuelingandmaintenance/refueling/refuelinglist.dart';
 import 'package:vehicle_management_app/presentation/pages/reviewapplication/reviewapplicationpage.dart';
 import 'package:vehicle_management_app/presentation/pages/spashscreen/splashscreen.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/profilescreenpage.dart';
@@ -52,15 +54,18 @@ final GoRouter router = GoRouter(
           path: 'applicationform',
           builder: (context, state) {
             final uid = state.uri.queryParameters['uid'] ?? '';
-            return ApplicationForm(uid: uid);
+            final role = state.uri.queryParameters['role'] ?? '';
+            return ApplicationForm(uid: uid, role: role);
           },
           routes: [
             GoRoute(
               path: 'reviewapplication',
               builder: (context, state) {
                 final application = state.extra as UserApplication;
+                final who = state.uri.queryParameters['who'] ?? '';
                 return ReviewApplicationPage(
                   application: application,
+                  who: who,
                 );
               },
             ),
@@ -70,8 +75,18 @@ final GoRouter router = GoRouter(
             path: 'reviewapplication',
             builder: (context, state) {
               final application = state.extra as UserApplication;
-              return ReviewApplicationPage(application: application);
+              final who = state.uri.queryParameters['who'] ?? '';
+              return ReviewApplicationPage(
+                application: application,
+                who: who,
+              );
             }),
+        GoRoute(
+            path: 'refueling',
+            builder: (context, state) => const RefuelingList()),
+        GoRoute(
+            path: 'maintenance',
+            builder: (context, state) => const MaintenanceList()),
       ],
     ),
   ],

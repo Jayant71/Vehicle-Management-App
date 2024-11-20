@@ -5,7 +5,10 @@ import 'package:vehicle_management_app/service_locator.dart';
 
 class UpdateApplicationsUsecase extends UseCase<Either, Map<String, dynamic>> {
   @override
-  Future<Either> call({String? id, Map<String, dynamic>? params}) async {
+  Future<Either> call({
+    Map<String, dynamic>? params,
+    String? id,
+  }) async {
     return sl<ApplicationRepository>().updateApplication(id!, params!);
   }
 }

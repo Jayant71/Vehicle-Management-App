@@ -2,10 +2,13 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vehicle_management_app/common/helpers/isinternetconnected.dart';
 import 'package:vehicle_management_app/common/helpers/isloggedin.dart';
+import 'package:vehicle_management_app/common/utils/picklocation.dart';
 import 'package:vehicle_management_app/common/utils/requestpermissions.dart';
+import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
 import 'package:vehicle_management_app/presentation/widgets/getstartedlogo.dart';
 
 class Splashscreen extends StatelessWidget {
@@ -51,6 +54,10 @@ class Splashscreen extends StatelessWidget {
       bool isLoggedIn = isUserLoggedIn();
       if (context.mounted) {
         if (isLoggedIn) {
+          bool isDriver = auth.currentUser!.email!.contains('driver');
+          await context
+              .read<ProfileCubit>()
+              .getUserProfile(isDriver ? 'driver' : 'user', '');
           context.go('/home');
         } else {
           context.go('/getstarted');

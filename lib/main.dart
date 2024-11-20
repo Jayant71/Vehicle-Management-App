@@ -34,6 +34,7 @@ Future<void> main() async {
   await dotenv.load(fileName: ".env");
   await initializeDependencies();
 
+
   runApp(const MyApp());
 }
 
@@ -62,7 +63,7 @@ class _MyAppState extends State<MyApp> {
         ? SystemUiOverlayStyle.light
         : SystemUiOverlayStyle.dark;
 
-    SystemChrome.setSystemUIOverlayStyle(style);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
   }
 
   @override

@@ -12,6 +12,7 @@ class UserHome extends StatefulWidget {
 
 class _UserHomeState extends State<UserHome> {
   String? uid;
+  String? role_;
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -22,6 +23,7 @@ class _UserHomeState extends State<UserHome> {
             child: BlocBuilder<ProfileCubit, dynamic>(
               builder: (context, state) {
                 uid = state?.uid ?? "";
+                role_ = state?.role ?? "user";
                 return Text.rich(
                   TextSpan(children: [
                     const TextSpan(
@@ -50,7 +52,7 @@ class _UserHomeState extends State<UserHome> {
           height: 60,
           child: ElevatedButton(
             onPressed: () {
-              context.go("/home/applicationform?uid=$uid");
+              context.go("/home/applicationform?uid=$uid&role=$role_");
             },
             child: const Text(
               "Book a Vehicle",

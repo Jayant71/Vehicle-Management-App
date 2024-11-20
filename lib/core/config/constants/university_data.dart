@@ -30,7 +30,18 @@ final List<String> adminDepartments = [
   'Pharmacy',
   'UTD',
   'Establishment',
-  'Purchase'
+  'Purchase',
+  'Computer Science',
+  'Mechanical Engineering',
+  'Electrical Engineering',
+  'Civil Engineering',
+  'Business Administration',
+  'Mathematics',
+  'Physics',
+  'Chemistry',
+  'Biology',
+  'Economics',
+  'N/A'
 ];
 
 final List<String> designations = [
@@ -44,5 +55,6 @@ final List<String> designations = [
   'Library Staff',
   'IT Support',
   'Maintenance Staff',
-  'Driver'
+  'Driver',
+  'Other'
 ];

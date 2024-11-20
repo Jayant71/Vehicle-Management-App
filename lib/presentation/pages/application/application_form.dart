@@ -7,9 +7,10 @@ import 'package:vehicle_management_app/data/models/user/user_application.dart';
 import 'package:vehicle_management_app/presentation/widgets/commonappbar.dart';
 
 class ApplicationForm extends StatefulWidget {
-  const ApplicationForm({super.key, required this.uid});
+  const ApplicationForm({super.key, required this.uid, required this.role});
 
   final String uid;
+  final String role;
 
   @override
   State<ApplicationForm> createState() => _VehicleRequestFormState();
@@ -71,17 +72,21 @@ class _VehicleRequestFormState extends State<ApplicationForm> {
                     date: dateController.text,
                     time: timeController.text,
                     accepted: 'false',
-                    directions: "",
+                    rejectionComment: '',
                     purpose: purposeController.text,
                     driverId: '',
                     vehicleId: '',
                     createdAt: DateTime.now().toString(),
                     roundTrip: isRoundTrip.toString(),
                     userId: widget.uid,
-                    status: '3',
+                    status: widget.role == 'user'
+                        ? 3
+                        : widget.role == 'hod'
+                            ? 2
+                            : 1,
                   );
                   context.go(
-                    '/home/applicationform/reviewapplication',
+                    '/home/applicationform/reviewapplication?who=review',
                     extra: application,
                   );
                 },

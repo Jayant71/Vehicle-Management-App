@@ -19,6 +19,8 @@ dependencies:
   firebase_storage: ^12.3.6
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   flutter_bloc: ^8.1.6
   flutter_dotenv: ^5.2.1
   flutter_svg: ^2.0.14
@@ -48,6 +50,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
     - assets/images/

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:vehicle_management_app/data/repositories/applications/application_repository_impl.dart';
 import 'package:vehicle_management_app/data/repositories/auth/auth_repository_impl.dart';
@@ -20,7 +21,6 @@ import 'package:vehicle_management_app/domain/usecases/application/get_applicati
 import 'package:vehicle_management_app/domain/usecases/application/get_branch_applications_usecase.dart';
 import 'package:vehicle_management_app/domain/usecases/application/get_self_applications_usecase.dart';
 import 'package:vehicle_management_app/domain/usecases/application/update_applications_usecase.dart';
-import 'package:vehicle_management_app/domain/usecases/auth/get_user.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/sigin.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/signout.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/signup.dart';
@@ -29,6 +29,7 @@ import 'package:vehicle_management_app/domain/usecases/user/create_userdatabase_
 import 'package:vehicle_management_app/domain/usecases/user/delete_userdatabase_usecase.dart';
 import 'package:vehicle_management_app/domain/usecases/user/get_driver_usecase.dart';
 import 'package:vehicle_management_app/domain/usecases/user/get_driverlist_usecase.dart';
+import 'package:vehicle_management_app/domain/usecases/user/get_user_usecase.dart';
 import 'package:vehicle_management_app/domain/usecases/vehicle/create_maintenance.dart';
 import 'package:vehicle_management_app/domain/usecases/vehicle/create_refueling.dart';
 import 'package:vehicle_management_app/domain/usecases/vehicle/create_vehicle_usecase.dart';
@@ -46,6 +47,7 @@ Future<void> initializeDependencies() async {
   // Authservices
   sl.registerSingleton<AuthFirebaseService>(AuthFirebaseServiceImpl());
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
+  sl.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
   sl.registerSingleton<SignupUseCase>(SignupUseCase());
   sl.registerSingleton<SigninUseCase>(SigninUseCase());
   sl.registerSingleton<GetUserUseCase>(GetUserUseCase());
