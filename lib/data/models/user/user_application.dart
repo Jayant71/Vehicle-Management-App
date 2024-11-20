@@ -8,6 +8,7 @@ class UserApplication {
   final String date;
   final String time;
   final String purpose;
+  final String rejectionComment;
   final int status;
   final String accepted;
   final String driverId;
@@ -24,6 +25,7 @@ class UserApplication {
     required this.destinationCoordinates,
     required this.date,
     required this.time,
+    required this.rejectionComment,
     required this.status,
     required this.accepted,
     required this.purpose,
@@ -44,6 +46,7 @@ class UserApplication {
       date: json['date'],
       time: json['time'],
       status: json['status'],
+      rejectionComment: json['rejectionComment'],
       accepted: json['accepted'],
       purpose: json['purpose'],
       driverId: json['driverId'],
@@ -64,6 +67,7 @@ class UserApplication {
       'date': date,
       'time': time,
       'status': status,
+      'rejectionComment': rejectionComment,
       'accepted': accepted,
       'purpose': purpose,
       'driverId': driverId,

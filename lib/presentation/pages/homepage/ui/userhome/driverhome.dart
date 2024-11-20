@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:vehicle_management_app/presentation/pages/reviewapplication/cubit/applicationlist_cubit.dart';
+import 'package:vehicle_management_app/presentation/pages/applicationlist/cubit/applicationlist_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
 
 class DriverHome extends StatefulWidget {
@@ -16,19 +16,15 @@ class _DriverHomeState extends State<DriverHome>
   late final TabController _tabController;
 
   late dynamic profileCubit;
-  bool pending = true;
-  List completedTask = [];
 
-  fetchApplications() {
-    final cubit = context.read<ApplicationlistCubit>();
-    cubit.getApplications(false, 'driver', '', '');
-  }
+  late dynamic cubit = context.read<ApplicationlistCubit>();
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
     profileCubit = context.read<ProfileCubit>().state;
-    fetchApplications();
+    cubit = context.read<ApplicationlistCubit>();
+    cubit.getApplications(false, profileCubit.role);
     super.initState();
   }
 
@@ -47,16 +43,7 @@ class _DriverHomeState extends State<DriverHome>
               child: Text("Completed Task"),
             ),
           ],
-          onTap: (value) {
-            if (value == 1) {
-              pending = true;
-            } else {
-              setState(() {
-                pending = false;
-                fetchApplications();
-              });
-            }
-          },
+          onTap: (value) => setState(() {}),
         ),
       ),
       body: IndexedStack(
@@ -65,18 +52,19 @@ class _DriverHomeState extends State<DriverHome>
           BlocBuilder<ApplicationlistCubit, ApplicationlistState>(
               builder: (context, state) {
             if (state is ApplicationlistLoaded) {
-              completedTask = state.applications
-                  .where((application) => application.status == '0')
-                  .toList();
               return ListView.builder(
-                itemCount: state.applications.length,
+                itemCount: state.applications[0].length,
+                shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  final application = state.applications[index];
                   return ListTile(
-                    title: Text(application.sourceName),
-                    subtitle: Text(application.destinationName),
+                    title: Text(state.applications[0][index].date),
+                    subtitle:
+                        Text(state.applications[0][index].destinationName),
                     onTap: () {
-                      context.go('/home/reviewapplication', extra: application);
+                      GoRouter.of(context).go(
+                        '/home/reviewapplication?who=${profileCubit.role}',
+                        extra: state.applications[0][index],
+                      );
                     },
                   );
                 },
@@ -92,21 +80,42 @@ class _DriverHomeState extends State<DriverHome>
             }
             return const SizedBox();
           }),
-          ListView.builder(
-            itemCount: completedTask.length,
-            itemBuilder: (context, index) {
-              final application = completedTask[index];
-              return ListTile(
-                title: Text(application.sourceName),
-                subtitle: Text(application.destinationName),
+          BlocBuilder<ApplicationlistCubit, ApplicationlistState>(
+              builder: (context, state) {
+            if (state is ApplicationlistLoaded) {
+              return ListView.builder(
+                itemCount: state.applications[1].length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(state.applications[1][index].date),
+                    subtitle:
+                        Text(state.applications[1][index].destinationName),
+                    onTap: () {
+                      GoRouter.of(context).go(
+                        '/home/reviewapplication?who=${profileCubit.role}',
+                        extra: state.applications[1][index],
+                      );
+                    },
+                  );
+                },
               );
-            },
-          ),
+            } else if (state is ApplicationlistLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is ApplicationlistError) {
+              return Center(
+                child: Text(state.message),
+              );
+            }
+            return const SizedBox();
+          }),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          fetchApplications();
+          cubit.getApplications(false, profileCubit.role);
         },
         child: const Icon(Icons.refresh),
       ),

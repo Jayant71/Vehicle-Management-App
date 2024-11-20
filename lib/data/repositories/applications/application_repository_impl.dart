@@ -16,10 +16,8 @@ class ApplicationRepositoryImpl extends ApplicationRepository {
   }
 
   @override
-  Future<Either> getApplications(
-      bool self, String designation, String status, String branch) {
-    return sl<FirestoreService>()
-        .getApplications(self, designation, status, branch);
+  Future<Either> getApplications(bool self, String designation) {
+    return sl<FirestoreService>().getApplications(self, designation);
   }
 
   @override

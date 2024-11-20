@@ -54,7 +54,8 @@ final GoRouter router = GoRouter(
           path: 'applicationform',
           builder: (context, state) {
             final uid = state.uri.queryParameters['uid'] ?? '';
-            return ApplicationForm(uid: uid);
+            final role = state.uri.queryParameters['role'] ?? '';
+            return ApplicationForm(uid: uid, role: role);
           },
           routes: [
             GoRoute(

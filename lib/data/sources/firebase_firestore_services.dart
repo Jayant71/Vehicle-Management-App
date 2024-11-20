@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:logger/logger.dart';
 import 'package:vehicle_management_app/data/models/feedback/feedback.dart';
 import 'package:vehicle_management_app/data/models/user/driver.dart';
@@ -45,8 +42,7 @@ abstract class FirestoreService {
   // Applications
   Future<Either> createApplication(UserApplication userApplication);
   Future<Either> updateApplication(String id, Map<String, dynamic> fields);
-  Future<Either> getApplications(
-      bool self, String designation, String status, String branch);
+  Future<Either> getApplications(bool self, String designation);
   Future<Either> getApplication(String id);
   Future<Either> getSelfApplications(String userId, String status);
   Future<Either> getBranchApplications(String branch, String status);
@@ -503,45 +499,121 @@ class FirestoreServiceImpl implements FirestoreService {
   }
 
   @override
-  Future<Either> getApplications(
-      bool self, String designation, String status, String branch) async {
+  Future<Either> getApplications(bool self, String designation) async {
     String message = '';
+
     try {
-      if (self) {
-        var applications = await FirebaseFirestore.instance
+      if (designation == 'user') {
+        var applcations = await FirebaseFirestore.instance
             .collection('user_applications')
             .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
             .get();
-        List<UserApplication> applicationList = [];
-        for (var application in applications.docs) {
-          applicationList.add(UserApplication.fromJson(application.data()));
+        List<UserApplication> pendingApplicationList = [];
+        List<UserApplication> approvedApplicationList = [];
+        List<UserApplication> rejectedApplications = [];
+
+        for (var application in applcations.docs) {
+          if (application.data()['status'] == 3 ||
+              application.data()['status'] == 2) {
+            pendingApplicationList
+                .add(UserApplication.fromJson(application.data()));
+          } else if (application.data()['status'] == -1) {
+            rejectedApplications
+                .add(UserApplication.fromJson(application.data()));
+          } else {
+            approvedApplicationList
+                .add(UserApplication.fromJson(application.data()));
+          }
         }
-        return Right(applicationList);
-      } else if (designation == "hod") {
+        return Right([
+          pendingApplicationList,
+          approvedApplicationList,
+          rejectedApplications
+        ]);
+      } else if (designation == 'hod') {
+        final user = await getUser('');
+        var department = '';
+        user.fold((l) => Logger().e(l), (r) {
+          department = r.department;
+        });
         var applications = await FirebaseFirestore.instance
             .collection('user_applications')
-            .where('status', isEqualTo: status)
+            .where(Filter(
+              'department',
+              isEqualTo: department,
+            ))
+            .where(Filter(
+              'status',
+              isLessThanOrEqualTo: 3,
+            ))
             .get();
-        List<UserApplication> applicationList = [];
+
+        List<UserApplication> pendingApplications = [];
+        List<UserApplication> approvedApplications = [];
+        List<UserApplication> rejectedApplications = [];
         for (var application in applications.docs) {
-          dynamic user = await getUser(application.data()['userId']);
-          user.fold((l) => Logger().e(l), (r) {
-            if (r.department == branch) {
-              applicationList.add(UserApplication.fromJson(application.data()));
+          if (application.data()['status'] == 3) {
+            if (self) {
+              if (application.data()['userId'] ==
+                  FirebaseAuth.instance.currentUser!.uid) {
+                pendingApplications
+                    .add(UserApplication.fromJson(application.data()));
+              }
+            } else {
+              pendingApplications
+                  .add(UserApplication.fromJson(application.data()));
             }
-          });
+          } else if (application.data()['status'] == -1) {
+            if (self) {
+              if (application.data()['userId'] ==
+                  FirebaseAuth.instance.currentUser!.uid) {
+                rejectedApplications
+                    .add(UserApplication.fromJson(application.data()));
+              } else {
+                rejectedApplications
+                    .add(UserApplication.fromJson(application.data()));
+              }
+            }
+          } else {
+            if (self) {
+              if (application.data()['userId'] ==
+                  FirebaseAuth.instance.currentUser!.uid) {
+                approvedApplications
+                    .add(UserApplication.fromJson(application.data()));
+              }
+            } else {
+              approvedApplications
+                  .add(UserApplication.fromJson(application.data()));
+            }
+          }
         }
-        return Right(applicationList);
-      } else if (designation == "allocator") {
+        return Right(
+            [pendingApplications, approvedApplications, rejectedApplications]);
+      } else if (designation == 'allocator') {
         var applications = await FirebaseFirestore.instance
             .collection('user_applications')
-            .where('status', isEqualTo: status)
+            .where('status', isLessThan: 3)
             .get();
-        List<UserApplication> applicationList = [];
+
+        List<UserApplication> pendingApplications = [];
+        List<UserApplication> approvedApplications = [];
+        List<UserApplication> rejectedApplications = [];
+
         for (var application in applications.docs) {
-          applicationList.add(UserApplication.fromJson(application.data()));
+          if (application.data()['status'] == 2) {
+            pendingApplications
+                .add(UserApplication.fromJson(application.data()));
+          } else if (application.data()['status'] == -1) {
+            rejectedApplications
+                .add(UserApplication.fromJson(application.data()));
+          } else {
+            approvedApplications
+                .add(UserApplication.fromJson(application.data()));
+          }
         }
-        return Right(applicationList);
+
+        return Right(
+            [pendingApplications, approvedApplications, rejectedApplications]);
       } else if (designation == 'driver') {
         var id = FirebaseAuth.instance.currentUser!.email
             .toString()
@@ -551,13 +623,43 @@ class FirestoreServiceImpl implements FirestoreService {
             .collection('user_applications')
             .where('driverId', isEqualTo: id)
             .get();
-        List<UserApplication> applicationList = [];
+        List<UserApplication> pendingTasks = [];
+        List<UserApplication> completedTasks = [];
+
         for (var application in applications.docs) {
-          applicationList.add(UserApplication.fromJson(application.data()));
+          if (application.data()['status'] == 1) {
+            pendingTasks.add(UserApplication.fromJson(application.data()));
+          } else if (application.data()['status'] == 0) {
+            completedTasks.add(UserApplication.fromJson(application.data()));
+          }
         }
-        return Right(applicationList);
+
+        return Right([pendingTasks, completedTasks]);
+      } else if (designation == "admin") {
+        var applications = await FirebaseFirestore.instance
+            .collection('user_applications')
+            .get();
+        List<UserApplication> pendingApplication = [];
+        List<UserApplication> completedApplication = [];
+        List<UserApplication> rejectedApplication = [];
+
+        for (var application in applications.docs) {
+          if (application.data()['status'] <= 3 &&
+              application.data()['status'] != 0) {
+            pendingApplication
+                .add(UserApplication.fromJson(application.data()));
+          } else if (application.data()['status'] == -1) {
+            rejectedApplication
+                .add(UserApplication.fromJson(application.data()));
+          } else if (application.data()['status'] == 0) {
+            completedApplication
+                .add(UserApplication.fromJson(application.data()));
+          }
+        }
+        return Right(
+            [pendingApplication, completedApplication, rejectedApplication]);
       } else {
-        return const Left('Invalid designation');
+        return const Right([]);
       }
     } on FirebaseException catch (e) {
       message = e.toString();

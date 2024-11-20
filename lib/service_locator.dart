@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:vehicle_management_app/data/repositories/applications/application_repository_impl.dart';
 import 'package:vehicle_management_app/data/repositories/auth/auth_repository_impl.dart';
@@ -46,6 +47,7 @@ Future<void> initializeDependencies() async {
   // Authservices
   sl.registerSingleton<AuthFirebaseService>(AuthFirebaseServiceImpl());
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
+  sl.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
   sl.registerSingleton<SignupUseCase>(SignupUseCase());
   sl.registerSingleton<SigninUseCase>(SigninUseCase());
   sl.registerSingleton<GetUserUseCase>(GetUserUseCase());

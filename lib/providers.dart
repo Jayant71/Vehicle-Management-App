@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vehicle_management_app/presentation/cubit/currentlocation/currentlocation_cubit.dart';
 import 'package:vehicle_management_app/presentation/cubit/theme_cubit/theme_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/admin/cubit/driverlist_cubit.dart';
-import 'package:vehicle_management_app/presentation/pages/reviewapplication/cubit/applicationlist_cubit.dart';
+import 'package:vehicle_management_app/presentation/pages/applicationlist/cubit/applicationlist_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/vehicle/vehiclelistpage/cubit/vehiclelist_cubit.dart';
 

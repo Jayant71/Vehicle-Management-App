@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/cubit/navindex_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/cubit/time_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/homeview.dart';
-import 'package:vehicle_management_app/presentation/pages/reviewapplication/applicationlistpage.dart';
+import 'package:vehicle_management_app/presentation/pages/applicationlist/applicationlistpage.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
 
 class Homepage extends StatefulWidget {
@@ -19,15 +19,6 @@ class _HomepageState extends State<Homepage> {
   PageController pageController = PageController();
   int _currentIndx = 0;
   String? role_;
-
-  @override
-  void dispose() {
-    pageController.dispose();
-    context.read<NavindexCubit>().close();
-    context.read<TimeCubit>().close();
-    context.read<ProfileCubit>().close();
-    super.dispose();
-  }
 
   @override
   void initState() {

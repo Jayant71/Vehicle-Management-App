@@ -5,7 +5,7 @@ import 'package:vehicle_management_app/domain/usecases/auth/signout.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/userhome/adminhome.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/userhome/driverhome.dart';
 import 'package:vehicle_management_app/presentation/pages/homepage/ui/userhome/userhome.dart';
-import 'package:vehicle_management_app/presentation/pages/reviewapplication/cubit/applicationlist_cubit.dart';
+import 'package:vehicle_management_app/presentation/pages/applicationlist/cubit/applicationlist_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
 import 'package:vehicle_management_app/service_locator.dart';
 

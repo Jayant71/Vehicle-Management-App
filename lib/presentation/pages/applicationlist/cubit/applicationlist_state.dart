@@ -12,7 +12,7 @@ final class ApplicationlistInitial extends ApplicationlistState {}
 final class ApplicationlistLoading extends ApplicationlistState {}
 
 final class ApplicationlistLoaded extends ApplicationlistState {
-  final List<UserApplication> applications;
+  final List<List<UserApplication>> applications;
 
   const ApplicationlistLoaded(this.applications);
 
