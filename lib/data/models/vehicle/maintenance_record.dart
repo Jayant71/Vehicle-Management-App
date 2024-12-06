@@ -1,20 +1,22 @@
 class MaintenanceRecord {
   String maintenanceId;
-  String userId;
+  String driverId;
   String vehicleId;
   String date;
-  String? description;
-  // String billImgUrl;
+  String description = '';
+  List<dynamic> billImgUrl = [];
+  String comment = '';
+  int status = 2;
   String createdAt;
   String? updatedAt;
 
   MaintenanceRecord({
     required this.maintenanceId,
     required this.date,
-    required this.userId,
+    required this.driverId,
     required this.vehicleId,
     this.description = '',
-    // required this.billImgUrl,
+    required this.billImgUrl,
     required this.createdAt,
     this.updatedAt = ' ',
   });
@@ -22,11 +24,11 @@ class MaintenanceRecord {
   factory MaintenanceRecord.fromJson(Map<String, dynamic> json) {
     return MaintenanceRecord(
       maintenanceId: json['maintenanceId'],
-      userId: json['userId'],
+      driverId: json['userId'],
       vehicleId: json['vehicleId'],
       date: json['date'],
       description: json['description'],
-      // billImgUrl: json['billImgUrl'],
+      billImgUrl: json['billImgUrl'],
       createdAt: json['createdAt'],
     );
   }
@@ -34,11 +36,11 @@ class MaintenanceRecord {
   Map<String, dynamic> toJson() {
     return {
       'maintenanceId': maintenanceId,
-      'userId': userId,
+      'userId': driverId,
       'vehicleId': vehicleId,
       'date': date,
       'description': description,
-      // 'billImgUrl': billImgUrl,
+      'billImgUrl': billImgUrl,
       'createdAt': createdAt,
     };
   }

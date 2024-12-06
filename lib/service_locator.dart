@@ -18,8 +18,6 @@ import 'package:vehicle_management_app/domain/repositories/vehicle/vehicle.dart'
 import 'package:vehicle_management_app/domain/usecases/application/create_application_usecase.dart';
 import 'package:vehicle_management_app/domain/usecases/application/get_application_usecase.dart';
 import 'package:vehicle_management_app/domain/usecases/application/get_applications_usecase.dart';
-import 'package:vehicle_management_app/domain/usecases/application/get_branch_applications_usecase.dart';
-import 'package:vehicle_management_app/domain/usecases/application/get_self_applications_usecase.dart';
 import 'package:vehicle_management_app/domain/usecases/application/update_applications_usecase.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/sigin.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/signout.dart';
@@ -87,10 +85,6 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<CreateApplicationUsecase>(CreateApplicationUsecase());
   sl.registerSingleton<GetApplicationUsecase>(GetApplicationUsecase());
   sl.registerSingleton<GetApplicationsUsecase>(GetApplicationsUsecase());
-  sl.registerSingleton<GetBranchApplicationsUsecase>(
-      GetBranchApplicationsUsecase());
-  sl.registerSingleton<GetSelfApplicationsUsecase>(
-      GetSelfApplicationsUsecase());
 
   // Location services
   sl.registerSingleton<LocationServices>(LocationServices());

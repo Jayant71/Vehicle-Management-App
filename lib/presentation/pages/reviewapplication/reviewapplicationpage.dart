@@ -342,7 +342,7 @@ class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
                                 child: const Text('Cancel'),
                               ),
                               TextButton(
-                                onPressed: () async {
+                                onPressed: () {
                                   if (rejectionComment.text.isEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
@@ -363,18 +363,26 @@ class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
                                     },
                                   );
 
-                                  await sl<UpdateApplicationsUsecase>().call(
+                                  sl<UpdateApplicationsUsecase>().call(
                                     params: {
                                       'status': -1,
                                       'rejectionComment': rejectionComment.text,
                                     },
                                     id: widget.application.bookingId,
-                                  ).whenComplete(
-                                    () {
-                                      context.pop();
-                                      context.go('/home');
-                                    },
                                   );
+                                  context
+                                      .read<ApplicationlistCubit>()
+                                      .getApplications(false, 'allocator');
+                                  ScaffoldMessenger.of(context)
+                                      .clearSnackBars();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Vehicle and driver allocated'),
+                                      behavior: SnackBarBehavior.floating,
+                                    ),
+                                  );
+                                  context.go('/home');
                                 },
                                 child: const Text('Reject'),
                               ),
@@ -397,7 +405,7 @@ class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
               const SizedBox(width: 16),
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () async {
+                  onPressed: () {
                     showDialog(
                       context: context,
                       barrierDismissible: false,
@@ -414,7 +422,7 @@ class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
                               child: const Text('Cancel'),
                             ),
                             TextButton(
-                              onPressed: () async {
+                              onPressed: () {
                                 context.pop();
                                 showDialog(
                                   context: context,
@@ -428,10 +436,18 @@ class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
                                 sl<UpdateApplicationsUsecase>().call(
                                   params: {'status': 2},
                                   id: widget.application.bookingId,
-                                ).whenComplete(() {
-                                  context.pop();
-                                  context.go('/home');
-                                });
+                                );
+                                context
+                                    .read<ApplicationlistCubit>()
+                                    .getApplications(false, 'hod');
+                                ScaffoldMessenger.of(context).clearSnackBars();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Application approved'),
+                                    behavior: SnackBarBehavior.floating,
+                                  ),
+                                );
+                                context.go('/home');
                               },
                               child: const Text('Approve'),
                             ),
@@ -456,7 +472,9 @@ class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
           ),
         ),
       );
-    } else if (who == "allocator") {
+    } else if (who == "allocator" &&
+        widget.application.userId != sl<FirebaseAuth>().currentUser!.uid &&
+        widget.application.status == 2) {
       return SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -513,12 +531,19 @@ class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
                                       'rejectionComment': rejectionComment.text,
                                     },
                                     id: widget.application.bookingId,
-                                  ).whenComplete(
-                                    () {
-                                      context.pop();
-                                      context.go('/home');
-                                    },
                                   );
+                                  context
+                                      .read<ApplicationlistCubit>()
+                                      .getApplications(false, 'allocator');
+                                  ScaffoldMessenger.of(context)
+                                      .clearSnackBars();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Application rejected'),
+                                      behavior: SnackBarBehavior.floating,
+                                    ),
+                                  );
+                                  context.go('/home');
                                 },
                                 child: const Text('Reject'),
                               ),
@@ -599,10 +624,19 @@ class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
                                     'driverId': driverId.text.toLowerCase(),
                                   },
                                   id: widget.application.bookingId,
-                                ).whenComplete(() {
-                                  context.pop();
-                                  context.go('/home');
-                                });
+                                );
+                                context
+                                    .read<ApplicationlistCubit>()
+                                    .getApplications(false, 'allocator');
+                                ScaffoldMessenger.of(context).clearSnackBars();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                        Text('Vehicle and driver allocated'),
+                                    behavior: SnackBarBehavior.floating,
+                                  ),
+                                );
+                                context.go('/home');
                               },
                               child: const Text('Approve'),
                             ),

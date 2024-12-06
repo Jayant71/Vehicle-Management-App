@@ -44,8 +44,6 @@ abstract class FirestoreService {
   Future<Either> updateApplication(String id, Map<String, dynamic> fields);
   Future<Either> getApplications(bool self, String designation);
   Future<Either> getApplication(String id);
-  Future<Either> getSelfApplications(String userId, String status);
-  Future<Either> getBranchApplications(String branch, String status);
 
   // Feedback
   Future<Either> createFeedback(FeedbackModel feedbackModel);
@@ -208,7 +206,7 @@ class FirestoreServiceImpl implements FirestoreService {
     String message = '';
     try {
       var auth = FirebaseAuth.instance;
-      maintenanceModel.userId = auth.currentUser!.uid.toString();
+      maintenanceModel.driverId = auth.currentUser!.uid.toString();
       await FirebaseFirestore.instance
           .collection('maintenance')
           .doc(maintenanceModel.maintenanceId)
@@ -661,61 +659,6 @@ class FirestoreServiceImpl implements FirestoreService {
       } else {
         return const Right([]);
       }
-    } on FirebaseException catch (e) {
-      message = e.toString();
-      return Left(message);
-    } catch (e) {
-      message = e.toString();
-      return Left(message);
-    }
-  }
-
-  @override
-  Future<Either> getSelfApplications(String userId, String status) async {
-    String message = '';
-    dynamic applications;
-    try {
-      if (status == "accepted") {
-        applications = await FirebaseFirestore.instance
-            .collection('user_applications')
-            .where('userId', isEqualTo: userId)
-            .get();
-      } else {
-        applications = await FirebaseFirestore.instance
-            .collection('user_applications')
-            .where('userId', isEqualTo: userId)
-            .where('accepted', isEqualTo: status)
-            .get();
-      }
-      List<UserApplication> applicationList = [];
-      for (var application in applications.docs) {
-        applicationList.add(UserApplication.fromJson(application.data()));
-      }
-      return Right(applicationList);
-    } on FirebaseException catch (e) {
-      message = e.toString();
-      return Left(message);
-    } catch (e) {
-      message = e.toString();
-      return Left(message);
-    }
-  }
-
-  @override
-  Future<Either> getBranchApplications(String branch, String status) async {
-    String message = '';
-    dynamic applications;
-    try {
-      applications = FirebaseFirestore.instance
-          .collection('user_applications')
-          .where('branch', isEqualTo: branch)
-          .where('status', isEqualTo: status)
-          .get();
-      List<UserApplication> applicationList = [];
-      for (var application in applications.docs) {
-        applicationList.add(UserApplication.fromJson(application.data()));
-      }
-      return Right(applicationList);
     } on FirebaseException catch (e) {
       message = e.toString();
       return Left(message);

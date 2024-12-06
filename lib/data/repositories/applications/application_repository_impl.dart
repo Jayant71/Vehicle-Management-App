@@ -21,16 +21,6 @@ class ApplicationRepositoryImpl extends ApplicationRepository {
   }
 
   @override
-  Future<Either> getBranchApplications(String branch, String status) {
-    return sl<FirestoreService>().getBranchApplications(branch, status);
-  }
-
-  @override
-  Future<Either> getSelfApplications(String userId, String status) {
-    return sl<FirestoreService>().getSelfApplications(userId, status);
-  }
-
-  @override
   Future<Either> updateApplication(String id, Map<String, dynamic> fields) {
     return sl<FirestoreService>().updateApplication(id, fields);
   }

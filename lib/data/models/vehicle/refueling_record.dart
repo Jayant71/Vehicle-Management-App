@@ -4,8 +4,11 @@ class RefuelingRecord {
   String vehicleId;
   String date;
   double amount;
-  // String billImgUrl;
+  List<dynamic> billImgUrl = [];
+  int status = 2;
   String comment = '';
+  String createdAt;
+  String? updatedAt;
 
   RefuelingRecord({
     required this.refuelingId,
@@ -13,8 +16,10 @@ class RefuelingRecord {
     required this.userId,
     required this.vehicleId,
     required this.amount,
-    // required this.billImgUrl,
+    required this.billImgUrl,
     this.comment = '',
+    required this.createdAt,
+    this.updatedAt = ' ',
   });
 
   factory RefuelingRecord.fromJson(Map<String, dynamic> json) {
@@ -24,8 +29,10 @@ class RefuelingRecord {
       vehicleId: json['vehicleId'],
       date: json['date'],
       amount: json['amount'],
-      // billImgUrl: json['billImgUrl'],
+      billImgUrl: json['billImgUrl'],
       comment: json['comment'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
     );
   }
 
@@ -36,8 +43,10 @@ class RefuelingRecord {
       'vehicleId': vehicleId,
       'date': date,
       'amount': amount,
-      // 'billImgUrl': billImgUrl,
+      'billImgUrl': billImgUrl,
       'comment': comment,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
     };
   }
 }
