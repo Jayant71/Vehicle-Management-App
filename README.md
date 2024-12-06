@@ -1,16 +1,38 @@
-# vehicle_management_app
+# Vehicle Management App
 
-A new Flutter project.
+A vehicle management android application built using Flutter. This project provides a comprehensive solution for managing vehicle data, booking, services, and maintenance schedules.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- **User Hierarchy**: Admin, Driver and User each have 3 different homepages for reflecting their work.
+- **Authentications**: User authentication and navigation to homepage based on their role.
+- **Vehicle Booking**: Users can raise a booking request for a vehicle by filling a form.
+- **Vehicle Data Management**: Add, edit, and track vehicle details.
+- **Refueling and maintenance**: Drivers can raise a refueling or maintenance request by providing necessary details.
 
-A few resources to get you started if this is your first Flutter project:
+## Technologies Used
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Flutter**: For Android application development.
+- **Firebase**: Backend support for data storage and user authentication.
+- **Google Maps**: To ease the booking process for users by picking a location or searching by keyword on map.
+- **REST**: For using REST Api services (e.g. google directions api for searching route between two places)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Prerequisites
+
+- Flutter SDK
+- Dart Programming Language
+
+## Note
+
+You will need to make the following files -
+
+- `.env` contains PLACES_API_KEY=YOUR_GOOGLEMAPS_API_KEY
+- `android/secrets.properties` contains MAPS_API_KEY=YOUR_GOOGLEMAPS_API_KEY
+
+## Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+## License
+
+This project is licensed under the [GNU GENERAL PUBLIC LICENSE](LICENSE).
