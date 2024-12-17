@@ -56,17 +56,15 @@ class _DriverHomeState extends State<DriverHome>
                 itemCount: state.applications[0].length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(state.applications[0][index].date),
-                    subtitle:
-                        Text(state.applications[0][index].destinationName),
-                    onTap: () {
-                      GoRouter.of(context).go(
-                        '/home/reviewapplication?who=${profileCubit.role}',
-                        extra: state.applications[0][index],
-                      );
-                    },
-                  );
+                  onTap() {
+                    GoRouter.of(context).go(
+                      '/home/reviewapplication?who=${profileCubit.role}',
+                      extra: state.applications[0][index],
+                    );
+                  }
+
+                  return customListTile(
+                      context, state.applications[0][index], onTap);
                 },
               );
             } else if (state is ApplicationlistLoading) {
@@ -87,17 +85,15 @@ class _DriverHomeState extends State<DriverHome>
                 itemCount: state.applications[1].length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(state.applications[1][index].date),
-                    subtitle:
-                        Text(state.applications[1][index].destinationName),
-                    onTap: () {
-                      GoRouter.of(context).go(
-                        '/home/reviewapplication?who=${profileCubit.role}',
-                        extra: state.applications[1][index],
-                      );
-                    },
-                  );
+                  onTap() {
+                    GoRouter.of(context).go(
+                      '/home/reviewapplication?who=${profileCubit.role}',
+                      extra: state.applications[1][index],
+                    );
+                  }
+
+                  return customListTile(
+                      context, state.applications[1][index], onTap);
                 },
               );
             } else if (state is ApplicationlistLoading) {
@@ -123,4 +119,33 @@ class _DriverHomeState extends State<DriverHome>
   }
 
   Size get preferredSize => const Size.fromHeight(55.0);
+}
+
+Widget customListTile(
+    BuildContext context, dynamic application, GestureTapCallback onTap) {
+  return ListTile(
+    title: Text(
+      application.purpose,
+      style: const TextStyle(fontWeight: FontWeight.bold),
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+    ),
+    subtitle: Text(application.destinationName,
+        maxLines: 2, overflow: TextOverflow.ellipsis),
+    onTap: onTap,
+    trailing: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          "Date: ${application.date}",
+          style: const TextStyle(fontSize: 15),
+        ),
+        Text(
+          "Time: ${application.time}",
+          style: const TextStyle(fontSize: 15),
+        ),
+      ],
+    ),
+  );
 }

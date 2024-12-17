@@ -398,11 +398,13 @@ class FirestoreServiceImpl implements FirestoreService {
   Future<Either> getDriver(String id) async {
     String message = '';
     try {
-      var id_ = FirebaseAuth.instance.currentUser!.email
-          .toString()
-          .split('@')[0]
-          .split('.')[1]
-          .toUpperCase();
+      var id_ = (id.isEmpty)
+          ? FirebaseAuth.instance.currentUser!.email
+              .toString()
+              .split('@')[0]
+              .split('.')[1]
+              .toUpperCase()
+          : id.toUpperCase();
       var driver =
           await FirebaseFirestore.instance.collection('drivers').doc(id_).get();
       DriverModel driverModel = DriverModel.fromJson(driver.data()!);
@@ -530,27 +532,27 @@ class FirestoreServiceImpl implements FirestoreService {
         ]);
       } else if (designation == 'hod') {
         final user = await getUser('');
-        var department = '';
+        var uid = '';
         user.fold((l) => Logger().e(l), (r) {
-          department = r.department;
+          uid = r.uid;
         });
         var applications = await FirebaseFirestore.instance
             .collection('user_applications')
             .where(Filter(
-              'department',
-              isEqualTo: department,
+              'userId',
+              isEqualTo: uid,
             ))
-            .where(Filter(
-              'status',
-              isLessThanOrEqualTo: 3,
-            ))
+            // .where(Filter(
+            //   'status',
+            //   isLessThanOrEqualTo: 3,
+            // ))
             .get();
 
         List<UserApplication> pendingApplications = [];
         List<UserApplication> approvedApplications = [];
         List<UserApplication> rejectedApplications = [];
         for (var application in applications.docs) {
-          if (application.data()['status'] == 3) {
+          if (application.data()['status'] == 2) {
             if (self) {
               if (application.data()['userId'] ==
                   FirebaseAuth.instance.currentUser!.uid) {
@@ -598,7 +600,7 @@ class FirestoreServiceImpl implements FirestoreService {
         List<UserApplication> rejectedApplications = [];
 
         for (var application in applications.docs) {
-          if (application.data()['status'] == 2) {
+          if (application.data()['status'] == 3) {
             pendingApplications
                 .add(UserApplication.fromJson(application.data()));
           } else if (application.data()['status'] == -1) {

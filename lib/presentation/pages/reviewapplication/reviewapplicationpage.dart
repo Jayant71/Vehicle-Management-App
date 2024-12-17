@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:vehicle_management_app/common/utils/picklocation.dart';
+import 'package:logger/logger.dart';
+import 'package:vehicle_management_app/data/models/user/driver.dart';
+import 'package:vehicle_management_app/data/models/user/user.dart';
 import 'package:vehicle_management_app/data/models/user/user_application.dart';
+import 'package:vehicle_management_app/data/sources/firebase_firestore_services.dart';
 import 'package:vehicle_management_app/data/sources/location_services.dart';
 import 'package:vehicle_management_app/domain/usecases/application/create_application_usecase.dart';
 import 'package:vehicle_management_app/domain/usecases/application/update_applications_usecase.dart';
+import 'package:vehicle_management_app/domain/usecases/user/get_driver_usecase.dart';
 import 'package:vehicle_management_app/presentation/pages/admin/cubit/driverlist_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/applicationlist/cubit/applicationlist_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/vehicle/vehiclelistpage/cubit/vehiclelist_cubit.dart';
@@ -30,12 +34,62 @@ class ReviewApplicationPage extends StatefulWidget {
 
 class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
   dynamic directions;
+  UserModel? userData;
+  DriverModel? driverData;
 
   @override
   void initState() {
     super.initState();
-
+    getUser();
+    getdriver();
     getDirections();
+  }
+
+  getUser() async {
+    final user =
+        await sl<FirestoreService>().getUser(widget.application.userId);
+    user.fold(
+      (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error.message),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      },
+      (data) {
+        setState(() {
+          userData = data;
+        });
+      },
+    );
+  }
+
+  getdriver() async {
+    if (widget.application.driverId == '') {
+      return;
+    }
+
+    final driver =
+        await sl<GetDriverUseCase>().call(params: widget.application.driverId);
+    driver.fold(
+      (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        setState(() {
+          driverData = error;
+        });
+      },
+      (data) {
+        setState(() {
+          driverData = data;
+        });
+      },
+    );
   }
 
   getDirections() async {
@@ -159,6 +213,14 @@ class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            _buildInfoRow(Icons.person, 'Name',
+                                (userData != null) ? userData!.fullName! : ''),
+                            _buildInfoRow(
+                                Icons.phone,
+                                'Phone Number',
+                                (userData != null)
+                                    ? userData!.contactNumber!
+                                    : ''),
                             _buildInfoRow(Icons.location_on, 'Source',
                                 widget.application.sourceName),
                             _buildInfoRow(Icons.location_on, 'Destination',
@@ -185,6 +247,22 @@ class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
                                 widget.application.roundTrip == 'true'
                                     ? 'Yes'
                                     : 'No'),
+                            _buildInfoRow(
+                                Icons.person,
+                                'Driver Name:',
+                                driverData != null
+                                    ? driverData!.name.isEmpty
+                                        ? 'Not assigned'
+                                        : driverData!.name
+                                    : 'Not assigned'),
+                            _buildInfoRow(
+                                Icons.phone,
+                                'Driver Phone:',
+                                driverData != null
+                                    ? driverData!.contact.isEmpty
+                                        ? 'Not assigned'
+                                        : driverData!.contact
+                                    : 'Not assigned'),
                           ],
                         ),
                       ),
@@ -310,171 +388,173 @@ class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
           ),
         ),
       );
-    } else if (who == "hod" &&
+    }
+    // else if (who == "hod" &&
+    //     widget.application.userId != sl<FirebaseAuth>().currentUser!.uid &&
+    //     widget.application.status == 3) {
+    //   return SafeArea(
+    //     child: Padding(
+    //       padding: const EdgeInsets.all(16.0),
+    //       child: Row(
+    //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //         children: [
+    //           Expanded(
+    //             child: ElevatedButton.icon(
+    //               onPressed: () {
+    //                 final rejectionComment = TextEditingController();
+    //                 showDialog(
+    //                     context: context,
+    //                     builder: (_) {
+    //                       return AlertDialog(
+    //                         title: const Text('Rejection Comment'),
+    //                         content: TextField(
+    //                           controller: rejectionComment,
+    //                           decoration: const InputDecoration(
+    //                             hintText: 'Enter rejection comment',
+    //                           ),
+    //                         ),
+    //                         actions: [
+    //                           TextButton(
+    //                             onPressed: () {
+    //                               context.pop();
+    //                             },
+    //                             child: const Text('Cancel'),
+    //                           ),
+    //                           TextButton(
+    //                             onPressed: () {
+    //                               if (rejectionComment.text.isEmpty) {
+    //                                 ScaffoldMessenger.of(context).showSnackBar(
+    //                                   const SnackBar(
+    //                                     content: Text('Please enter a comment'),
+    //                                     behavior: SnackBarBehavior.floating,
+    //                                   ),
+    //                                 );
+    //                                 return;
+    //                               }
+    //                               context.pop();
+    //                               showDialog(
+    //                                 context: context,
+    //                                 barrierDismissible: false,
+    //                                 builder: (BuildContext context) {
+    //                                   return const Center(
+    //                                     child: CircularProgressIndicator(),
+    //                                   );
+    //                                 },
+    //                               );
+
+    //                               sl<UpdateApplicationsUsecase>().call(
+    //                                 params: {
+    //                                   'status': -1,
+    //                                   'rejectionComment': rejectionComment.text,
+    //                                 },
+    //                                 id: widget.application.bookingId,
+    //                               );
+    //                               context
+    //                                   .read<ApplicationlistCubit>()
+    //                                   .getApplications(false, 'allocator');
+    //                               ScaffoldMessenger.of(context)
+    //                                   .clearSnackBars();
+    //                               ScaffoldMessenger.of(context).showSnackBar(
+    //                                 const SnackBar(
+    //                                   content:
+    //                                       Text('Vehicle and driver allocated'),
+    //                                   behavior: SnackBarBehavior.floating,
+    //                                 ),
+    //                               );
+    //                               context.go('/home');
+    //                             },
+    //                             child: const Text('Reject'),
+    //                           ),
+    //                         ],
+    //                       );
+    //                     });
+    //               },
+    //               icon: const Icon(Icons.remove, color: Colors.white),
+    //               label: const Text('Reject',
+    //                   style: TextStyle(color: Colors.white)),
+    //               style: ElevatedButton.styleFrom(
+    //                 backgroundColor: Colors.blue,
+    //                 padding: const EdgeInsets.symmetric(vertical: 12),
+    //                 shape: RoundedRectangleBorder(
+    //                   borderRadius: BorderRadius.circular(8),
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //           const SizedBox(width: 16),
+    //           Expanded(
+    //             child: ElevatedButton.icon(
+    //               onPressed: () {
+    //                 showDialog(
+    //                   context: context,
+    //                   barrierDismissible: false,
+    //                   builder: (BuildContext context) {
+    //                     return AlertDialog(
+    //                       title: const Text('Approve Application'),
+    //                       content: const Text(
+    //                           'Are you sure you want to approve this application?'),
+    //                       actions: [
+    //                         TextButton(
+    //                           onPressed: () {
+    //                             context.pop();
+    //                           },
+    //                           child: const Text('Cancel'),
+    //                         ),
+    //                         TextButton(
+    //                           onPressed: () {
+    //                             context.pop();
+    //                             showDialog(
+    //                               context: context,
+    //                               barrierDismissible: false,
+    //                               builder: (BuildContext context) {
+    //                                 return const Center(
+    //                                   child: CircularProgressIndicator(),
+    //                                 );
+    //                               },
+    //                             );
+    //                             sl<UpdateApplicationsUsecase>().call(
+    //                               params: {'status': 2},
+    //                               id: widget.application.bookingId,
+    //                             );
+    //                             context
+    //                                 .read<ApplicationlistCubit>()
+    //                                 .getApplications(false, 'hod');
+    //                             ScaffoldMessenger.of(context).clearSnackBars();
+    //                             ScaffoldMessenger.of(context).showSnackBar(
+    //                               const SnackBar(
+    //                                 content: Text('Application approved'),
+    //                                 behavior: SnackBarBehavior.floating,
+    //                               ),
+    //                             );
+    //                             context.go('/home');
+    //                           },
+    //                           child: const Text('Approve'),
+    //                         ),
+    //                       ],
+    //                     );
+    //                   },
+    //                 );
+    //               },
+    //               icon: const Icon(Icons.send, color: Colors.white),
+    //               label: const Text('Approve',
+    //                   style: TextStyle(color: Colors.white)),
+    //               style: ElevatedButton.styleFrom(
+    //                 backgroundColor: Colors.green,
+    //                 padding: const EdgeInsets.symmetric(vertical: 12),
+    //                 shape: RoundedRectangleBorder(
+    //                   borderRadius: BorderRadius.circular(8),
+    //                 ),
+    //               ),
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   );
+    // }
+    else if (who == "allocator" &&
         widget.application.userId != sl<FirebaseAuth>().currentUser!.uid &&
         widget.application.status == 3) {
-      return SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    final rejectionComment = TextEditingController();
-                    showDialog(
-                        context: context,
-                        builder: (_) {
-                          return AlertDialog(
-                            title: const Text('Rejection Comment'),
-                            content: TextField(
-                              controller: rejectionComment,
-                              decoration: const InputDecoration(
-                                hintText: 'Enter rejection comment',
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  context.pop();
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  if (rejectionComment.text.isEmpty) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('Please enter a comment'),
-                                        behavior: SnackBarBehavior.floating,
-                                      ),
-                                    );
-                                    return;
-                                  }
-                                  context.pop();
-                                  showDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    builder: (BuildContext context) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    },
-                                  );
-
-                                  sl<UpdateApplicationsUsecase>().call(
-                                    params: {
-                                      'status': -1,
-                                      'rejectionComment': rejectionComment.text,
-                                    },
-                                    id: widget.application.bookingId,
-                                  );
-                                  context
-                                      .read<ApplicationlistCubit>()
-                                      .getApplications(false, 'allocator');
-                                  ScaffoldMessenger.of(context)
-                                      .clearSnackBars();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content:
-                                          Text('Vehicle and driver allocated'),
-                                      behavior: SnackBarBehavior.floating,
-                                    ),
-                                  );
-                                  context.go('/home');
-                                },
-                                child: const Text('Reject'),
-                              ),
-                            ],
-                          );
-                        });
-                  },
-                  icon: const Icon(Icons.remove, color: Colors.white),
-                  label: const Text('Reject',
-                      style: TextStyle(color: Colors.white)),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Approve Application'),
-                          content: const Text(
-                              'Are you sure you want to approve this application?'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                context.pop();
-                              },
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                context.pop();
-                                showDialog(
-                                  context: context,
-                                  barrierDismissible: false,
-                                  builder: (BuildContext context) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  },
-                                );
-                                sl<UpdateApplicationsUsecase>().call(
-                                  params: {'status': 2},
-                                  id: widget.application.bookingId,
-                                );
-                                context
-                                    .read<ApplicationlistCubit>()
-                                    .getApplications(false, 'hod');
-                                ScaffoldMessenger.of(context).clearSnackBars();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Application approved'),
-                                    behavior: SnackBarBehavior.floating,
-                                  ),
-                                );
-                                context.go('/home');
-                              },
-                              child: const Text('Approve'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  icon: const Icon(Icons.send, color: Colors.white),
-                  label: const Text('Approve',
-                      style: TextStyle(color: Colors.white)),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    } else if (who == "allocator" &&
-        widget.application.userId != sl<FirebaseAuth>().currentUser!.uid &&
-        widget.application.status == 2) {
       return SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
