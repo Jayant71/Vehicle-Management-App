@@ -14,7 +14,8 @@ final List<VehicleModel> vehicleList = [
     user: 'HVC',
     remark: '',
     driverId: '',
-    imageUrl: '',
+    imageUrl:
+        'https://imgd.aeplcdn.com/642x361/n/cw/ec/51540/toyota-innova-crysta-left-front-three-quarter0.jpeg?wm=1&q=80',
   ),
   VehicleModel(
     vehicleId: '002',
@@ -29,7 +30,8 @@ final List<VehicleModel> vehicleList = [
     user: 'Pro VC',
     remark: '',
     driverId: '',
-    imageUrl: '',
+    imageUrl:
+        'https://5.imimg.com/data5/AA/RB/MY-69291249/toyota-etios-28per-day-300kms-29-1000x1000.jpg',
   ),
   VehicleModel(
     vehicleId: '003',
@@ -44,7 +46,7 @@ final List<VehicleModel> vehicleList = [
     user: 'Registrar',
     remark: '',
     driverId: '',
-    imageUrl: '',
+    imageUrl: 'https://imgd.aeplcdn.com/370x208/n/qcu6isa_1467597.jpg?q=80',
   ),
   VehicleModel(
     vehicleId: '004',
@@ -59,7 +61,7 @@ final List<VehicleModel> vehicleList = [
     user: '',
     remark: '',
     driverId: '',
-    imageUrl: '',
+    imageUrl: 'https://imgd.aeplcdn.com/370x208/n/qcu6isa_1467597.jpg?q=80',
   ),
   VehicleModel(
     vehicleId: '005',
@@ -74,7 +76,8 @@ final List<VehicleModel> vehicleList = [
     user: '',
     remark: '',
     driverId: '',
-    imageUrl: '',
+    imageUrl:
+        'https://stimg.cardekho.com/images/car-images/930x620/Maruti/Ertiga/8711/1650016330874/224_white_fffff.jpg?tr=w-898',
   ),
   VehicleModel(
     vehicleId: '006',
@@ -89,7 +92,8 @@ final List<VehicleModel> vehicleList = [
     user: '',
     remark: '',
     driverId: '',
-    imageUrl: '',
+    imageUrl:
+        'https://stimg.cardekho.com/images/car-images/930x620/Maruti/Ertiga/8711/1650016330874/224_white_fffff.jpg?tr=w-898',
   ),
   VehicleModel(
       vehicleId: '007',
@@ -103,7 +107,7 @@ final List<VehicleModel> vehicleList = [
       user: '',
       owner: 'CSVTU',
       driverId: '',
-      imageUrl: '',
+      imageUrl: 'https://imgd.aeplcdn.com/664x374/n/o55akva_1604753.jpg?q=80',
       year: null),
   VehicleModel(
     vehicleId: '008',
@@ -117,7 +121,7 @@ final List<VehicleModel> vehicleList = [
     user: '',
     owner: 'CSVTU',
     driverId: '',
-    imageUrl: '',
+    imageUrl: 'https://imgd.aeplcdn.com/664x374/n/dft0asa_1458925.jpg?q=80',
     year: null,
   ),
   VehicleModel(
@@ -133,7 +137,7 @@ final List<VehicleModel> vehicleList = [
     owner: 'CSVTU',
     user: '',
     driverId: '',
-    imageUrl: '',
+    imageUrl: 'https://imgd.aeplcdn.com/664x374/n/dft0asa_1458925.jpg?q=80',
     year: null,
   ),
   VehicleModel(
@@ -147,7 +151,8 @@ final List<VehicleModel> vehicleList = [
     user: '',
     owner: 'CSVTU',
     driverId: '',
-    imageUrl: '',
+    imageUrl:
+        'https://pickup.tatamotors.com/images/tata-pickup-trucks/features/tata-207/tata-207-pickup-truck-features.png',
     remark: '',
     year: null,
   ),
@@ -162,7 +167,7 @@ final List<VehicleModel> vehicleList = [
     remark: '4wheels, brake',
     owner: 'CSVTU',
     driverId: '',
-    imageUrl: '',
+    imageUrl: 'https://imgd.aeplcdn.com/664x374/n/o55akva_1604753.jpg?q=80',
     year: null,
   ),
   VehicleModel(
@@ -177,7 +182,7 @@ final List<VehicleModel> vehicleList = [
     owner: 'CSVTU',
     user: '',
     driverId: '',
-    imageUrl: '',
+    imageUrl: 'https://imgd.aeplcdn.com/664x374/n/o55akva_1604753.jpg?q=80',
     year: null,
   ),
   VehicleModel(
@@ -192,7 +197,7 @@ final List<VehicleModel> vehicleList = [
     remark: 'Full servicing, 4wheels completed 80000km',
     owner: 'CSVTU',
     driverId: '',
-    imageUrl: '',
+    imageUrl: 'https://imgd.aeplcdn.com/664x374/n/o55akva_1604753.jpg?q=80',
     year: null,
   ),
   VehicleModel(
@@ -207,7 +212,7 @@ final List<VehicleModel> vehicleList = [
     remark: 'Oil total, 4wheels completed 80000km',
     owner: 'CSVTU',
     driverId: '',
-    imageUrl: '',
+    imageUrl: 'https://imgd.aeplcdn.com/664x374/n/o55akva_1604753.jpg?q=80',
     year: null,
   ),
   VehicleModel(
@@ -222,7 +227,7 @@ final List<VehicleModel> vehicleList = [
     remark: '2wheels',
     owner: 'CSVTU',
     driverId: '',
-    imageUrl: '',
+    imageUrl: 'https://imgd.aeplcdn.com/664x374/n/o55akva_1604753.jpg?q=80',
     year: null,
   ),
   VehicleModel(
@@ -236,7 +241,8 @@ final List<VehicleModel> vehicleList = [
     fuelType: 'Electric',
     owner: 'CSVTU',
     driverId: '',
-    imageUrl: '',
+    imageUrl:
+        'https://truckcdn.cardekho.com/in/mahindra/treo/mahindra-treo-67242.jpg',
     remark: '',
     year: null,
   ),
@@ -251,7 +257,7 @@ final List<VehicleModel> vehicleList = [
     fuelType: 'Petrol',
     owner: 'CSVTU',
     driverId: '',
-    imageUrl: '',
+    imageUrl: 'https://imgd.aeplcdn.com/664x374/n/bohdicb_1710129.jpg?q=80',
     remark: '',
     year: null,
   ),
@@ -265,7 +271,8 @@ final List<VehicleModel> vehicleList = [
     fuelType: 'Petrol',
     owner: 'CSVTU',
     driverId: '',
-    imageUrl: '',
+    imageUrl:
+        'https://stimg.cardekho.com/images/carexteriorimages/630x420/Tata/Tata-Indigo/929/1544533656403/front-left-side-47.jpg',
     user: '',
     remark: '',
     year: null,
@@ -280,7 +287,7 @@ final List<VehicleModel> vehicleList = [
     fuelType: 'Petrol',
     owner: 'CSVTU',
     driverId: '',
-    imageUrl: '',
+    imageUrl: 'https://imgd-ct.aeplcdn.com/1056x660/n/nj4fmsa_1472636.jpg?q=80',
     user: '',
     remark: '',
     year: null,
@@ -295,7 +302,7 @@ final List<VehicleModel> vehicleList = [
     fuelType: 'Diesel',
     owner: 'CSVTU',
     driverId: '',
-    imageUrl: '',
+    imageUrl: 'https://imgd.aeplcdn.com/370x208/n/fvsdora_1420344.jpg?q=80',
     user: '',
     remark: '',
     year: null,
@@ -310,7 +317,7 @@ final List<VehicleModel> vehicleList = [
     fuelType: 'Diesel',
     owner: 'CSVTU',
     driverId: '',
-    imageUrl: '',
+    imageUrl: 'https://imgd.aeplcdn.com/664x374/n/dft0asa_1458925.jpg?q=80',
     user: '',
     remark: '',
     year: null,
@@ -327,7 +334,7 @@ final List<VehicleModel> vehicleList = [
     driverId: '',
     remark: '',
     year: null,
-    imageUrl: '',
+    imageUrl: 'https://imgd.aeplcdn.com/664x374/n/dft0asa_1458925.jpg?q=80',
     user: '',
   ),
   VehicleModel(
@@ -342,7 +349,8 @@ final List<VehicleModel> vehicleList = [
     driverId: '',
     remark: "",
     year: null,
-    imageUrl: '',
+    imageUrl:
+        'https://offers.caimahindra.com/uploads/product/maxx-pik-up-white.png',
     user: '',
   ),
 ];

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:vehicle_management_app/domain/usecases/auth/signout.dart';
@@ -31,8 +32,10 @@ class _HomeViewState extends State<HomeView>
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
+        extendBodyBehindAppBar:
+            widget.role != 'driver' || widget.role != 'admin' ? true : false,
         drawer: _drawer(context, widget.role),
-        appBar: _appbar(),
+        appBar: _appbar(context),
         body: widget.role == 'driver'
             ? const DriverHome()
             : widget.role == 'admin'
@@ -40,18 +43,28 @@ class _HomeViewState extends State<HomeView>
                 : const UserHome());
   }
 
-  _appbar() {
+  _appbar(context) {
     return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      elevation: 5,
+      backgroundColor: widget.role == "admin"
+          ? Theme.of(context).colorScheme.primary
+          : Colors.transparent,
+      elevation: 0,
       centerTitle: true,
       automaticallyImplyLeading: false,
       leading: Builder(
         builder: (BuildContext context) {
           return IconButton(
-            icon: Icon(
-              Icons.menu,
-              color: Theme.of(context).colorScheme.onPrimary,
+            icon: Container(
+              decoration: BoxDecoration(
+                color: Colors.white.withAlpha(170),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.menu,
+                  color: Colors.black,
+                ),
+              ),
             ),
             onPressed: () {
               Scaffold.of(context).openDrawer();
@@ -64,6 +77,7 @@ class _HomeViewState extends State<HomeView>
 
   _drawer(BuildContext context, String role) {
     return Drawer(
+      width: MediaQuery.sizeOf(context).width * 0.7,
       child: ListView(
         children: [
           DrawerHeader(
@@ -74,6 +88,11 @@ class _HomeViewState extends State<HomeView>
                 children: [
                   const CircleAvatar(
                     radius: 50,
+                    backgroundColor: Colors.grey,
+                    child: Icon(
+                      Icons.person,
+                      size: 70,
+                    ),
                     // backgroundImage: NetworkImage(
                     //     'https://via.placeholder.com/150?text=${state?.fullName}'),
                   ),

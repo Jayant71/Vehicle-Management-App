@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -126,13 +127,45 @@ class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CommonAppBar(
-        title: 'Preview Application',
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.white.withAlpha(120),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: const Text('Review Application',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        ),
+        centerTitle: true,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        backgroundColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        leading: IconButton(
+          icon: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white.withAlpha(120),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                ),
+              )),
+          onPressed: () {
+            context.go('/home');
+          },
+        ),
       ),
       body: Column(
         children: [
           SizedBox(
-            height: 200,
+            height: MediaQuery.of(context).size.height * 0.5,
             child: directions == null
                 ? const Center(child: CircularProgressIndicator())
                 : GoogleMap(
@@ -201,12 +234,18 @@ class _ReviewApplicationPageState extends State<ReviewApplicationPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Card(
-                      elevation: 0,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        side: const BorderSide(color: Colors.grey, width: 0.5),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),

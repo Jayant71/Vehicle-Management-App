@@ -30,8 +30,8 @@ class VehicleEntity {
   final String? owner;
   final String? user;
   final String? remark; // Optional remark field
-  final String driverId;
-  final String imageUrl;
+  final String? driverId;
+  final String? imageUrl;
 
   VehicleEntity({
     required this.vehicleId,

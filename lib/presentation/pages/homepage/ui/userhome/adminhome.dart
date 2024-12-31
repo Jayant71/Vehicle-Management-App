@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vehicle_management_app/presentation/pages/admin/add_driver.dart';
-import 'package:vehicle_management_app/presentation/pages/admin/cubit/driverlist_cubit.dart';
+import 'package:vehicle_management_app/presentation/pages/admin/add_vehicle.dart';
 import 'package:vehicle_management_app/presentation/pages/admin/driver_list.dart';
+import 'package:vehicle_management_app/presentation/pages/vehicle/vehiclelistpage/vehiclelistpage.dart';
 
 class AdminHome extends StatelessWidget {
   AdminHome({super.key});
@@ -11,10 +12,24 @@ class AdminHome extends StatelessWidget {
       'title': 'Vehicle Management',
       'icon': Icons.car_rental,
       'actions': [
-        {'icon': Icons.add, 'label': 'Add Vehicle', 'onPressed': () {}},
+        {
+          'icon': Icons.add,
+          'label': 'Add Vehicle',
+          'onPressed': (context) {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const AddVehicle()));
+          }
+        },
         {'icon': Icons.remove, 'label': 'Remove Vehicle', 'onPressed': () {}},
         {'icon': Icons.update, 'label': 'Update Vehicle', 'onPressed': () {}},
-        {'icon': Icons.list, 'label': 'View Vehicles', 'onPressed': () {}},
+        {
+          'icon': Icons.list,
+          'label': 'View Vehicles',
+          'onPressed': (context) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const VehicleListPage()));
+          }
+        },
       ],
     },
     {
@@ -154,12 +169,6 @@ class AdminHome extends StatelessWidget {
                       child: ElevatedButton.icon(
                         onPressed: () {
                           action['onPressed'](context);
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Action for ${action['label']}'),
-                            ),
-                          );
                         },
                         icon: Icon(action['icon']),
                         label: Text(action['label']),

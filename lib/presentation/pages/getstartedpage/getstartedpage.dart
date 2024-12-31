@@ -1,11 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:vehicle_management_app/core/config/assets/app_images.dart';
-import 'package:vehicle_management_app/router.dart';
-import 'package:vehicle_management_app/presentation/pages/auth/signinpage/signinpage.dart';
 import 'package:vehicle_management_app/presentation/widgets/getstartedlogo.dart';
 
 class GetStartedPage extends StatefulWidget {
@@ -32,6 +31,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
       body: Stack(
         children: [
@@ -86,7 +86,10 @@ class _GetStartedPageState extends State<GetStartedPage> {
                   foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
-                icon: const Icon(Icons.arrow_forward),
+                icon: const Icon(
+                  Icons.arrow_forward,
+                  color: Colors.white,
+                ),
                 iconAlignment: IconAlignment.end,
                 onPressed: () {
                   context.go('/getstarted/login');

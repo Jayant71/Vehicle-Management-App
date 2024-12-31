@@ -15,6 +15,7 @@ class AuthAppButton extends StatelessWidget {
       onPressed: onPressed,
       icon: const Icon(
         Icons.arrow_forward,
+        color: Colors.white,
         size: 20,
       ),
       iconAlignment: IconAlignment.end,

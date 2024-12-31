@@ -52,7 +52,11 @@ class ProfileScreenPage extends StatelessWidget {
             backgroundColor: Colors.white,
             child: CircleAvatar(
               radius: 75,
-              backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+              backgroundColor: Colors.grey,
+              child: Icon(
+                Icons.person,
+                size: 100,
+              ),
             ),
           ),
           Text(

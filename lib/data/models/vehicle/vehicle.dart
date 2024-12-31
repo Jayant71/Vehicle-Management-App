@@ -12,8 +12,8 @@ class VehicleModel {
   String? owner = "CSVTU";
   String? user = "";
   String? remark = "";
-  final String driverId;
-  String imageUrl = "";
+  String? driverId = "";
+  String? imageUrl = "";
 
   VehicleModel({
     required this.vehicleId,
@@ -27,8 +27,8 @@ class VehicleModel {
     this.owner,
     this.user,
     this.remark,
-    required this.driverId,
-    required this.imageUrl,
+    this.driverId,
+    this.imageUrl,
   });
 
   factory VehicleModel.fromJson(Map<String, dynamic> json) {

@@ -18,6 +18,7 @@ class VehicleWidget extends StatelessWidget {
       child: Card(
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         elevation: 4,
+        color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -28,14 +29,15 @@ class VehicleWidget extends StatelessWidget {
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(15)),
               child: Image.network(
-                vehicle.imageUrl, // Assuming images are named in lowercase
+                vehicle.imageUrl ??
+                    "", // Assuming images are named in lowercase
                 height: 180,
                 width: double.infinity,
                 fit: BoxFit.fill,
                 errorBuilder: (context, error, stackTrace) {
                   return Image.network(
                     cacheHeight: 150,
-                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmWru8q17zpOzzzT1s475ZS_8fOL1GS0teSw&s', // Default image if the specific image is not found
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmWru8q17zpOzzzT1s475ZS_8fOL1GS0teSw&s',
                     height: 150,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -43,24 +45,28 @@ class VehicleWidget extends StatelessWidget {
                 },
               ),
             ),
+            Divider(
+              color: Colors.grey[300],
+              thickness: 1,
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${vehicle.manufacturer} ${vehicle.brand}',
+                    '${vehicle.manufacturer}  ${vehicle.brand}',
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Registration: ${vehicle.registrationNumber}',
+                        vehicle.registrationNumber,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey[700],
@@ -73,7 +79,8 @@ class VehicleWidget extends StatelessWidget {
                             color: Colors.white,
                           ),
                         ),
-                        backgroundColor: vehicle.status == 'Available'
+                        backgroundColor: vehicle.status == 'Available' ||
+                                vehicle.status == ''
                             ? Colors.green
                             : Colors.red,
                       ),

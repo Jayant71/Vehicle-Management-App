@@ -16,8 +16,8 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  PageController pageController = PageController();
-  int _currentIndx = 0;
+  PageController pageController = PageController(initialPage: 0);
+
   String? role_;
 
   @override
@@ -30,53 +30,64 @@ class _HomepageState extends State<Homepage> {
     role_ = context.read<ProfileCubit>().state?.role;
 
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<NavindexCubit>(
-          create: (context) => NavindexCubit(),
-        ),
-        BlocProvider<TimeCubit>(create: (context) => TimeCubit()),
-      ],
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        bottomNavigationBar: (role_ != 'admin' && role_ != 'driver')
-            ? SafeArea(
-                child: BlocBuilder<NavindexCubit, dynamic>(
-                  builder: (context, state) {
-                    return BottomNavigationBar(
-                      type: BottomNavigationBarType.fixed,
-                      currentIndex: state,
-                      onTap: (value) {
-                        context.read<NavindexCubit>().changeIndex(value);
-                        setState(() {
-                          _currentIndx = value;
-                        });
-                      },
-                      items: const [
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.home),
-                          label: 'Home',
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(Icons.pages),
-                          label: 'Applications',
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              )
-            : null,
-        body: (role_ != 'admin' && role_ != 'driver')
-            ? IndexedStack(
-                // controller: pageController,
-                // physics: const NeverScrollableScrollPhysics(),
-                index: _currentIndx,
-                children: [
-                    HomeView(role: role_!),
-                    const ApplicationListPage(),
-                  ])
-            : HomeView(role: role_!),
-      ),
-    );
+        providers: [
+          BlocProvider<NavindexCubit>(
+            create: (context) => NavindexCubit(),
+          ),
+          BlocProvider<TimeCubit>(create: (context) => TimeCubit()),
+        ],
+        child: Scaffold(
+          bottomNavigationBar: (role_ != 'admin' && role_ != 'driver')
+              ? SafeArea(
+                  child: BlocBuilder<NavindexCubit, dynamic>(
+                    builder: (context, state) {
+                      return BottomNavigationBar(
+                        type: BottomNavigationBarType.fixed,
+                        backgroundColor: Colors.white.withAlpha(150),
+                        unselectedLabelStyle:
+                            const TextStyle(color: Colors.white, fontSize: 12),
+                        selectedItemColor: Colors.black,
+                        selectedIconTheme: const IconThemeData(size: 35),
+                        selectedLabelStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold),
+                        elevation: 0,
+                        selectedFontSize: 17,
+                        unselectedFontSize: 15,
+                        currentIndex: state,
+                        onTap: (value) {
+                          context.read<NavindexCubit>().changeIndex(value);
+                          setState(() {
+                            pageController.animateToPage(value,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.ease);
+                          });
+                        },
+                        items: const [
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.home),
+                            label: 'Home',
+                          ),
+                          BottomNavigationBarItem(
+                            icon: Icon(Icons.pages),
+                            label: 'Applications',
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                )
+              : null,
+          body: (role_ != 'admin' && role_ != 'driver')
+              ? PageView(
+                  controller: pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                      HomeView(role: role_!),
+                      const ApplicationListPage(),
+                    ])
+              : HomeView(role: role_!),
+        ));
   }
 }

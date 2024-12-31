@@ -1,11 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logger/logger.dart';
 import 'package:vehicle_management_app/presentation/pages/applicationlist/cubit/applicationlist_cubit.dart';
 import 'package:vehicle_management_app/presentation/pages/user/profilescreen/cubit/profile_cubit.dart';
-import 'package:vehicle_management_app/service_locator.dart';
 
 class ApplicationListPage extends StatefulWidget
     implements PreferredSizeWidget {
@@ -33,6 +30,7 @@ class _ApplicationListPageState extends State<ApplicationListPage>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+
     profileCubit = context.read<ProfileCubit>().state;
     cubit = context.read<ApplicationlistCubit>();
     cubit.getApplications(false, profileCubit.role);
@@ -47,18 +45,18 @@ class _ApplicationListPageState extends State<ApplicationListPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: false,
       appBar: PreferredSize(
         preferredSize: preferredSize,
         child: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
+          centerTitle: true,
           title: Text('Applications',
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
           automaticallyImplyLeading: false,
-        ),
-      ),
-      body: Column(
-        children: [
-          TabBar(
+          bottom: TabBar(
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white,
             controller: _tabController,
             tabs: const [
               Tab(
@@ -76,92 +74,101 @@ class _ApplicationListPageState extends State<ApplicationListPage>
             ],
             onTap: (value) => setState(() {}),
           ),
-          IndexedStack(
-            index: _tabController.index,
-            children: [
-              BlocBuilder<ApplicationlistCubit, ApplicationlistState>(
-                  builder: (context, state) {
-                if (state is ApplicationlistLoaded) {
-                  return ListView.builder(
-                    itemCount: state.applications[0].length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      final application = state.applications[0][index];
-                      void onTap() {
-                        GoRouter.of(context).go(
-                          '/home/reviewapplication?who=${profileCubit.role}',
-                          extra: application,
-                        );
-                      }
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            IndexedStack(
+              index: _tabController.index,
+              children: [
+                BlocBuilder<ApplicationlistCubit, ApplicationlistState>(
+                    builder: (context, state) {
+                  if (state is ApplicationlistLoaded) {
+                    return ListView.builder(
+                      itemCount: state.applications[0].length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        final application = state.applications[0][index];
+                        void onTap() {
+                          GoRouter.of(context).go(
+                            '/home/reviewapplication?who=${profileCubit.role}',
+                            extra: application,
+                          );
+                        }
 
-                      return customListTile(context, application, onTap);
-                    },
-                  );
-                } else if (state is ApplicationlistLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is ApplicationlistError) {
-                  return Center(child: Text(state.message));
-                }
-                return const Center(child: Text("Something went wrong"));
-              }),
-              BlocBuilder<ApplicationlistCubit, ApplicationlistState>(
-                  builder: (context, state) {
-                if (state is ApplicationlistLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is ApplicationlistLoaded) {
-                  return ListView.builder(
-                    itemCount: state.applications[1].length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      final application = state.applications[1][index];
-                      void onTap() {
-                        var who = (application.userId == profileCubit.uid &&
-                                application.status == 1)
-                            ? 'completion'
-                            : profileCubit.role;
+                        return customListTile(context, application, onTap);
+                      },
+                    );
+                  } else if (state is ApplicationlistLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is ApplicationlistError) {
+                    return Center(child: Text(state.message));
+                  }
+                  return const Center(child: Text("Something went wrong"));
+                }),
+                BlocBuilder<ApplicationlistCubit, ApplicationlistState>(
+                    builder: (context, state) {
+                  if (state is ApplicationlistLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is ApplicationlistLoaded) {
+                    return ListView.builder(
+                      itemCount: state.applications[1].length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        final application = state.applications[1][index];
+                        void onTap() {
+                          var who = (application.userId == profileCubit.uid &&
+                                  application.status == 1)
+                              ? 'completion'
+                              : profileCubit.role;
 
-                        GoRouter.of(context).go(
-                          '/home/reviewapplication?who=$who',
-                          extra: application,
-                        );
-                      }
+                          GoRouter.of(context).go(
+                            '/home/reviewapplication?who=$who',
+                            extra: application,
+                          );
+                        }
 
-                      return customListTile(context, application, onTap);
-                    },
-                  );
-                } else if (state is ApplicationlistError) {
-                  return Center(child: Text(state.message));
-                }
-                return const Center(child: Text("Something went wrong"));
-              }),
-              BlocBuilder<ApplicationlistCubit, ApplicationlistState>(
-                  builder: (context, state) {
-                if (state is ApplicationlistLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is ApplicationlistLoaded) {
-                  return ListView.builder(
-                    itemCount: state.applications[2].length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      final application = state.applications[2][index];
-                      void onTap() {
-                        GoRouter.of(context).go(
-                          '/home/reviewapplication?who=${profileCubit.role}',
-                          extra: application,
-                        );
-                      }
+                        return customListTile(context, application, onTap);
+                      },
+                    );
+                  } else if (state is ApplicationlistError) {
+                    return Center(child: Text(state.message));
+                  }
+                  return const Center(child: Text("Something went wrong"));
+                }),
+                BlocBuilder<ApplicationlistCubit, ApplicationlistState>(
+                    builder: (context, state) {
+                  if (state is ApplicationlistLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is ApplicationlistLoaded) {
+                    return ListView.builder(
+                      itemCount: state.applications[2].length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        final application = state.applications[2][index];
+                        void onTap() {
+                          GoRouter.of(context).go(
+                            '/home/reviewapplication?who=${profileCubit.role}',
+                            extra: application,
+                          );
+                        }
 
-                      return customListTile(context, application, onTap);
-                    },
-                  );
-                } else if (state is ApplicationlistError) {
-                  return Center(child: Text(state.message));
-                }
-                return const Center(child: Text("Something went wrong"));
-              }),
-            ],
-          ),
-        ],
+                        return customListTile(context, application, onTap);
+                      },
+                    );
+                  } else if (state is ApplicationlistError) {
+                    return Center(child: Text(state.message));
+                  }
+                  return const Center(child: Text("Something went wrong"));
+                }),
+              ],
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -173,34 +180,66 @@ class _ApplicationListPageState extends State<ApplicationListPage>
     );
   }
 
-  Size get preferredSize => const Size.fromHeight(55.0);
+  Size get preferredSize => const Size.fromHeight(100.0);
 }
 
 Widget customListTile(
     BuildContext context, dynamic application, GestureTapCallback onTap) {
-  return ListTile(
-    title: Text(
-      application.purpose,
-      style: const TextStyle(fontWeight: FontWeight.bold),
-      maxLines: 2,
-      overflow: TextOverflow.ellipsis,
-    ),
-    subtitle: Text(application.destinationName,
-        maxLines: 2, overflow: TextOverflow.ellipsis),
-    onTap: onTap,
-    trailing: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Text(
-          "Date: ${application.date}",
-          style: const TextStyle(fontSize: 15),
-        ),
-        Text(
-          "Time: ${application.time}",
-          style: const TextStyle(fontSize: 15),
-        ),
-      ],
+  return Card(
+    shadowColor: Colors.black,
+    elevation: 3,
+    color: Colors.white,
+    shape: ShapeBorder.lerp(
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        1),
+    child: ListTile(
+      title: Text(
+        application.purpose,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        application.destinationName,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(fontSize: 12),
+      ),
+      onTap: onTap,
+      trailing: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            spacing: 3,
+            children: [
+              const Icon(
+                Icons.calendar_today,
+                size: 15,
+              ),
+              Text(
+                "Date: ${application.date}",
+                style: const TextStyle(fontSize: 15),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.access_time,
+                size: 15,
+              ),
+              Text(
+                "Time: ${application.time}",
+                style: const TextStyle(fontSize: 15),
+              ),
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }
